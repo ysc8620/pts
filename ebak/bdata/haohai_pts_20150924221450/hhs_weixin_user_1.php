@@ -1,0 +1,219 @@
+<?php
+require("../../inc/header.php");
+
+/*
+		SoftName : EmpireBak Version 2010
+		Author   : wm_chief
+		Copyright: Powered by www.phome.net
+*/
+
+DoSetDbChar('utf8');
+E_D("DROP TABLE IF EXISTS `hhs_weixin_user`;");
+E_C("CREATE TABLE `hhs_weixin_user` (
+  `uid` int(7) NOT NULL AUTO_INCREMENT,
+  `subscribe` tinyint(1) unsigned NOT NULL,
+  `wxid` char(28) NOT NULL,
+  `nickname` varchar(200) NOT NULL,
+  `sex` tinyint(1) unsigned NOT NULL,
+  `city` varchar(100) NOT NULL,
+  `country` varchar(100) NOT NULL,
+  `province` varchar(100) NOT NULL,
+  `language` varchar(50) NOT NULL,
+  `headimgurl` varchar(200) NOT NULL,
+  `subscribe_time` int(10) unsigned NOT NULL,
+  `localimgurl` varchar(200) NOT NULL,
+  `setp` smallint(2) unsigned NOT NULL,
+  `uname` varchar(50) NOT NULL,
+  `coupon` varchar(30) NOT NULL,
+  `lat` decimal(10,5) DEFAULT NULL,
+  `lng` decimal(10,5) DEFAULT NULL,
+  PRIMARY KEY (`uid`)
+) ENGINE=MyISAM AUTO_INCREMENT=187 DEFAULT CHARSET=utf8");
+E_D("replace into `hhs_weixin_user` values('2','0','onSWAuOcOaSJgGidvKTJoj6u0rCc','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('3','0','onSWAuCC_T8YAJeO2Q6bEhtrN0gY','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('4','0','onSWAuEC_SiyXOjKC4SyrzQBamcs','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('5','0','onSWAuMUYFynwR24kNlMlr8B0xbw','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('6','0','onSWAuF5mPsY3lKolHkhPJB4tfFQ','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('7','0','onSWAuH24TnDBh7jJogN-iVO9djk','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('8','0','onSWAuPFpoBmXDYqT3A-Ihsw2A50','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('9','0','onSWAuE3Iqb4LIETBBz_tOWUQ8xA','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('10','0','onSWAuJR24RMo-EqsAoaKClmvys8','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('11','0','onSWAuJnsRgdQLtdk_NnOxoGjRio','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('12','0','onSWAuDW7UULxB6VhlhtVXv315PQ','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('13','0','onSWAuFKsCHuD-NCl5NoN9pTrSnw','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('14','0','onSWAuOIDYEVgzhZ8yRNnMIlTdg0','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('15','0','onSWAuMrSEAjczovHNIJEIsUmcxs','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('16','0','onSWAuNneCGpMmNYTzYKM0gpOY3U','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('17','0','onSWAuJ6lx-AB7ouyW44zoUrra50','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('18','0','onSWAuI7or4RUX9ABdTnx6Ao_hcI','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('19','0','onSWAuNzXyxLl1fytbEk2TYWvE8A','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('20','0','onSWAuBqad__PejKlKzXkd7DU7Ao','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('21','0','onSWAuKVp7vxraOS-ikfzsIr-VXM','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('22','0','onSWAuDh5o01xJzy3oPvXdaecdlE','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('23','0','onSWAuGOTm1Mq26iFW6nGCFBGWMc','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('24','0','onSWAuM8vIg7S1Yb5a7GI9yik688','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('25','0','onSWAuKQsvblbLM5XFb8w88kRKeU','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('26','0','onSWAuLv1yycoQLthsB1zA852IyI','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('27','0','onSWAuDfbhExXF76w9jbRT-19I1g','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('28','0','onSWAuOBv3LYIzFO86uOheEYO1Ks','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('29','0','onSWAuPE7vBQu-XneUvPtDAl7Hdw','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('30','0','onSWAuNHHHVy0HusWRT7PDBrui0w','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('31','0','onSWAuIUOOoDq2Jg0xd3x_5feP-4','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('32','0','onSWAuKTmbWiM6lGBfSYOrseDmFI','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('33','0','onSWAuBkAUR6M76ki3AJFHcVXVxY','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('34','0','onSWAuD4xYzoZ9WB_s-jaVHysFao','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('35','0','onSWAuP1q-mhDRJ90v7wQakyWvLE','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('36','0','onSWAuCJgcCsR7FrbLnWqkSR7ppk','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('37','0','onSWAuJ3jOqSDhs3cDmP9dMvmUEM','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('38','0','onSWAuNIWc5jnJQ7mWwl3Y3dis18','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('39','0','onSWAuKPtuy97QaXiW9GfpiGFT8E','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('40','0','onSWAuE0U5ydw1XxrSi_k9hT5VF4','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('41','0','onSWAuPe4g0tlHCCX4lUchprCS0Y','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('42','0','onSWAuDYwluOMk917_n1HsqmMPbU','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('43','0','onSWAuL6FAkVltn4ZlVe8CeinEbA','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('44','0','onSWAuGSa9MNBw3N1GfK1rZSOeac','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('45','0','onSWAuCHKVxtdzfW__6KQgoDDy3w','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('46','0','onSWAuBNPiPtXy1r4etD9Y-E94Zg','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('47','0','onSWAuIJDMTk2ywztnuj0w2dqrYU','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('48','0','onSWAuHN1K3cnYpiEn1bOfqFvNdE','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('49','0','onSWAuHZhOvLsc-LM8LvoIHvb2uw','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('50','0','onSWAuJFcVEJioZrhFskr5iTWnCQ','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('51','0','onSWAuNZTfE8TmtUxihLrBRuhI3A','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('52','0','onSWAuCmZ27rgfhdhlzj2x-aGgU4','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('53','0','onSWAuHZOq1ihI7EXZaSBouQmdi4','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('54','0','onSWAuIw9Y03zTlRipMwgoCY6Qr4','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('55','0','onSWAuGc2h33BCN_SjittM_7kXiQ','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('56','0','oFC46wApxalvuLp9lOfbJHHHIJFw','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('57','0','oFC46wBKnE0l3UKDa0SJXQR2zGYk','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('58','0','oFC46wEQJKqotb-bhGS9xoRaYufc','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('59','0','oFC46wIEvcTDVse9LTcmm6fPfqWk','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('60','0','oFC46wFMPc07L89Qm3u8BzukWAvw','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('61','0','oFC46wEaIka_xVY3Bc3vlF3cpMfo','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('62','0','oFC46wJRmXDWWDG9-gm5-kFcxark','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('63','0','oFC46wGXmqfeUhiOu-vpaju6c7SQ','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('64','0','oFC46wMNcePl0uXI8uz47Gq7WF0A','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('65','0','oFC46wMIDJTXUG9Q_vbLYhimnXt8','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('66','0','oFC46wPPIudtTbt3kJD11XJjmHSo','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('67','0','oFC46wMfOKz6IspDKXoE81tGOiqk','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('68','0','oFC46wI2-mvyhVKbg69lsPPsaTx0','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('69','0','oFC46wAySk-RZxeuiEWUMHyWF6tE','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('70','0','oFC46wBaFNO_9TayZQT9K_3LJ0Hc','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('71','0','oFC46wKsjNhPM8iKfpEZABaeaRMo','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('72','0','oFC46wF86D98S6yzEyyWDUkLw3Xw','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('73','0','oFC46wLoJiXsYmQHtA5v72T0en58','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('74','0','oFC46wF-a1qvLoNQeUhnqQnBRHPc','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('75','0','oFC46wOFqC6-U5QsgfKpK_hXPZks','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('76','0','oFC46wEPDga6dQyZM5hzTZ5unmHg','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('77','0','oFC46wOLeuYfHe7piNH1nKmOm8Kw','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('78','0','oFC46wMXlrfcqGx9fUp2ciD5Cxrw','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('79','0','oFC46wOEzzIO1Mo2xlJe4uUos7-U','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('80','0','oFC46wAgOJip8vdClm7WjPJtWtsI','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('81','0','oFC46wDoygNUiP-zsfXGShshUUrU','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('82','0','oFC46wJUoO1lABbMNB0-uKMqb_-0','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('83','0','oFC46wLd9Nif-68TpYyuz_sASegw','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('84','0','oFC46wA3k-0HIM3_psSWO7_MxQ1U','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('85','0','oFC46wCCz8B_Z73wprp7WhRyUy_w','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('86','0','oFC46wG4_6NC6loimwEmmzf8PrG4','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('87','0','oFC46wIqGZ8gn-cX8Y2VNlmKaw2c','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('88','0','oFC46wJ4YaC95qGUpC0lpOS8aFRk','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('89','0','oFC46wLgHXb0A-gCQX6oHXEON294','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('90','0','oFC46wB5xC_b1j6sbl1eNxOZ3Izw','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('91','0','oFC46wF94RZD5uO-yob8ZZ2nNcaM','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('92','0','oFC46wB6PiIMDGk1wOwnaLqmYCZ4','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('93','0','oFC46wOvUTPMVMhd-2zFme0Qbm7o','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('94','0','oFC46wPB4UNrPraRkWVFiGntTK5I','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('95','0','oFC46wJJAb3Rk8bzVjIaFxnMPBKE','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('96','0','oFC46wLa-2KLmvbnOLe7D0Q1GYU8','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('97','0','oFC46wCqZpjXlLLSiotjw-dCJAj8','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('98','0','oFC46wDaBsLeEYZ6DPedJ9frpTzE','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('99','0','oFC46wD9XhJKRgJd6ZjKDFWVqL5I','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('100','0','oFC46wCS7In1Df8LbZG4Upq43zAk','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('101','0','oFC46wIZvuRTjVB1d9OeJ6ixztxE','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('102','0','oFC46wJ6g1NK2BSZReAUNLhBzMH8','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('103','0','oFC46wF2_Ys6DH2Y2sTv0UeOS6t8','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('104','0','oFC46wOhxmRcUj4_0bbK2JWWWSP0','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('105','0','oFC46wD4aRzHEZoS05d_bTMyeGlk','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('106','0','oFC46wB723weW-TUQzBIEIhAj7Ag','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('107','0','oFC46wD9yTIRtMAxePr8Qqc9GG4k','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('108','0','oFC46wEonfZFvWlP6kXrPNLdhTog','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('109','0','oFC46wIr4MafJ-n3UkydLoqV8Cu0','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('110','0','oFC46wHLGYJ8ivNecC4DDLNyL4xE','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('111','0','oFC46wEfGs4scZ9mV-1Z9uF0M-zY','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('112','0','oFC46wDbRIKQuVb8dHqXI8np-ALE','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('113','0','oFC46wL-SuHGJSMuY2iejp4ChWrU','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('114','0','oFC46wLbi3ZqCTvUKYypcsa6lDXY','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('115','0','oFC46wM2tt4AkePKezuAWKf8Krao','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('116','0','oFC46wFljEhh4APMJw05NUWMpoLk','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('117','0','oFC46wGJGGH4KaBkciG5_jKYveI0','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('118','0','oFC46wHERSfDcnPL6FsOM2EdKz7Q','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('119','0','oFC46wBo8uZsQtA06LtZgQzjydqg','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('120','0','oFC46wAgD2Ke6HjzNPbGZ3hLKfCk','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('121','0','oFC46wLtvkZuP0X0TTQvnWxJZztg','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('122','0','oFC46wFeJfSXKHCkjzl4dXJv0ypA','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('123','0','oFC46wAxqI6IydrSZSPAjt40sBXs','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('124','0','oFC46wOSoAqMFT_Z4IrxenBG1srA','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('125','0','oFC46wKTh6FLVAdWVzhhXAvmwzqI','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('126','0','oFC46wM9lmaMT2MvV5k4xN9D7zec','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('127','0','oFC46wIKZfNT6ItobxSIN5azTWfo','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('128','0','oFC46wJEMsmPUc6tVs7B3mJJHgQA','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('129','0','oFC46wPPzXwxHtfYBOG70g4incvI','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('130','0','oFC46wAlNT0MTsPUgZvsd8uaMquw','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('131','0','oFC46wJb-cETktnRGtOA62EylYXk','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('132','0','oFC46wJBsWxsaZ-Si7RhEQHDoZzY','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('133','0','oFC46wEyIfCjuBCD0WhpqjQycNEc','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('134','0','oFC46wOl9EtmvV5-XGspRy5gzvQA','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('135','0','oFC46wExtkurtAc0_HNtrjA4bwgg','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('136','0','oFC46wFjtwnxv0iSDRRa3vQyYpuU','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('137','0','oFC46wM2BGikUubR0xz1eK48bA5Y','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('138','0','oFC46wBuyyHjswj_VSPYBm9XDUOM','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('139','0','oFC46wMBeSyJSYamaQjKojVAQS9Y','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('140','0','oFC46wCJcIyYfxo36nmegadLmi58','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('141','0','oFC46wFwKIiJZfeizMKJe0gHD7AQ','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('142','0','oFC46wKoCQyS9JDOqXJaeaWgSX_s','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('143','0','oFC46wGXcoeBMMGZWPL5Sb_ijj1g','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('144','0','oFC46wNxmY7B4uHy1V8LF42-TZEE','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('145','0','oFC46wLLizLJ21hCmAmxzyg2nylE','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('146','0','oFC46wHdxa_Nr5TeMOtjaZFBwciM','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('147','0','oFC46wGrYfTJAaFU70URUbuUMJ8o','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('148','0','oFC46wOjMnZ48cOU9UbI07JNlhAA','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('149','0','oFC46wCXU9awIBg4q20abdesgVg0','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('150','0','oFC46wOFfBb3xgiazrGz9otb--aA','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('151','0','oFC46wJ3AiMHDYDkBEuO2RahxUGw','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('152','0','oFC46wOYIUpAmwGYD3vplM16d_lY','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('153','0','oFC46wHntASuJI2lnMTzc9bWcTEY','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('154','0','oFC46wFFraCb3OaHRC93NPT5KBZU','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('155','0','oFC46wHSNxWz2GX-RDwUs_HVdXNw','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('156','0','oFC46wIo1kMUYp8lpli-GZbyoAQ8','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('157','0','oFC46wGaF-7LDPXHJL2-hk9-_R08','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('158','0','oFC46wDui6Np_xXDuWeThcZo2x84','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('159','0','oFC46wF4epQp406Dr3zrLs5dLjF0','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('160','0','oFC46wEO-sPMupwXbRxuKPSt9mOc','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('161','0','oFC46wHqynYaR0FfGhba273VwyC0','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('162','0','oFC46wM0FCY4SMWU3JgYKdg5iwHE','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('163','0','oFC46wFzTEBWtqjxnGhy0wWVKoZE','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('164','0','oFC46wNnNlH9BMwyRp7hCGcSOooQ','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('165','0','oFC46wMd3y4ajumu__HNvd1sRNmk','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('166','0','oFC46wEeycxplL9QErw-Mgwb_0W4','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('167','0','oFC46wE2cVR5rn8_R1g8eOR8IStw','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('168','0','oFC46wJtXCB4XN7bE2xWR44tO9HY','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('169','0','oFC46wGgunumhKjGMqS6S0XPxXcE','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('170','0','oFC46wLftDIf7shFVdhUYjE5Me3U','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('171','0','oFC46wOPrE28EqP2tpwPAUSfF9XU','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('172','0','oFC46wPfQXP5ok7FwPy0NBAUwEGI','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('173','0','oFC46wJ9DPXtI_u0VlJW3PXsg0TM','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('174','0','oFC46wERec5cWkNgpxHjfcxhLXNw','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('175','0','oFC46wA3Vy0Us4uPiN3FjyKL0dAs','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('176','0','oFC46wKm8ajfW5eZYjKW8YV-DIFo','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('177','0','oFC46wPpaTd02kVJVHFR16X5-Dtg','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('178','0','oFC46wLr468Ln7inCP9vRB4_IoTI','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('179','0','oFC46wAvWeeei0RgIa2ZQGgUkQYI','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('180','0','oFC46wKIvIyeKfQhytJW0bEAqurU','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('181','0','oFC46wJ3PS_f3mxEw0Aca3uRebAg','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('182','0','oFC46wGeG2tS7mCwAl3OmYsgxOvM','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('183','0','oFC46wLyeBrR4xX-7fYgYhIiTbWE','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('184','0','oFC46wNPNWt2dDaXAljRDwEXALgU','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('185','0','oFC46wN5KacbwQA5m8bk8vS4qmE0','','0','','','','','','0','','0','','',NULL,NULL);");
+E_D("replace into `hhs_weixin_user` values('186','0','oFC46wHS5ahSws3Z9Ah-OfEf3cRY','','0','','','','','','0','','0','','',NULL,NULL);");
+
+require("../../inc/footer.php");
+?>
