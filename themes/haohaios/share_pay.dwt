@@ -82,7 +82,7 @@
 	        	statis(1,2);
 	        }
 	    });
-	  
+	  alert(link)
 	    wx.onMenuShareQQ({
 	        title: title, // 分享标题
 	        desc: desc, // 分享描述
