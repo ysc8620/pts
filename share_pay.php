@@ -35,7 +35,7 @@ if ($act=='default'){
     $smarty->assign('progress', number_format($order_info['money_paid']*100/($order_info['money_paid']+$order_info['order_amount']),2)  );
     $smarty->assign('order_info', $order_info );
 
-    if($_REQUEST['showwxpaytitle']==1){//别人的
+    if($order_info['user_id'] != $user_id){//别人的
         
         if(floatval($order_info['order_amount'])<=0.00){
             echo"<script>";
