@@ -65,7 +65,6 @@ if ($act=='default'){
         $smarty->display('share_to_pay.dwt');
         
     }else{//自己
-
         $smarty->assign('imgUrl', $user_info['headimgurl']);//'http://'.$_SERVER['HTTP_HOST']."/".$goods_list[0]['goods_thumb']
         $smarty->assign('title', "找人代付");
         $smarty->assign('desc', mb_substr($order_info['wxdesc'], 0,30,'utf-8')  );//

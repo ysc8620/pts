@@ -34,7 +34,7 @@
 <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> 
 <script language="javascript" type="text/javascript">
 	wx.config({
-	    debug: false,//这里是开启测试，如果设置为true，则打开每个步骤，都会有提示，是否成功或者失败
+	    debug: true,//这里是开启测试，如果设置为true，则打开每个步骤，都会有提示，是否成功或者失败
 	    appId: '{$appid}',
 	    timestamp: '{$timestamp}',//这个一定要与上面的php代码里的一样。
 	    nonceStr: '{$timestamp}',//这个一定要与上面的php代码里的一样。
@@ -43,7 +43,8 @@
 	      // 所有要调用的 API 都要加到这个列表中
 	        'onMenuShareTimeline',
 	        'onMenuShareAppMessage',
-	 
+	        'onMenuShareQQ',
+	        'onMenuShareWeibo'
 	    ]
 	});
 	
