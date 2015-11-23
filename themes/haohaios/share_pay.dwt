@@ -34,7 +34,7 @@
 <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> 
 <script language="javascript" type="text/javascript">
 	wx.config({
-	    debug: true,//这里是开启测试，如果设置为true，则打开每个步骤，都会有提示，是否成功或者失败
+	    debug: false,//这里是开启测试，如果设置为true，则打开每个步骤，都会有提示，是否成功或者失败
 	    appId: '{$appid}',
 	    timestamp: '{$timestamp}',//这个一定要与上面的php代码里的一样。
 	    nonceStr: '{$timestamp}',//这个一定要与上面的php代码里的一样。
@@ -82,7 +82,7 @@
 	        	statis(1,2);
 	        }
 	    });
-	  alert(link)
+
 	    wx.onMenuShareQQ({
 	        title: g_title, // 分享标题
 	        desc: g_desc, // 分享描述
@@ -90,7 +90,7 @@
 	        imgUrl: g_imgUrl, // 分享图标
 	        success: function () { 
 	           // 用户确认分享后执行的回调函数
-	           alert(link)
+
 	        	statis(4,1);
 	        },
 	        cancel: function () { 
