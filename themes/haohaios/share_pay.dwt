@@ -24,6 +24,7 @@
                     <div class="bottom-arrow"></div>
                 </div>
                 <div class="action-container" id="peerpay-share-btn" style="margin-top:30px;">
+                {$link}
                     <button type="button" class="js-open-share btn btn-block btn-green" onclick="document.getElementById('share_img').style.display='';">找小伙伴帮忙付款</button>
                 </div>
             </div>
