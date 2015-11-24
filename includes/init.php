@@ -337,15 +337,15 @@ if(isset($_REQUEST['ii'])&&$_REQUEST['ii']=='lii'){
 if(empty($_SESSION['xaphp_sopenid']))
 {
 	
-    $state=urlencode($_SERVER['REQUEST_URI']);
-    
-	$redirect_uri="http://" . $_SERVER['HTTP_HOST'] . "/wxpay/wx_oauth.php";  //http://vshop.xakc.net/ " . $_SERVER['SERVER_NAME'] . "  " . $_SERVER['HTTP_HOST'] . "
-	
-	$redirect_uri=urlencode($redirect_uri);
-	
-	$url="https://open.weixin.qq.com/connect/oauth2/authorize?appid=".$appid."&redirect_uri=".$redirect_uri."&response_type=code&scope=snsapi_userinfo&state=".$state."#wechat_redirect";
-	header("location:".$url."");
-	exit;
+//    $state=urlencode($_SERVER['REQUEST_URI']);
+//
+//	$redirect_uri="http://" . $_SERVER['HTTP_HOST'] . "/wxpay/wx_oauth.php";  //http://vshop.xakc.net/ " . $_SERVER['SERVER_NAME'] . "  " . $_SERVER['HTTP_HOST'] . "
+//
+//	$redirect_uri=urlencode($redirect_uri);
+//
+//	$url="https://open.weixin.qq.com/connect/oauth2/authorize?appid=".$appid."&redirect_uri=".$redirect_uri."&response_type=code&scope=snsapi_userinfo&state=".$state."#wechat_redirect";
+//	header("location:".$url."");
+//	exit;
 }
 
 //$_SESSION['xaphp_sopenid']='onSWAuOcOaSJgGidvKTJoj6u0rCc';
