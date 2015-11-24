@@ -66,7 +66,7 @@
 <!-- {/if} -->
 </div>
 {if $subscribe==0}
-        <div class="guanzhu"><a href="{$subscribe_url}">您还未关注我们，立即去关注</a></div>
+        <div class="guanzhu" style="display:none"><a href="{$subscribe_url}">您还未关注我们，立即去关注</a></div>
         {/if}
 <div class="footer">
     <ul>
