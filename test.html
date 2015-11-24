@@ -1,170 +1,45 @@
-
-<!DOCTYPE html>
-<html lang="en">
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
-    <meta name="format-detection" content="telephone=no" />
-    <title>滴滴打车</title>
-    <link rel="stylesheet" type="text/css" href="http://static.xiaojukeji.com/activity/css/base/merged-common-ui.css">
-    <link rel="stylesheet" type="text/css" href="http://static.xiaojukeji.com/activity/css/hb-v3/index.css?v=61D7B36A">
-    <link rel="stylesheet" type="text/css" href="http://static.xiaojukeji.com/activity/css/hb-v3/media.css?v=7d610f6664bed9fce5589200e6f06540">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>一窝蜂团购一窝蜂团购</title>
+<script type="text/javascript">
+
+    var imgUrl = "http://ywf.kakaapp.com/images/201511/thumb_img/1_thumb_P_1448257534528.jpg"; //注意必须是绝对路径
+
+    var lineLink = "http://ywf.kakaapp.com"; //同样，必须是绝对路径
+    var descContent = '一窝蜂专注于提供手机网站，其内容涵盖手机网站模板,wap网站模板,手机网站源码,wap网站源码,wap网站建设,手机网站制作等，让任何一个网站程序员都能轻松找到自己想要的模板'; //分享给朋友或朋友圈时的文字简介
+    var shareTitle = '一窝蜂团购'; //分享title
+    var appid = 'wx0bfc93135bf3062e'; //apiID，分享显示微信号名称
+	</script>
+
+<script src="/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+//初始化配置
+wx.config({
+    debug: true, // 调试模式,会打印所有调用返回信息
+    appId: appid, 
+    timestamp: 0, // 时间戳
+    nonceStr: '', // 随机串
+    signature: '',// 签名，参考我上面给出的解释
+    jsApiList: [] // 请求权限
+});
+//分享朋友圈
+wx.onMenuShareTimeline({
+    title: '', // 分享标题
+    link: '', // 分享链接
+    imgUrl: '', // 分享图标
+    success: function () { }, //成功回调
+    cancel: function () { }, //失败回调
+});
+
+</script>
 </head>
+
 <body>
-    <div id='master'>
-        <!--Start Grap page -->
-        <div class="div-video" id="div-video">
-            <div id="video-show"><img src="data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" /></div>
-            <div id="video-play"><video src="data:video/mp4;base64, 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" controls="controls" webkit-playsinline></video></div>
-        </div>
-        <div class="main" id='page-grap'>
-            <div id="header-wrap">   
-                <div class="header">
-                    <span class="owner-logo"></span>
-                </div>
-                <div class='tip-bubble'>
-                    <p id='grap-bubble-1'>
-                        <span class="nickname">我是滴滴</span>
-                    </p>
-                    <p id='grap-bubble-2'></p>
-                </div>
-            </div>
-            <div class="dv-wrap dv-wrap-posi">
-                <div class='dv-result'>
-                    <form>
-                        <input type="tel" id="txt-tel" name="txt-tel" placeholder='输入手机号，领取优惠'>
-                        <a id="btn-open" class="btn-gray">点击领取</a>
-                    </form>
-                </div>
-                <div class="didi-activity"><div class="checkbox"><span class="checked" id="checked-box"></span></div><div class="activity-desc">我已阅读并同意滴滴打车的<span class="activity-link"><a id="linkbox" href="http://static.diditaxi.com.cn/activity/pages/activity-pay.html">[活动规则]</a></span></div></div>
-            </div>
-        </div>
-        <!-- End grap page -->
+<img src="http://ywf.kakaapp.com/images/201511/thumb_img/1_thumb_P_1448257534528.jpg" />
 
-        <!--Start result page 1-->
-        <div class="main" id='page-result'>
-            <div id="" class="result-header-wrap">
-                <div class="header">
-                    <span class="owner-logo"></span>
-                </div>
-                <div class='tip-bubble'>
-                    <p id='result-bubble-1'>
-                        <span class="nickname"><span>
-                    </p>
-                    <p id='result-bubble-2'></p>
-                </div>
-            </div>
-            <div id="" class="dv-wrap dv-wrap-posi2">
-                <div class="dv-result">
-                    <div class="dv-result-tips hidden"></div>
-                    <div class="dv-result-success">
-                        <div id="tips">
-                            <div id="coupon-list"></div>
-                            <p class='p-tips'>打车券已放入账户
-                                <span id="sp-change-phone"></span>
-                                <span id="btn-modify-phone">修改</span>
-                            </p>
-                        </div>
-                        <div id="btns">
-                            <div id="btns-container"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="btn-addCard" style="display: none">+添加至微信卡包</div>
-            <!--活动说明-->
-            <div id="activity">
-                <div class="activity-container">
-                    <span class="activity-title">活动说明</span>
-                    <div class="activity-content"></div>
-                </div>
-            </div>
-            <!-- 抢红包用户列表 -->
-            <div class='list-wrap' id='dv-list'>
-                <div class='hr-tip'>
-                    <span id="friends-tips">看朋友们手气如何</span>
-                </div>
-                <ul id='ul-list'>
-                </ul>
-            </div>
-            <!-- endof抢红包用户列表 -->
-        </div>
-        <!-- End result page 1-->
+一窝蜂专注于提供手机网站，其内容涵盖手机网站模板,wap网站模板,手机网站源码,wap网站源码,wap网站建设,手机网站制作等，让任何一个网站程序员都能轻松找到自己想要的模板
 
-        <!-- 修改手机号页面开始 -->
-        <div class="main" id="page-changephone">
-            <div class='change-phone-tip'>
-                <span id="tip-text">更换号码</span>
-            </div>
-            <div id="div-origin-phone">
-                <span>当前手机号：</span>
-                <span id="sp-origin-phone"></span>
-            </div>
-            <div id="div-new-phone">
-                <input type="text" placeholder="输入新手机号" value="">
-            </div>
-            <div id="div-btn-confirm">
-                <div class="div-btn-confirm btn-gray">确 定</div>
-            </div>
-            <div id="div-changephone-tips">
-                修改手机号后，下次领打车券时将自动放入新账户。
-            </div>
-            <input type="hidden" id="hid-newphone">
-        </div>
-        <!-- 修改手机号页面结束 -->
-
-        <!--异常页开始-->
-        <div class="main" id='page-exception'>
-            <div class="icon-wrap">
-                <span class="icon i-out-server"></span>
-            </div>
-            <p class='p-soft-errno'>对不起，程序出现了一些问题</p>
-            <p style='margin:0;font-size:1.2rem;color:#666;'>程序猿GG正在抢修，请稍后再试~</p>
-        </div>
-        <!--异常页面结束-->
-    </div>
-    <!-- End gen hongbao page 2-->
-    <!--微信分享蒙层-->
-    <div class="didi-cover" id="dv-cover">
-        <p id="btn-hide-cover">
-            <img src="http://static.diditaxi.com.cn/activity/img-hb/v3/sharealert.png" style="width:80%;margin:0 auto; margin-top:20px" />
-        </p>
-        <p></p>
-    </div>
-
-    </div>
-    <!--页面标志-->
-    <input type="hidden" id='hid-page-no' value='1'>
-    <input type="hidden" id='hid-errno' value='0'>
-    <input type="hidden" id='hid-theme-config' value='{&quot;ti_id&quot;:&quot;601&quot;,&quot;ti_name&quot;:&quot;\u5feb\u8f66-\u5feb\u8f66\u62fc\u8f66-\u6df1\u5733&quot;,&quot;ti_theme_model&quot;:&quot;sc&quot;,&quot;ti_create_time&quot;:&quot;2015-11-19 15:36:22&quot;,&quot;ti_edit_time&quot;:&quot;2015-11-23 15:21:02&quot;,&quot;ti_creator&quot;:&quot;admin&quot;,&quot;ti_latest_editor&quot;:&quot;adimin&quot;,&quot;ti_info&quot;:&quot;{\&quot;name\&quot;:\&quot;\u5feb\u8f66-\u5feb\u8f66\u62fc\u8f66-\u6df1\u5733\&quot;,\&quot;chk_share\&quot;:\&quot;1\&quot;,\&quot;share_title\&quot;:\&quot;\u62fc\u5feb\u8f66\uff0c\u4e00\u53e3\u4ef7\uff0c\u5728\u6df1\u5733\u6700\u4f4e7.8\u5143\uff0c\u5feb\u6765\u9886\u6253\u8f66\u5238\&quot;,\&quot;share_cont\&quot;:\&quot;\u6df1\u5733\u5927\u5b66--\u4e16\u754c\u4e4b\u7a97\uff0c\u6700\u4f4e7.8\u5143\uff0c\u5feb\u6765\u9886\u6253\u8f66\u5238\&quot;,\&quot;share_img_url\&quot;:\&quot;http:\/\/static.diditaxi.com.cn\/op\/veyronmis\/066fd3d4a3a0dc123a04f5b20cb04688.jpg\&quot;,\&quot;chk_weibo\&quot;:\&quot;1\&quot;,\&quot;weibo_cont\&quot;:\&quot;\u6211\u521a\u7528 @\u6ef4\u6ef4\u51fa\u884c \u4e86\uff0c\u611f\u89c9\u68d2\u68d2\u54d2\uff01\u53eb\u597d\u8f66\u518d\u51fa\u95e8\uff0c\u4e0d\u6015\u65e5\u6652\u548c\u96e8\u6dcb~\u518d\u9001\u4f60\u4e00\u5f20\u6ef4\u6ef4\u6253\u8f66\u5238\uff0c\u7528\u5238\u62b5\u8f66\u8d39\uff0c\u7701\u5fc3\u53c8\u7701\u94b1\uff01\&quot;,\&quot;weibo_img_url\&quot;:\&quot;http:\/\/static.diditaxi.com.cn\/op\/veyronmis\/fc99b7b9378b609774e4fc8ec3da00a6.png\&quot;,\&quot;chk_sendman\&quot;:\&quot;1\&quot;,\&quot;sendman_attr\&quot;:\&quot;0\&quot;,\&quot;send_name\&quot;:\&quot;\u6ef4\u6ef4\&quot;,\&quot;send_img_url\&quot;:\&quot;http:\/\/static.diditaxi.com.cn\/activity\/img-hb\/v3\/head_default.png\&quot;,\&quot;tel_head_opacity\&quot;:\&quot;1\&quot;,\&quot;tel_bub_txt\&quot;:\&quot;\u9001\u4f60\u6ef4\u6ef4\u6253\u8f66\u5238\uff0c\u8d76\u5feb\u6765\u9886\u4e48\u4e48\u54d2~\&quot;,\&quot;tel_bub_col\&quot;:\&quot;RGBA(75,44,0,1)\&quot;,\&quot;tel_btn_txt\&quot;:\&quot;\u9886\u53d6\u6253\u8f66\u5238\&quot;,\&quot;tel_bg_img_url\&quot;:\&quot;http:\/\/static.diditaxi.com.cn\/op\/veyronmis\/db382db2732bfbcdf2066d0903d97bf3.png\&quot;,\&quot;res_succ\&quot;:\&quot;\u606d\u559c\u4f60\u62a2\u5230\u4e86\u6211\u7684\u6253\u8f66\u5238\uff0c\u4e0b\u6b21\u6253\u8f66\u7528\u6ef4\u6ef4\u5457\uff01\&quot;,\&quot;res_finish\&quot;:\&quot;\u6253\u8f66\u5238\u5df2\u9886\u5149\u4e86\uff0c\u4e0b\u6b21\u65e9\u70b9\u5566~\&quot;,\&quot;res_bub_txt_col\&quot;:\&quot;RGBA(75,44,0,1)\&quot;,\&quot;res_bub_bg_col\&quot;:\&quot;RGBA(250,242,233,0.8)\&quot;,\&quot;res_bg_img_url\&quot;:\&quot;http:\/\/static.diditaxi.com.cn\/op\/veyronmis\/29ec990841ea6ba78f465d2b8da2e74f.png\&quot;,\&quot;chk_activity\&quot;:\&quot;\&quot;,\&quot;act_title\&quot;:\&quot;\u6d3b\u52a8\u8bf4\u660e\&quot;,\&quot;get_record\&quot;:\&quot;1\&quot;,\&quot;record_count\&quot;:\&quot;100\&quot;,\&quot;record_bg\&quot;:\&quot;RGB(246,246,246)\&quot;,\&quot;record_col\&quot;:\&quot;75,44,0\&quot;,\&quot;btn_bub_bg\&quot;:\&quot;RGBA(232,231,230,0.8)\&quot;,\&quot;chk_btn_01\&quot;:\&quot;1\&quot;,\&quot;btn_name_01\&quot;:\&quot;\u9080\u8bf7\u65b0\u670b\u53cb \u8d6220\u5143\u8f66\u8d39\&quot;,\&quot;btn_link_01\&quot;:\&quot;http:\/\/recommend.xiaojukeji.com\/growth\/receiveCoupon.html?activityId=1&amp;recommendMobile=18000000000&amp;channelId=20\&quot;,\&quot;chk_btn_02\&quot;:\&quot;1\&quot;,\&quot;btn_name_02\&quot;:\&quot;\u6ce8\u518c\u6ef4\u6ef4\u53f8\u673a\&quot;,\&quot;btn_link_02\&quot;:\&quot;http:\/\/www.udache.com\/app\/mQuickReg\/index?channel=10&amp;channelId=30595&amp;source=&amp;sourceid=&amp;type=&amp;category=1\&quot;,\&quot;chk_btn_03\&quot;:\&quot;\&quot;,\&quot;btn_name_03\&quot;:\&quot;\u5206\u4eab\u6253\u8f66\u5238\&quot;,\&quot;chk_btn_04\&quot;:\&quot;\&quot;,\&quot;btn_name_04\&quot;:\&quot;\&quot;,\&quot;btn_link_04\&quot;:\&quot;\&quot;}&quot;,&quot;ti_status&quot;:&quot;0&quot;,&quot;ti_delflag&quot;:&quot;0&quot;,&quot;ti_weixin_info&quot;:&quot;{\&quot;chk_wx_get_msg\&quot;:\&quot;1\&quot;,\&quot;wx_get_start_msg\&quot;:\&quot;\u5b9e\u60e0\u5b89\u5168\uff0c\u968f\u53eb\u968f\u5230\u3002\u8f7b\u677e\u8212\u9002\u51fa\u884c\uff0c\u4ece\u6ef4\u6ef4\u5feb\u8f66\u5f00\u59cb\uff01\&quot;,\&quot;wx_get_title_col\&quot;:\&quot;\&quot;,\&quot;wx_get_end_msg\&quot;:\&quot;\u4ee3\u91d1\u5238\u80fd\u62b5\u8f66\u8d39\uff0c\u8bb0\u5f97\u4f7f\u7528\u54e6\uff01\&quot;,\&quot;wx_get_end_col\&quot;:\&quot;\&quot;,\&quot;chk_wx_by_msg\&quot;:\&quot;1\&quot;,\&quot;wx_by_start_msg\&quot;:\&quot;\u5b9e\u60e0\u5b89\u5168\uff0c\u968f\u53eb\u968f\u5230\u3002\u8f7b\u677e\u8212\u9002\u51fa\u884c\uff0c\u4ece\u6ef4\u6ef4\u5feb\u8f66\u5f00\u59cb\uff01\&quot;,\&quot;wx_by_title_col\&quot;:\&quot;\&quot;,\&quot;wx_by_end_msg\&quot;:\&quot;\u4e3a\u4e86\u907f\u514d\u6253\u6270\u60a8\uff0c\u53ea\u6709\u7b2c\u4e09\u6b21\u548c\u9886\u5b8c\u65f6\u901a\u77e5\u60a8\&quot;,\&quot;wx_by_end_col\&quot;:\&quot;\&quot;}&quot;,&quot;id&quot;:&quot;theme:601&quot;,&quot;datafrom&quot;:&quot;redis&quot;}'>
-
-    <!-- 红包本身的信息包括id -->
-    <input type="hidden" id='hid-hb-info' value='{"access_type":"1","order_id":"662887396","prd":"210","start_time":"2015-11-24 08:58:09","total_cnt":"35","theme_gid":"35","instance_id":"VL06UewE201511240858093026181696","owner":"18688708861","end_time":"2015-12-09 08:58:09","v_shareid":"a6f89f8d7cca3dc05d489700f6296fd2","strategy_gid":"-1","rob_cnt":"2","info":"{\"errno\":0,\"errmsg\":\"\\u6210\\u529f\",\"info\":{\"url\":\"http:\\\/\\\/pay.xiaojukeji.com\\\/veyron\\\/market_entry\\\/hbrob\\\/gethongbao?id=VL06UewE201511240858093026181696&sign=ee5f12d3689e33acf7b630867507ee77\",\"amount\":22885,\"number\":35},\"share_info\":{\"wx_share_title\":\"\\u62fc\\u5feb\\u8f66\\uff0c\\u4e00\\u53e3\\u4ef7\\uff0c\\u5728\\u6df1\\u5733\\u6700\\u4f4e7.8\\u5143\\uff0c\\u5feb\\u6765\\u9886\\u6253\\u8f66\\u5238\",\"wx_share_text\":\"\\u6df1\\u5733\\u5927\\u5b66--\\u4e16\\u754c\\u4e4b\\u7a97\\uff0c\\u6700\\u4f4e7.8\\u5143\\uff0c\\u5feb\\u6765\\u9886\\u6253\\u8f66\\u5238\",\"wx_share_logo\":\"http:\\\/\\\/static.diditaxi.com.cn\\\/op\\\/veyronmis\\\/066fd3d4a3a0dc123a04f5b20cb04688.jpg\",\"wx_friend_title\":\"\\u62fc\\u5feb\\u8f66\\uff0c\\u4e00\\u53e3\\u4ef7\\uff0c\\u5728\\u6df1\\u5733\\u6700\\u4f4e7.8\\u5143\\uff0c\\u5feb\\u6765\\u9886\\u6253\\u8f66\\u5238\",\"wx_friend_text\":\"\\u6df1\\u5733\\u5927\\u5b66--\\u4e16\\u754c\\u4e4b\\u7a97\\uff0c\\u6700\\u4f4e7.8\\u5143\\uff0c\\u5feb\\u6765\\u9886\\u6253\\u8f66\\u5238\",\"wx_friend_logo\":\"http:\\\/\\\/static.diditaxi.com.cn\\\/op\\\/veyronmis\\\/066fd3d4a3a0dc123a04f5b20cb04688.jpg\",\"platform\":{\"weibo\":{\"share_title\":\"\\u62fc\\u5feb\\u8f66\\uff0c\\u4e00\\u53e3\\u4ef7\\uff0c\\u5728\\u6df1\\u5733\\u6700\\u4f4e7.8\\u5143\\uff0c\\u5feb\\u6765\\u9886\\u6253\\u8f66\\u5238\",\"share_msg\":\"\\u6211\\u521a\\u7528 @\\u6ef4\\u6ef4\\u51fa\\u884c \\u4e86\\uff0c\\u611f\\u89c9\\u68d2\\u68d2\\u54d2\\uff01\\u53eb\\u597d\\u8f66\\u518d\\u51fa\\u95e8\\uff0c\\u4e0d\\u6015\\u65e5\\u6652\\u548c\\u96e8\\u6dcb~\\u518d\\u9001\\u4f60\\u4e00\\u5f20\\u6ef4\\u6ef4\\u6253\\u8f66\\u5238\\uff0c\\u7528\\u5238\\u62b5\\u8f66\\u8d39\\uff0c\\u7701\\u5fc3\\u53c8\\u7701\\u94b1\\uff01\",\"share_url\":\"http:\\\/\\\/pay.xiaojukeji.com\\\/veyron\\\/market_entry\\\/hbrob\\\/gethongbao?id=VL06UewE201511240858093026181696&sign=ee5f12d3689e33acf7b630867507ee77\",\"share_logo\":\"http:\\\/\\\/static.diditaxi.com.cn\\\/op\\\/veyronmis\\\/fc99b7b9378b609774e4fc8ec3da00a6.png\"}}},\"is_api_share_info\":1,\"api_share_info\":{\"share_title\":\"\\u606d\\u559c\\u60a8\\u83b7\\u5f97\\u6ef4\\u6ef4\\u793c\\u5305\",\"share_text\":\"\\u5206\\u4eab\\u793c\\u5305\\u7ed9\\u5c0f\\u4f19\\u4f34\\uff0c\\u793c\\u5305\\u91d1\\u989d\\u53ef\\u62b5\\u8f66\\u8d39\\u3002\\u8d76\\u5feb\\u5206\\u4eab\\u5427\\uff01\",\"share_button_send\":\"\\u6211\\u8981\\u6253\\u8f66\\u5238\",\"share_button_later\":\"\\u7a0d\\u540e\\u518d\\u5206\\u4eab\",\"layer_image_url\":\"http:\\\/\\\/static.diditaxi.com.cn\\\/activity\\\/img-hb\\\/v3\\\/alert_icon.png\"}}","sign":"b86bd10d55f0e78110cdaf14f8c29469"}'>
-
-    <!--打开红包结果页面的分享信息，也就是抢红包的时候能获取到手机号，那就不需要进入到第一个页面了，直接出分享信息-->
-    <input type="hidden" id='hid-all-hb-info' value='{&quot;create&quot;:&quot;&quot;,&quot;list_info&quot;:&quot;&quot;}'>
-
-    <input type="hidden" id="hid-more-ticket" value=''>
-
-    <input type="hidden" id="jump" value='0'>
-
-    <input type="hidden" id="display_jump_c2c" value='0'>
-
-    <input type="hidden" id="hid-new-sign" value='' />
-    <input type="hidden" id="hid-source" value='{"source":3,"data":[]}' />
-    <input type="hidden" id="hid-userInfo" value='{"nickname":"\u6ef4\u6ef4\u5c0f\u4f19\u4f34","head_url":"http:\/\/static.diditaxi.com.cn\/activity\/img-hb\/v3\/head_default.png","phone":"","pid":"14495458","area":"2"}' />
-    <input type="hidden" id="hid-cardlist" value='[]' />
-    <input type="hidden" id="hid-configlist" value='{"appId":"wx69b6673576ec5a65","timestamp":"1448327354","nonceStr":"card_quan","signature":"a8894a87ec992e4288b7d9171540ec58152c37a5"}' />
-    <input type="hidden" id="hid-autocard" value='0' />
-    <script src="http://pub.idqqimg.com/qqmobile/qqapi.js"></script>
-    <script src="http://tjs.sjs.sinajs.cn/open/thirdpart/js/frame/appclient.js" charset="utf-8"></script>
-    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-    <script src="http://static.diditaxi.com.cn/activity/js/hb-v3/common.js?v=535404019ec30f8e1354e5c24aea5c5b"></script>
-    <script src="http://static.diditaxi.com.cn/webapp/js/merged-base-dialog.js"></script>
-    <script src='http://static.xiaojukeji.com/activity/js/hb-v3/hbConfig.js?v=201511101044'></script>
-    <script src='http://static.diditaxi.com.cn/activity/js/hb-v3/hbUtils.js?v=2015061201'></script>
-    <script src='http://static.xiaojukeji.com/activity/lib/dd.share.js?v=1.0'></script>
-    <script src='http://static.xiaojukeji.com/activity/js/hb-v3/index.js?v=56F87E19'></script>
 </body>
 </html>
