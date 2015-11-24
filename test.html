@@ -15,23 +15,7 @@
 
 <script src="/js/jweixin-1.0.0.js"></script>
 <script type="text/javascript">
-//初始化配置
-wx.config({
-    debug: true, // 调试模式,会打印所有调用返回信息
-    appId: appid, 
-    timestamp: 0, // 时间戳
-    nonceStr: '', // 随机串
-    signature: '',// 签名，参考我上面给出的解释
-    jsApiList: [] // 请求权限
-});
-//分享朋友圈
-wx.onMenuShareTimeline({
-    title: '', // 分享标题
-    link: '', // 分享链接
-    imgUrl: '', // 分享图标
-    success: function () { }, //成功回调
-    cancel: function () { }, //失败回调
-});
+
 
 </script>
 </head>
@@ -40,6 +24,131 @@ wx.onMenuShareTimeline({
 <img src="http://ywf.kakaapp.com/images/201511/thumb_img/1_thumb_P_1448257534528.jpg" />
 
 一窝蜂专注于提供手机网站，其内容涵盖手机网站模板,wap网站模板,手机网站源码,wap网站源码,wap网站建设,手机网站制作等，让任何一个网站程序员都能轻松找到自己想要的模板
+
+<script type="text/javascript">
+    var not_in_mm_css = "http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/style/page/appmsg/not_in_mm2637ae.css";
+    var windowwx_css = "http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/style/page/appmsg/page_mp_article_improve_pc2826cc.css";
+    var tid = "";
+    var aid = "";
+    var clientversion = "0";
+    var appuin = "MzA5MzAxOTUwNw==";
+
+    var source = "18";
+    var scene = 75;
+
+    var itemidx = "";
+    var nickname = "方倍工作室";
+    var ct = "1398778010";
+    var user_name = "gh_204936aea56d";
+    var user_name_new = "";
+    var fakeid   = "";
+    var version   = "";
+    var is_limit_user   = "0";
+    var msg_title = "微信公众平台开发最佳实践";
+    var msg_desc = "《微信公众平台开发最佳实践》&nbsp;由方倍工作室编写，机械工业出版社出版。该书知识全面、案例丰富，是学习微信公众平台开发的经典教材！";
+    var msg_cdn_url = "http://mmbiz.qpic.cn/mmbiz/elfwnae4ASscDcje4nDQgcNFlmTfhlDgwh7XYggdRGepLTJicHOyzEzm3D1TvYSy0e7TjA6yo0IJtBiaKW59tvHg/0?wx_fmt=jpeg";
+    var msg_link = "http://mp.weixin.qq.com/s?__biz=MzA5MzAxOTUwNw==&amp;mid=200322150&amp;idx=1&amp;sn=b0f53f2a3f60d0115705b25be79c902b#rd";
+    var user_uin = "0"*1;
+    var msg_source_url = 'http://wq.jd.com/item/view?sku=11447844#main';
+    var img_format = 'jpeg';
+    var srcid = '';
+    var networkType;
+    var appmsgid = '' || '200322150';
+    var comment_id = "0" * 1;
+    var comment_enabled = "" * 1;
+    var is_need_reward = "0" * 1;
+    var is_https_res = ("" * 1) && (location.protocol == "https:");
+
+    var devicetype = "";
+    var source_username = "";
+    var reprint_ticket = "";
+    var source_mid = "";
+    var source_idx = "";
+
+    var show_comment = "";
+    var __appmsgCgiData = {
+        can_use_page : "0"*1,
+        is_wxg_stuff_uin : "0"*1,
+        card_pos : "",
+        copyright_stat : "0",
+        hd_head_img : "http://wx.qlogo.cn/mmhead/Q3auHgzwzM7DustJTVclAwCdPthuM0prbHoEGMy9j5VV5CRgRCkt7g/0"||(window.location.protocol+"//"+window.location.host + "http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/images/pic/appmsg/pic_rumor_link.2x264e76.jpg")
+    };
+    var _empty_v = "http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/images/pic/pages/voice/empty26f1f1.mp3";
+
+    var copyright_stat = "0" * 1;
+
+    var pay_fee = "" * 1; // 付费阅读费用
+    var pay_timestamp = "";
+    var need_pay = "" * 1;
+
+    var need_report_cost = "0" * 1;
+
+    window.wxtoken = "";
+</script>
+
+<script type="text/javascript">
+    (function() {
+        var JSAPI = {
+            ready: function(onBridgeReady) {
+                if (typeof top.window.WeixinJSBridge == 'undefined' || !top.window.WeixinJSBridge.invoke) {
+                    if (top.window.document.addEventListener) {
+                        top.window.document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                    } else if (top.window.document.attachEvent) {
+                        top.window.document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                        top.window.document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                    }
+                } else {
+                    onBridgeReady();
+                }
+            },
+            on: function(eventName, callback) {
+                top.window.WeixinJSBridge.on(eventName, callback);
+            }
+        };
+        var onA8KeyReady = function(A8KeyUrl) {
+            if (A8KeyUrl) {
+                var params = getQueryFromURL(A8KeyUrl);
+                window.uin = params['uin'] || window.uin;
+                window.key = params['key'] || window.key;
+                window.pass_ticket = params['pass_ticket'] || window.pass_ticket;
+            }
+            seajs.use('appmsg/index.js');
+        };
+        var bridgeReadyTimer;
+        var onBridgeReady = function() {
+            window.logs.pagetime['jsapi_ready_time'] = (+new Date());
+            if (bridgeReadyTimer) {
+                clearTimeout(bridgeReadyTimer);
+            }
+            if (!window.isWeixinCached) {
+                window.logs['is_page_cached'] = 0;
+                onA8KeyReady();
+            } else if (window.getA8KeyUrl) {
+                window.logs.pagetime['a8key_ready_time'] = (+new Date());
+                onA8KeyReady(window.getA8KeyUrl);
+            } else {
+                JSAPI.on('onGetA8KeyUrl', function(res) {
+                    window.logs.pagetime['a8key_ready_time'] = (+new Date());
+                    onA8KeyReady(res.url);
+                });
+            }
+        };
+
+        if (typeof window.pass_ticket !== 'undefined' && !!window.pass_ticket) {
+            onA8KeyReady();
+        } else if (window.isInWeixinApp() == false) {
+            onA8KeyReady();
+        } else {
+            window.logs['is_page_cached'] = 1;
+            JSAPI.ready(onBridgeReady);
+            bridgeReadyTimer = setTimeout(function() {
+                window.logs['jsapi_ready_fail'] = 1000;
+                onA8KeyReady();
+            }, 2000);
+        }
+    })();
+</script>
+
 
 </body>
 </html>
