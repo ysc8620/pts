@@ -66,9 +66,9 @@ if ($act=='default'){
         
     }else{//自己
         $smarty->assign('imgUrl', $user_info['headimgurl']);//'http://'.$_SERVER['HTTP_HOST']."/".$goods_list[0]['goods_thumb']
-        $smarty->assign('title', "找人代付");
-        $smarty->assign('desc', mb_substr($order_info['wxdesc'], 0,30,'utf-8')  );//
-        $link="http://" . $_SERVER['HTTP_HOST'] . "/share_pay.php?showwxpaytitle=1&id=".$order_id;
+        $smarty->assign('title', "【一窝蜂】快帮我支付下");
+        $smarty->assign('desc',"接头暗号『东大街』" );//
+        $link = "http://" . $_SERVER['HTTP_HOST'] . "/share_pay.php?showwxpaytitle=1&id=".$order_id;
         $smarty->assign('link', $link );
         $smarty->assign('link2', urlencode($link) );
         $smarty->display('share_pay.dwt');
