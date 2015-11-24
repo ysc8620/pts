@@ -57,6 +57,11 @@ if ($act=='default'){
         $pay_obj    = new wxpay();
         
         $pay_online = $pay_obj->get_code2($order_info, unserialize_config($payment['pay_config']) );
+
+        $sql="select * from ".$hhs->table('users')." where user_id='".$order_info['user_id']."'";
+        $order_user_info = $db->getRow($sql);
+        $smarty->assign('order_user_info', $order_user_info );
+
         
         $smarty->assign('code', json_encode($pay_online['jsApiParameters']) );  
         
@@ -80,6 +85,9 @@ elseif($act=='go_to_pay'){
     $order_info=order_info($order_id);
     $smarty->assign('goods_list', order_goods($order_id));
     $smarty->assign('order', $order_info );
+    $sql="select * from ".$hhs->table('users')." where user_id='".$order_info['user_id']."'";
+    $order_user_info = $db->getRow($sql);
+    $smarty->assign('order_user_info', $order_user_info );
     $smarty->display("go_share_pay.dwt");
    
 }

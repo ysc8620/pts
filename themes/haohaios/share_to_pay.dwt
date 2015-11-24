@@ -21,8 +21,8 @@
             <div class="app-inner inner-order">
                 <div id="peerpay-content-container">
                     <div class="message-container center" style="background-color:#a0bf54;">
-                        <div class="avatar avatar-peerpay center"> <img class="circular" src="{$user_info.headimgurl}">
-                            <p class="js-counter-msg"> <span class="txt-status" style="color:#ffffff;"> {$user_info.user_name} </span> </p>
+                        <div class="avatar avatar-peerpay center"> <img class="circular" src="{$order_user_info.headimgurl}">
+                            <p class="js-counter-msg"> <span class="txt-status" style="color:#ffffff;"> {$order_user_info.user_name} </span> </p>
                         </div>
                         <p>{$order_info.wxdesc}</p>
                         <div class="bottom-arrow"></div>
