@@ -14,7 +14,7 @@
  * $Id: init.php 17217 2014-05-12 06:29:08Z pangbin $
 */
 
-error_reporting(7);
+error_reporting(0);
 
 if (!defined('IN_HHS'))
 {

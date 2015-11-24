@@ -20,7 +20,7 @@ if (!defined('IN_HHS'))
 
 define('HHS_ADMIN', true);
 
-error_reporting(E_ALL);
+error_reporting(0);
 
 if (__FILE__ == '')
 {
@@ -362,11 +362,11 @@ header('Pragma: no-cache');
 
 if ((DEBUG_MODE & 1) == 1)
 {
-    error_reporting(E_ALL);
+    //error_reporting(E_ALL);
 }
 else
 {
-    error_reporting(E_ALL ^ E_NOTICE);
+    //error_reporting(E_ALL ^ E_NOTICE);
 }
 if ((DEBUG_MODE & 4) == 4)
 {

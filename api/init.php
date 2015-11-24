@@ -18,7 +18,7 @@ if (!defined('IN_HHS'))
     die('Hacking attempt');
 }
 
-error_reporting(E_ALL);
+error_reporting(0);
 
 if (__FILE__ == '')
 {
@@ -115,11 +115,11 @@ $user =& init_users();
 
 if ((DEBUG_MODE & 1) == 1)
 {
-    error_reporting(E_ALL);
+    //error_reporting(E_ALL);
 }
 else
 {
-    error_reporting(E_ALL ^ E_NOTICE);
+    //error_reporting(E_ALL ^ E_NOTICE);
 }
 if ((DEBUG_MODE & 4) == 4)
 {
