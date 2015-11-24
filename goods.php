@@ -334,13 +334,12 @@ $class_weixin=new class_weixin($appid,$appsecret);
 $signature=$class_weixin->getSignature($timestamp);
 $smarty->assign('signature', $signature);
 
-$sql="select count(*) as total from ".$hhs->table('order_goods')." where goods_id='".$goods['id']."'";
-$order_info=$db->getRow($sql);
+$total = get_buy_sum($goods_id)+$sales_num;
 
 //$smarty->assign('jssdk', jssdk($appid,$secret,$timestamp));
 $smarty->assign('imgUrl','http://' . $_SERVER['HTTP_HOST'].'/'.$goods['goods_thumb'] );
 $smarty->assign('title', $goods['goods_name']);
-$smarty->assign('desc', "已有{$order_info['total']}人购买，快来一窝蜂！" );
+$smarty->assign('desc', "已有{$total}人购买，快来一窝蜂！" );
 /*
 if(($pos=strrpos($_SERVER[REQUEST_URI], "from"))!==false){
 	$uri=substr($_SERVER[REQUEST_URI],0,$pos-1);
