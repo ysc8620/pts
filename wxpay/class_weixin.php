@@ -47,7 +47,7 @@ class class_weixin
         }
     	
     }
-    public function getSignature($timestamp='1499992323' ) {
+    public function getSignature($timestamp='1499992323',$url='' ) {
         
         $jsapiTicket = $this->getJsApiTicket();
     
@@ -59,8 +59,10 @@ class class_weixin
         }else{
             $uri=$_SERVER[REQUEST_URI];
         }*/
-        
-        $url = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."";
+        if( ! $url ){
+            $url = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."";
+        }
+
         
         $nonceStr = $timestamp;//$this->createNonceStr();
     
