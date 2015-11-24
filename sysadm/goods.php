@@ -614,11 +614,11 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
             $row = $db->getRow($sql);
             if ($row['goods_thumb'] != '' && is_file('../' . $row['goods_thumb']))
             {
-                @unlink('../' . $row['goods_thumb']);
+                //@unlink('../' . $row['goods_thumb']);
             }
             if ($row['goods_img'] != '' && is_file('../' . $row['goods_img']))
             {
-                @unlink('../' . $row['goods_img']);
+                //@unlink('../' . $row['goods_img']);
             }
             if ($row['original_img'] != '' && is_file('../' . $row['original_img']))
             {
@@ -780,8 +780,8 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
     /* 删除下载的外链原图 */
     if (!empty($is_url_goods_img))
     {
-        unlink(ROOT_PATH . $original_img);
-        empty($newname) || unlink(ROOT_PATH . $newname);
+        //unlink(ROOT_PATH . $original_img);
+        //empty($newname) || unlink(ROOT_PATH . $newname);
         $url_goods_img = $goods_img = $original_img = htmlspecialchars(trim($_POST['goods_img_url']));
     }
 
@@ -880,13 +880,13 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
         $row = $db->getRow($sql);
         if ($proc_thumb && $goods_img && $row['goods_img'] && !goods_parse_url($row['goods_img']))
         {
-            @unlink(ROOT_PATH . $row['goods_img']);
-            @unlink(ROOT_PATH . $row['original_img']);
+            //@unlink(ROOT_PATH . $row['goods_img']);
+            //@unlink(ROOT_PATH . $row['original_img']);
         }
 
         if ($proc_thumb && $goods_thumb && $row['goods_thumb'] && !goods_parse_url($row['goods_thumb']))
         {
-            @unlink(ROOT_PATH . $row['goods_thumb']);
+            //@unlink(ROOT_PATH . $row['goods_thumb']);
         }
 
         $sql = "UPDATE " . $hhs->table('goods') . " SET " .
@@ -1159,8 +1159,8 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
     {
         $db->query("UPDATE " . $hhs->table('goods') . " SET original_img='' WHERE `goods_id`='{$goods_id}'");
         $db->query("UPDATE " . $hhs->table('goods_gallery') . " SET img_original='' WHERE `goods_id`='{$goods_id}'");
-        @unlink('../' . $original_img);
-        @unlink('../' . $img);
+        //@unlink('../' . $original_img);
+        //@unlink('../' . $img);
     }
 	
 	
@@ -1823,7 +1823,7 @@ elseif ($_REQUEST['act'] == 'drop_goods')
     {
         if (!empty($row['img_url']))
         {
-            @unlink('../' . $row['img_url']);
+           @unlink('../' . $row['img_url']);
         }
         if (!empty($row['thumb_url']))
         {
