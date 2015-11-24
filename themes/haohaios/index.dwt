@@ -53,7 +53,7 @@
                             </span>
                         </div>
                         <div class="tuan_g_info">
-                            <p class="tuan_g_name">{$goods.goods_name}({if $goods.suppliers_name}由“{$goods.suppliers_name}”提供{else}由平台提供{/if})</p>
+                            <p class="tuan_g_name">{$goods.goods_name}({if $goods.suppliers_name}由“{$goods.suppliers_name}”提供{else}{/if})</p>
                             <p class="tuan_g_cx">{$goods.goods_brief}</p>
                         </div>
                         <div class="tuan_g_core">
