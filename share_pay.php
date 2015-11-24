@@ -117,8 +117,8 @@ elseif($act=='to_confirm'){
     $smarty->assign('order_info', $order_info );
     
     $smarty->assign('imgUrl', $user_info['headimgurl']);//'http://'.$_SERVER['HTTP_HOST']."/".$goods_list[0]['goods_thumb']
-    $smarty->assign('title', "代付");
-    $smarty->assign('desc', mb_substr($order_info['wxdesc'], 0,30,'utf-8')  );//
+    $smarty->assign('title', "【一窝蜂】快帮我支付一下");
+    $smarty->assign('desc', "接头暗号『一窝蜂』"  );//
     $link="http://" . $_SERVER['HTTP_HOST'] . "/share_pay.php?showwxpaytitle=1&id=".$order_id;
     $smarty->assign('link', $link );
     $smarty->assign('link2', urlencode($link) );
