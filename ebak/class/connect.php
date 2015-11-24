@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(0);
 
 define('InEmpireBak',TRUE);
 define('EBAK_PATH',substr(dirname(__FILE__),0,-5));
@@ -9,7 +9,7 @@ $editor=0;
 require_once EBAK_PATH.'lang/dbchar.php';
 require_once EBAK_PATH.'class/config.php';
 
-//³¬Ê±ÉèÖÃ
+//ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½
 if($php_outtime)
 {
 	$php_outtime=(int)$php_outtime;
@@ -19,7 +19,7 @@ if($php_outtime)
 function db_connect(){
 	global $phome_db_server,$phome_db_username,$phome_db_password,$phome_db_dbname,$phome_db_port,$phome_db_char,$phome_db_ver,$editor,$fun_r;
 	$dblocalhost=$phome_db_server;
-	//¶Ë¿Ú
+	//ï¿½Ë¿ï¿½
 	if($phome_db_port)
 	{
 		$dblocalhost.=":".$phome_db_port;
@@ -39,7 +39,7 @@ function db_connect(){
 		echo $fun_r['ConntConnectDb'];
 		exit();
 	}
-	//±àÂë
+	//ï¿½ï¿½ï¿½ï¿½
 	DoSetDbChar($phome_db_char);
 	if($phome_db_ver>='5.0')
 	{
@@ -48,7 +48,7 @@ function db_connect(){
 	return $link;
 }
 
-//ÉèÖÃ±àÂë
+//ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½
 function DoSetDbChar($dbchar){
 	if($dbchar&&$dbchar!='auto')
 	{
@@ -62,14 +62,14 @@ function db_close(){
 	@mysql_close($link);
 }
 
-//È¡µÃmysql°æ±¾(Êý¾Ý¿â)
+//È¡ï¿½ï¿½mysqlï¿½æ±¾(ï¿½ï¿½Ý¿ï¿½)
 function Ebak_GetMysqlVerForDb(){
 	$sql=mysql_query("select version() as version");
 	$r=mysql_fetch_array($sql);
 	return Ebak_ReturnMysqlVer($r['version']);
 }
 
-//·µ»Ømysql°æ±¾
+//ï¿½ï¿½ï¿½ï¿½mysqlï¿½æ±¾
 function Ebak_ReturnMysqlVer($dbver){
 	if(empty($dbver))
 	{
@@ -94,26 +94,26 @@ function Ebak_ReturnMysqlVer($dbver){
 	return $dbver;
 }
 
-//ÉèÖÃCOOKIE
+//ï¿½ï¿½ï¿½ï¿½COOKIE
 function esetcookie($var,$val,$life=0){
 	global $phome_cookiedomain,$phome_cookiepath,$phome_cookievarpre;
 	return setcookie($phome_cookievarpre.$var,$val,$life,$phome_cookiepath,$phome_cookiedomain);
 }
 
-//·µ»Øcookie
+//ï¿½ï¿½ï¿½ï¿½cookie
 function getcvar($var){
 	global $phome_cookievarpre;
 	$tvar=$phome_cookievarpre.$var;
 	return $_COOKIE[$tvar];
 }
 
-//µ¼ÈëÓïÑÔ°ü
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô°ï¿½
 function LoadLang($file){
 	global $ebaklang;
 	return "lang/".$ebaklang."/pub/".$file;
 }
 
-//²ÎÊý´¦Àíº¯Êý
+//ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½
 function RepPostVar($val){
 	$val=str_replace(" ","",$val);
 	$val=str_replace("'","",$val);
@@ -122,19 +122,19 @@ function RepPostVar($val){
 	return $val;
 }
 
-//µ¼ÈëÄ£°å
+//ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½
 function LoadAdminTemp($file){
 	global $ebaklang;
 	return "lang/".$ebaklang."/temp/".$file;
 }
 
-//Ê¹ÓÃ±àÂë
+//Ê¹ï¿½Ã±ï¿½ï¿½ï¿½
 function HeaderIeChar(){
 	global $ebaklangchar;
 	@header('Content-Type: text/html; charset='.$ebaklangchar);
 }
 
-//·µ»ØÓïÑÔ
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 function ReturnUseEbakLang(){
 	global $langcharr;
 	$loginlangid=(int)getcvar('loginlangid');

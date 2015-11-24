@@ -117,7 +117,7 @@ class cls_template
             }
             $out = implode('', $k);
         }
-        error_reporting($this->_errorlevel);
+        error_reporting(0);
         $this->_seterror--;
 
         echo $out;
@@ -208,7 +208,7 @@ class cls_template
         $this->_seterror--;
         if (!$this->_seterror)
         {
-            error_reporting($this->_errorlevel);
+            error_reporting(0);
         }
 
         return $out; // 返回html数据
