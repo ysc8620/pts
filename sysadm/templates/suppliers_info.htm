@@ -79,7 +79,8 @@
      {/if}
     </td>
   </tr>
-   
+   <!-- {/if} --> 
+   <tr>
                   <td  class="label">品牌logo：</td>
                   <td>
 
@@ -98,6 +99,20 @@
           {if $supp_list.supp_banner}<a  href="./../{$suppliers.supp_banner}" target="_blank">查看</a>{/if}
             </td>
           </tr>
+          
+          
+            <tr>
+          <td class="label">经度：</td>
+          <td>
+          <input name="longitude" type="text" size="40" id="address"  class="input"  value="{$suppliers.longitude}"/>
+          </td>
+        </tr>
+          <tr>
+          <td class="label">纬度：</td>
+          <td>
+          <input name="latitude" type="text" size="40" id="latitude"  class="input"  value="{$suppliers.latitude}"/>
+          </td>
+        </tr>
           
           
           
@@ -124,7 +139,7 @@
 		</select> 
           </td>
         </tr>
-<!-- {/if} --> 
+
          <tr>
           <td class="label">详细地址：</td>
           <td>

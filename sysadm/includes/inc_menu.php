@@ -25,7 +25,7 @@ $modules['01_suppliers']['04_suppliers_accounts']   = 'suppliers.php?act=supplie
 
 
 $modules['02_cat_and_goods']['01_goods_list']       = 'goods.php?act=list';         // 商品列表
-//$modules['02_cat_and_goods']['020_suppliers_goods_list']       = 'suppliers_goods.php?act=list';         // 商品列表
+$modules['02_cat_and_goods']['020_suppliers_goods_list']       = 'suppliers_goods.php?act=list';         // 商品列表
 
 
 $modules['02_cat_and_goods']['02_goods_add']        = 'goods.php?act=add';          // 添加商品
@@ -44,7 +44,7 @@ $modules['02_cat_and_goods']['12_batch_pic']        = 'picture_batch.php';
 
 
 $modules['03_promotion']['04_bonustype_list']       = 'bonus.php?act=list';
-$modules['03_promotion']['05_bonustype_list']       = 'bonus.php?act=suppliers_list';
+//$modules['03_promotion']['05_bonustype_list']       = 'bonus.php?act=suppliers_list';
 //$modules['03_promotion']['06_pack_list']            = 'pack.php?act=list';
 //$modules['03_promotion']['07_card_list']            = 'card.php?act=list';
 //$modules['03_promotion']['08_group_buy']            = 'group_buy.php?act=list';
@@ -116,6 +116,7 @@ $modules['11_system']['05_area_list']               = 'area_manage.php?act=list'
 //$modules['11_system']['021_reg_fields']             = 'reg_fields.php?act=list';
 //$modules['11_system']['website']                    = 'website.php?act=list';
 $modules['11_system']['flashplay']                  = 'flashplay.php?act=list';
+$modules['11_system']['021_site']                   = 'site.php?act=list';
 
 //$modules['12_template']['05_edit_languages']        = 'edit_languages.php?act=list';
 //$modules['12_template']['mail_template_manage']     = 'mail_template.php?act=list';
@@ -131,4 +132,5 @@ $modules['14_wxch']['03_regmsg']               = 'wxch.php?act=regmsg';
 $modules['14_wxch']['04_keywords']               = 'wxch.php?act=keywords';
 $modules['14_wxch']['05_menu']             = 'weixin_menu.php?act=list';
 $modules['14_wxch']['08_share']             = 'wx_share.php?act=list';
+$modules['14_wxch']['06_bonus']               = 'wxch.php?act=bonus';
 ?>

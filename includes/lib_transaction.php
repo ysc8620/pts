@@ -1152,7 +1152,7 @@ function get_user_bouns_list($user_id, $num = 10, $start = 0)
 
 function get_user_bouns_list2($user_id)
 {
-    $sql = "SELECT u.bonus_sn, u.order_id,u.used_time,b.is_share, b.type_name, b.type_money, b.min_goods_amount, b.use_start_date, b.use_end_date ".
+    $sql = "SELECT u.bonus_sn, u.order_id,u.used_time,u.suppliers_id,b.is_share, b.type_name, b.type_money, b.min_goods_amount, b.use_start_date, b.use_end_date ".
         " FROM " .$GLOBALS['hhs']->table('user_bonus'). " AS u ,".
         $GLOBALS['hhs']->table('bonus_type'). " AS b".
         " WHERE u.bonus_type_id = b.type_id AND u.user_id = '" .$user_id. "'";
@@ -1189,7 +1189,8 @@ function get_user_bouns_list2($user_id)
         
         $row['use_startdate']   = local_date($GLOBALS['_CFG']['date_format'], $row['use_start_date']);
         $row['use_enddate']     = local_date($GLOBALS['_CFG']['date_format'], $row['use_end_date']);
-        
+		
+        $row['suppliers_name'] =  get_suppliers_name($row['suppliers_id']);
         //归类存放 1 使用中 2 可使用 3已使用 4 未激活 5 已过期  
         if(!empty($row['order_id'])){//已使用分为 1 使用中 2 已使用
             $row['used_date']     = local_date($GLOBALS['_CFG']['date_format'], $row['used_time']);

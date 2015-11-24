@@ -70,7 +70,31 @@ function shipping_info($shipping_id)
 
     return $GLOBALS['db']->getRow($sql);
 }
+/**
+ * 取得用户当前可用红包
+ * @param   int     $user_id        用户id
+ * @param   float   $goods_amount   订单商品金额
+ * @return  array   红包数组
+ */
+function team_user_bonus($user_id, $goods_amount = 0,$supp_id)
+{
+    $day    = getdate();
+    $today  = local_mktime(23, 59, 59, $day['mon'], $day['mday'], $day['year']);
 
+    $sql = "SELECT t.type_id, t.type_name, t.type_money, b.bonus_id " .
+            "FROM " . $GLOBALS['hhs']->table('bonus_type') . " AS t," .
+                $GLOBALS['hhs']->table('user_bonus') . " AS b " .
+            "WHERE t.type_id = b.bonus_type_id " .
+            "AND t.use_start_date <= '$today' " .
+            "AND t.use_end_date >= '$today' " .
+            "AND t.min_goods_amount <= '$goods_amount' " .
+            "AND b.user_id<>0 " .
+			"AND b.suppliers_id='$supp_id' " .
+            "AND b.user_id = '$user_id' " .
+            "AND b.order_id = 0";
+			
+    return $GLOBALS['db']->getAll($sql);
+}
 /**
  * 取得可用的配送方式列表
  * @param   array   $region_id_list     收货人地区id数组（包括国家、省、市、区）

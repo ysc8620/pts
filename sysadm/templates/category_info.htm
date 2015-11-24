@@ -20,6 +20,34 @@
         </td>
       </tr>
       <tr>
+        <td class="label">分类图标:</td>
+        <td>
+          <input type='file' name='cat_img' maxlength="20" value=''  /> 
+        {if $cat_info.cat_img}
+        <a target="_blank" href="category.php?act=show_image&img_url={$cat_info.cat_img}">
+			<img border="0" src="images/yes.gif">
+		</a>
+		{else}
+		<a target="_blank" href="javascript:void(0);">
+			<img border="0" src="images/no.gif">
+		</a>
+		{/if}
+        </td>
+      </tr>
+      <tr>
+        <td class="label">{$lang.sort_order}:</td>
+        <td>
+          <input type="text" name='sort_order' {if $cat_info.sort_order}value='{$cat_info.sort_order}'{else} value="50"{/if} size="15" />
+        </td>
+      </tr>
+      <tr>
+        <td class="label">{$lang.is_show}:</td>
+        <td>
+          <input type="radio" name="is_show" value="1" {if $cat_info.is_show neq 0} checked="true"{/if}/> {$lang.yes}
+          <input type="radio" name="is_show" value="0" {if $cat_info.is_show eq 0} checked="true"{/if} /> {$lang.no}
+        </td>
+      </tr>
+      <tr>
         <td class="label">&nbsp;</td>
         <td>   <div class="button-div">
         <input type="submit" value="{$lang.button_submit}" />

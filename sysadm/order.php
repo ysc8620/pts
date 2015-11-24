@@ -68,6 +68,19 @@ elseif ($_REQUEST['act'] == 'list' || 'refund_list' == $_REQUEST['act'])
     $smarty->assign('action_link3', array('href' => 'order.php?act=import', 'text' => "批量修改订单"));
     
     
+    $suppliers_list_name = suppliers_list_name();
+    $suppliers_exists = 1;
+    if (empty($suppliers_list_name))
+    {
+        $suppliers_exists = 0;
+    }
+    $smarty->assign('suppliers_exists', $suppliers_exists);
+    $smarty->assign('suppliers_list_name', $suppliers_list_name);
+	$smarty->assign('cities',    get_sitelists());
+	
+	
+	
+	
     $smarty->assign('status_list', $_LANG['cs']);   // 订单状态
     
     $smarty->assign('os_unconfirmed',   OS_UNCONFIRMED);
@@ -101,6 +114,15 @@ elseif ($_REQUEST['act'] == 'suppliers_list' )
     $smarty->assign('action_link2', array('href' => 'order.php?act=download', 'text' => "导出"));
     $smarty->assign('action_link3', array('href' => 'order.php?act=import', 'text' => "批量修改订单"));
 
+	$suppliers_list_name = suppliers_list_name();
+    $suppliers_exists = 1;
+    if (empty($suppliers_list_name))
+    {
+        $suppliers_exists = 0;
+    }
+    $smarty->assign('suppliers_exists', $suppliers_exists);
+    $smarty->assign('suppliers_list_name', $suppliers_list_name);
+	$smarty->assign('cities',    get_sitelists());
 
     $smarty->assign('status_list', $_LANG['cs']);   // 订单状态
 
@@ -357,6 +379,18 @@ elseif ($_REQUEST['act'] == 'team_list' )
     $smarty->assign('filter',       $order_list['filter']);
     $smarty->assign('record_count', $order_list['record_count']);
     $smarty->assign('page_count',   $order_list['page_count']);
+	
+	
+    $suppliers_list_name = suppliers_list_name();
+    $suppliers_exists = 1;
+    if (empty($suppliers_list_name))
+    {
+        $suppliers_exists = 0;
+    }
+    $smarty->assign('suppliers_exists', $suppliers_exists);
+    $smarty->assign('suppliers_list_name', $suppliers_list_name);
+	$smarty->assign('cities',    get_sitelists());
+	
 	
 	
 	$order_list = $db->getAll("select order_id,shipping_time,user_id, order_sn , order_status, shipping_status, pay_status from ".$hhs->table("order_info")." where pay_status=2 and shipping_status=1");
@@ -5794,11 +5828,11 @@ function order_list($refund_ex="",$is_page=true,$is_suppliers=false)
         $filter['transaction_id'] = empty($_REQUEST['transaction_id']) ? -1 : $_REQUEST['transaction_id'];
         $filter['goods_sn'] = empty($_REQUEST['goods_sn']) ? '' : trim($_REQUEST['goods_sn']);
 
-        if($is_suppliers){
-            $where = " WHERE 1 and o.suppliers_id>0 ";
-        }else{
-            $where = " WHERE 1 and o.suppliers_id=0 ";
-        }
+		$filter['city_id'] = isset($_REQUEST['city_id']) ? intval($_REQUEST['city_id']) : '';
+		$filter['district_id'] = isset($_REQUEST['district_id']) ? intval($_REQUEST['district_id']) : '';
+		$filter['suppliers_id'] = isset($_REQUEST['suppliers_id']) ? intval($_REQUEST['suppliers_id']) : '';
+		
+
        //and extension_code!='team_goods'
 		if(!empty($refund_ex) )
 		{
@@ -5842,6 +5876,23 @@ function order_list($refund_ex="",$is_page=true,$is_suppliers=false)
         {
             $where .= " AND o.country = '$filter[country]'";
         }
+		
+ 		if ($filter['city_id'])
+        {
+            $where .= " AND o.city_id = '$filter[city_id]'";
+        }		
+		
+ 		if ($filter['district_id'])
+        {
+            $where .= " AND o.district_id = '$filter[district_id]'";
+        }		
+		
+ 		if ($filter['suppliers_id'])
+        {
+            $where .= " AND o.suppliers_id = '$filter[suppliers_id]'";
+        }		
+		
+		
         if ($filter['province'])
         {
             $where .= " AND o.province = '$filter[province]'";
@@ -6127,6 +6178,12 @@ function team_list($refund_ex="",$is_suppliers=true)
         $filter['team_status'] = isset($_REQUEST['team_status']) ? intval($_REQUEST['team_status']) : -1;
         
         $filter['extension_id'] = isset($_REQUEST['extension_id']) ? intval($_REQUEST['extension_id']) : '';
+		
+		$filter['city_id'] = isset($_REQUEST['city_id']) ? intval($_REQUEST['city_id']) : '';
+		$filter['district_id'] = isset($_REQUEST['district_id']) ? intval($_REQUEST['district_id']) : '';
+		$filter['suppliers_id'] = isset($_REQUEST['suppliers_id']) ? intval($_REQUEST['suppliers_id']) : '';
+		
+		
         $filter['team_lack_num'] = isset($_REQUEST['team_lack_num']) ? intval($_REQUEST['team_lack_num']) : -1;
         
         $where = " WHERE o.extension_code='team_goods' and o.team_first=1 ";
@@ -6178,6 +6235,22 @@ function team_list($refund_ex="",$is_suppliers=true)
         {
             $where .= " AND o.country = '$filter[country]'";
         }
+		
+ 		if ($filter['city_id'])
+        {
+            $where .= " AND o.city_id = '$filter[city_id]'";
+        }		
+		
+ 		if ($filter['district_id'])
+        {
+            $where .= " AND o.district_id = '$filter[district_id]'";
+        }		
+		
+ 		if ($filter['suppliers_id'])
+        {
+            $where .= " AND o.suppliers_id = '$filter[suppliers_id]'";
+        }		
+		
         if ($filter['province'])
         {
             $where .= " AND o.province = '$filter[province]'";

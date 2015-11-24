@@ -1,28 +1,18 @@
 <!doctype html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <meta name="Keywords" content="{$keywords}" />
 <meta name="Description" content="{$description}" />
 <title>{$page_title}</title>
 <link rel="shortcut icon" href="favicon.ico" />
-<link href="themes/haohaios/style.css" rel="stylesheet" type="text/css" />
-<link href="enter.css" rel="stylesheet" type="text/css" />
+<link href="{$hhs_css_path}/haohaios.css" rel="stylesheet" />
+<link href="{$hhs_css_path}/font-awesome.min.css" rel="stylesheet" />
 {* 包含脚本文件 *}
-{insert_scripts files='jquery.js,common.js,leftnav.js,region.js'}
-
-<!--[if IE]>
-{insert_scripts files='html5.js'}
-<![endif]-->
+{insert_scripts files='jquery.js,common.js,region.js'}
 <script language="javascript">
-	$(document).ready(function(){
-		//除第一个订制流程外隐藏其他定制流程
-		for(i=2;i<=10;i++)
-		{
-			$('#setp'+i).hide();
-		} 
-	});
-	function regs(first,second)
+	function regs()
 	{
 		 var reg = /^[0-9]+/;
 		 var reg2 = /^1[3458]\d{9}$/;
@@ -30,8 +20,6 @@
 		{
 			var suppliers_name =  $("#suppliers_name").val();
 			var address =  $("#address").val();
-			var email   = $("#email").val();
-			var qq   = $("#qq").val();
 			var real_name = $("#real_name").val();
 			var phone = $("#phone").val();
 			var user_name = $("#user_name").val();
@@ -53,26 +41,8 @@
 				$("#address_notice").html("请输入详细地址!");
 				return false;
 			}	
-			if(email=='')
-			{
-				$("#email_notice").html("请输入邮箱地址!");
-				return false;
-			}
-			else if (!Utils.isEmail(email))
-			{
-				$("#email_notice").html("邮箱地址输入不合法!");
-				return false;
-			}
-			if(qq=='')
-			{
-				$("#qq_notice").html("请输入客服qq!");
-				return false;
-			}
-			else if(!reg.test(qq))
-			{
-				$("#qq_notice").html("客服qq格式输入不正确!");
-				return false;
-			}
+
+
 			if(real_name=='')
 			{
 				$("#real_name_notice").html("请输入店长姓名!");
@@ -185,37 +155,8 @@
 			$("#address_notice").html("");
 		}
 	}
-	function checkEmail(value)
-	{
-		if(value=='')
-		{
-			$("#email_notice").html("请输入邮箱地址!");
-		}
-		else if (!Utils.isEmail(value))
-		{
-		  $("#email_notice").html("请输入正确邮箱地址!");
-		}
-		else
-		{
-		 $("#email_notice").html("");	
-		}
-	}
-	function checkqq(value)
-	{
-		 var reg = /^[0-9]+/;
-		if(value=='')
-		{
-			$("#qq_notice").html("请输入客服qq!");
-		}
-		else if(!reg.test(value))
-		{
-			$("#qq_notice").html("客服qq格式不正确!");
-		}
-		else
-		{
-			$("#qq_notice").html("");
-		}
-	}
+
+
 	function checkreal_name(value)
 	{
 		if(value=='')
@@ -243,109 +184,20 @@
 			$("#phone_notice").html("");
 		}
 	}
-function checkenterinfo()
-{
-	var business_license   = $("#business_license").val();
-	var business_scope   = $("#business_scope").val();
-	var cards   = $("#cards").val();
-	var certificate = $("#certificate").val();
-	var agreement =  $("#agreement").val();
-	
-	
-	if(business_license=='')
-	{
-		$("#business_license_notice").html("请上传企业营业执照!");
-		return false;
-	}
-	else
-	{
-		$("#business_license_notice").html("");
-	}
-	if(business_scope=='')
-	{
-		$("#business_scope_notice").html("请上传企业组织机构代码证!");
-		return false;
-	}
-	else
-	{
-		$("#business_scope_notice").html("");
-	}
-	
-	if(cards=='')
-	{
-		$("#cards_notice").html("请上传企业法人身份证!");
-		return false;
-	}
-	else
-	{
-		$("#cards_notice").html("");
-	}
-	if(certificate=='')
-	{
-		$("#certificate_notice").html("请上传税务登记证!");
-		return false;
-	}
-	else
-	{
-		$("#certificate_notice").html("");
-	}
-	if(agreement=='')
-	{
-		$("#agreement_notice").html("请先同意入驻协议!");
-		return false;
-	}
-	else
-	{
-		$("#agreement_notice").html("");
-	}
-	return true;
-}
+
 </script>
 </head>
 <body>
-<div class="headcon">
-
-		<h1 title="商家管理平台">商家管理平台</h1>
-
-		<div class="headright">
-
-			<div class="welcome"></div>
-
-			<div class="operate"><a href="?act=logout">退出登录</a>
-            {if $smarty.session.role_id eq ''}
-            <a href="suppliers.php?act=edit_password">修改密码</a>
-            {/if}
-            <!-- 
-            <a href="/store.php?id={$suppliers_id}" target="_blank">我的店铺</a>
-             -->
-            </div>
-
-		</div>
-
-	</div>
-<!-- #BeginLibraryItem "/library/top.lbi" --><!-- #EndLibraryItem -->
-<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
-<!-- #BeginLibraryItem "/library/ur_here.lbi" --><!-- #EndLibraryItem -->
-<div class="wp">{insert name='ads' id=15 num=1}</div>
-<div class="blank30"></div>
-<form action="enter.php" name="myfrom"  enctype="multipart/form-data"   method="post" onSubmit="return checkenterinfo();">
-<div class="wp">
-    <div id="setp1"> 
-        <div class="breadcrumb">
-	        <ul>
-		        <li class="current">1. 填写申请信息<em></em><i></i></li>
-		        <li>2. 资质上传<em></em><i></i></li>
-                <li>3. 等待审核<em></em><i></i></li>
-	        </ul>
-        </div>
-        <ul class="bod">
-            <li>
+<div class="enter_tit">商家入驻</div>
+<div class="enter">
+<form action="enter.php" name="myfrom"  enctype="multipart/form-data"   method="post" onSubmit="return regs();">
+            <p>
                 <label>商家名称：</label>
                 <input name="suppliers_name" type="text" onblur="check_suppliers_name(this.value);" id="suppliers_name" class="inp"/>
-                 <span id="suppliers_name_notice">*</span>
+                 <span id="suppliers_name_notice"></span>
                 
-            </li>
-            <li>
+            </p>
+            <p>
                 <label>经营区域：</label>
             <select name="province_id" id="selProvinces" onchange="region.changed(this, 2, 'selCities')">
            <option value=''>请选择</option>
@@ -367,120 +219,50 @@ function checkenterinfo()
 				{/foreach}
 		</select> 
     
-            </li>
-            <li>
+            </p>
+            <p>
                 <label>详细地址：</label>
-                <input name="address" onblur="check_address(this.value);" type="text" id="address" class="inp" />    <span id="address_notice">*</span>  
-            </li>
-            <li>
-                <label>邮箱：</label>
-                <input name="email" onblur="checkEmail(this.value);" type="text" id="email" class="inp" />
-                <span id="email_notice">*</span>  
-            </li>
-            <li>
-                <label>客服QQ：</label>
-                <input name="qq" type="text"  onblur="checkqq(this.value);" id="qq" class="inp" />
-                 <span id="qq_notice">*</span>  
-            </li>
-             <li>
-                <label>推荐人：</label>
-                <input name="recommend_person" type="text" id="recommend_person" class="inp" />
-           		 <span id="recommend_person_notice"></span>  
-            </li>
-            
-       
-            
-            <li>
+                <input name="address" onblur="check_address(this.value);" type="text" id="address" class="inp" />    <span id="address_notice"></span>  
+            </p>
+
+            <p>
                 <label>店长：</label>
                 <input name="real_name" type="text" onblur="checkreal_name(this.value);" id="real_name" class="inp" />
-           		 <span id="real_name_notice">*</span>  
-            </li>
-            <li>
+           		 <span id="real_name_notice"></span>  
+            </p>
+            <p>
                 <label>店长手机号码：</label>
                 <input name="phone" type="text" onblur="check_phone(this.value);" id="phone" class="inp" />
-                 <span id="phone_notice">*</span>  
-            </li>
-            <li>
+                 <span id="phone_notice"></span>  
+            </p>
+            <p>
                 <label>管理登录用户名：</label>
                 <input name="user_name" type="text" id="user_name" class="inp" onblur="check_user_name(this.value);" />
-           		 <span id="user_name_notice">*</span>  
-            </li>
-            <li>
+           		 <span id="user_name_notice"></span>  
+            </p>
+            <p>
                 <label>登录密码：</label>
                 <input name="password" type="password" id="password" class="inp" />
-           		 <span id="password_notice">*</span>  
-            </li>
-            <li>
+           		 <span id="password_notice"></span>  
+            </p>
+            <p>
                 <label>密码确认：</label>
                 <input name="password1" type="password" id="password1" class="inp" />
-           		 <span id="password_notice">*</span>  
-            </li>
-            
-           
-            
-            
+           		 <span id="password_notice"></span>  
+            </p>
 
-            
-            <li>
-                <label>&nbsp;</label>
-                
-                <input name="" value="下一步" type="button" class="us_Submit_reg yahei" onClick="return regs(1,2)">
-            </li>
-        </ul>
-    </div>
-    
-    <div id="setp2">
-        <div class="breadcrumb">
-	        <ul>
-		        <li>1. 填写申请信息<em></em><i></i></li>
-		        <li class="current">2. 资质上传<em></em><i></i></li>
-                <li>3. 等待审核<em></em><i></i></li>
-	        </ul>
-        </div>
-        <ul class="bod">
-            <li>
-                <label>企业营业执照：</label>
-                <input name="business_license" id="business_license" type="file" class="file">
-                <span id="business_license_notice">*</span>&nbsp;&nbsp;建议图片大小保持在1M以内
-            </li>
-            <li>
-                <label>组织机构代码证：</label>
-                <input name="business_scope" id="business_scope" type="file" class="file">
-                <span id="business_scope_notice">*</span>&nbsp;&nbsp;建议图片大小保持在1M以内
-            </li>
-            <li>
-                <label>企业法人身份证：</label>
-                <input name="cards" type="file" id="cards" class="file">
-                 <span id="cards_notice">*</span>&nbsp;&nbsp;建议图片大小保持在1M以内
-            </li>
-            <li>
-                <label>税务登记证：</label>
-                <input name="certificate" id="certificate" type="file" class="file">
-                 <span id="certificate_notice">*</span>&nbsp;&nbsp;建议图片大小保持在1M以内
-            </li>
-           
-             <li class="agree">
-                <label>&nbsp;</label>
-                <input name="agreement" type="checkbox" id="agreement" value="1" checked="checked" />我已阅读并同意<a href="article.php?id=479" target="_blank">《商家入驻协议》</a>
-             <span id="agreement_notice">*</span>
-            </li>
-            <li>
-                <label>&nbsp;</label>
+            <p>
                 <input name="act" type="hidden" value="enter_act">
-                <input name="Submit" type="submit" value="立即入驻" class="us_Submit_reg yahei">
-            </li>
-        </ul>
-    </div>
+                
+                <input name="Submit" type="submit" value="立即入驻" class="us_Submit_reg">
+            </p>
 
-
-</div>
 </form>
+</div>
    <script>
 	region.isAdmin = true;
 	</script>
 
-
-<div class="blank30"></div>
-<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+<!-- #BeginLibraryItem "/library/footer.lbi" --><!-- #EndLibraryItem -->
 </body>
 </html>

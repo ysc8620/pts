@@ -148,7 +148,7 @@ var process_request = "{$lang.process_request}";
       {/if}
       <td>{$bonus.type_name}</td>
       <td>{$bonus.order_sn}</td>
-      <td>{if $bonus.email}<a href="mailto:{$bonus.email}">{$bonus.user_name}</a>{else}{$bonus.user_name}{/if}</td>
+      <td>{if $bonus.uname}{$bonus.uname}{else}{$bonus.user_name}{/if}</td>
       <td >{$bonus.used_time}</td>
       {if $show_mail}
       <td align="center">{$bonus.emailed}</td>
@@ -271,8 +271,13 @@ function validate()
   <tr>
     <td class="right">{$lang.send_method}：</td>
     <td>
-      <input type="radio" name="send_type" onclick="show_hide(0);" value="1" {if $bonus_arr.send_type eq 1} checked="true" {/if}   />{$lang.send_by[1]}
-      <input type="radio" name="send_type" onclick="show_hide(1);" value="3" {if $bonus_arr.send_type eq 3} checked="true" {/if}  />{$lang.send_by[3]}    </td>
+     <input type="radio" name="send_type" value="0" {if $bonus_arr.send_type eq 0} checked="true" {/if} onClick="showunit(0)"  />{$lang.send_by[0]}
+      <input type="radio" name="send_type" value="1" {if $bonus_arr.send_type eq 1} checked="true" {/if} onClick="showunit(1)"  />{$lang.send_by[1]}
+      <input type="radio" name="send_type" value="2" {if $bonus_arr.send_type eq 2} checked="true" {/if} onClick="showunit(2)"  />{$lang.send_by[2]}
+      <input type="radio" name="send_type" value="3" {if $bonus_arr.send_type eq 3} checked="true" {/if} onClick="showunit(3)"  />{$lang.send_by[3]} 
+      
+      
+      </td>
   </tr>
  
   <tr id='license' style="display:{if $form_act eq 'bonus_update' && $bonus_arr.send_type eq '3'}table-row{else}none{/if}">

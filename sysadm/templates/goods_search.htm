@@ -1,4 +1,6 @@
 <!-- $Id: goods_search.htm 16790 2009-11-10 08:56:15Z wangleisvn $ -->
+{insert_scripts files="../js/region.js"}
+
 <div class="form-div">
   <form action="javascript:searchGoods()" name="searchForm">
     <img src="images/icon_search.gif" width="26" height="22" border="0" alt="SEARCH" />
@@ -7,6 +9,27 @@
     <select name="cat_id"><option value="0">{$lang.goods_cat}</option>{$cat_list}</select>
    
     <!-- 推荐 -->
+   区域选择
+     <select name="city_id" id="selCities"  onchange="region.changed(this, 3, 'selDistricts')">
+          <option value=''>请选择</option>
+            {foreach from=$cities item=region}
+              <option value="{$region.region_id}" {if $region.region_id eq $goods.city_id}selected="selected"{/if}>{$region.region_name}</option>
+            {/foreach}
+
+        </select>
+         <select name="district_id" id="selDistricts">
+
+				<option value="0">请选择</option>
+
+				{foreach from=$district_list item=district}
+
+				<option value="{$district.region_id}" {if $district.region_id eq $goods.district_id}selected="selected"{/if}  >{$district.region_name}</option>
+
+				{/foreach}
+
+		</select> 
+   
+   
    
      {if $suppliers_exists eq 1}    
       <!-- 供货商 -->
@@ -23,11 +46,16 @@
 
 {literal}
 <script language="JavaScript">
+region.isAdmin = true;
     function searchGoods()
     {
 {/literal}
         {if $smarty.get.act neq "trash"}
         listTable.filter['cat_id'] = document.forms['searchForm'].elements['cat_id'].value;
+		
+		
+		listTable.filter['city_id'] = document.forms['searchForm'].elements['city_id'].value;
+		listTable.filter['district_id'] = document.forms['searchForm'].elements['district_id'].value;
         //listTable.filter['brand_id'] = document.forms['searchForm'].elements['brand_id'].value;
    
          

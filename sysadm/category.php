@@ -17,7 +17,8 @@ define('IN_HHS', true);
 
 require(dirname(__FILE__) . '/includes/init.php');
 $exc = new exchange($hhs->table("category"), $db, 'cat_id', 'cat_name');
-
+include_once(ROOT_PATH . '/includes/cls_image.php');
+$image = new cls_image($_CFG['bgcolor']);
 /* act操作项的初始化 */
 if (empty($_REQUEST['act']))
 {
@@ -110,6 +111,9 @@ if ($_REQUEST['act'] == 'insert')
     $cat['filter_attr']  = !empty($_POST['filter_attr'])  ? implode(',', array_unique(array_diff($_POST['filter_attr'],array(0)))) : 0;
 
     $cat['cat_recommend']  = !empty($_POST['cat_recommend'])  ? $_POST['cat_recommend'] : array();
+    if(isset($_FILES['cat_img']) && $_FILES['cat_img']['tmp_name'] != '' ){
+        $cat['cat_img']  = $image->upload_image($_FILES['cat_img']);     
+    }
 
     if (cat_exists($cat['cat_name'], $cat['parent_id']))
     {
@@ -269,6 +273,10 @@ if ($_REQUEST['act'] == 'update')
     $cat['grade']        = !empty($_POST['grade'])        ? intval($_POST['grade'])      : 0;
     $cat['filter_attr']  = !empty($_POST['filter_attr'])  ? implode(',', array_unique(array_diff($_POST['filter_attr'],array(0)))) : 0;
     $cat['cat_recommend']  = !empty($_POST['cat_recommend'])  ? $_POST['cat_recommend'] : array();
+	
+	if(isset($_FILES['cat_img']) && $_FILES['cat_img']['tmp_name'] != '' ){
+        $cat['cat_img']  = $image->upload_image($_FILES['cat_img']);
+    }
 
     /* 判断分类名是否重复 */
 
@@ -347,7 +355,27 @@ if ($_REQUEST['act'] == 'update')
         sys_msg($_LANG['catedit_succed'], 0, $link);
     }
 }
+elseif ($_REQUEST['act'] == 'show_image')
+{
 
+    if (isset($GLOBALS['shop_id']) && $GLOBALS['shop_id'] > 0)
+    {
+        $img_url = $_GET['img_url'];
+    }
+    else
+    {
+        if (strpos($_GET['img_url'], 'http://') === 0)
+        {
+            $img_url = $_GET['img_url'];
+        }
+        else
+        {
+            $img_url = '../' . $_GET['img_url'];
+        }
+    }
+    $smarty->assign('img_url', $img_url);
+    $smarty->display('goods_show_image.htm');
+}
 /*------------------------------------------------------ */
 //-- 批量转移商品分类页面
 /*------------------------------------------------------ */
@@ -424,6 +452,25 @@ if ($_REQUEST['act'] == 'edit_sort_order')
     }
 }
 
+
+
+if ($_REQUEST['act'] == 'edit_commission')
+{
+    check_authz_json('cat_manage');
+
+    $id = intval($_POST['id']);
+    $val = $_POST['val'];
+
+    if (cat_update($id, array('commission' => $val)))
+    {
+        clear_cache_files(); // 清除缓存
+        make_json_result($val);
+    }
+    else
+    {
+        make_json_error($db->error());
+    }
+}
 /*------------------------------------------------------ */
 //-- 编辑数量单位
 /*------------------------------------------------------ */

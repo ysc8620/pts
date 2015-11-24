@@ -26,6 +26,11 @@ else
 {
     $_REQUEST['act'] = trim($_REQUEST['act']);
 }
+	$suppliers_list = get_suppliers_list();
+	$suppliers_list_count = count($suppliers_list);
+	$smarty->assign('suppliers_name', suppliers_list_name()); // 取供货商名
+	$smarty->assign('suppliers_list', ($suppliers_list_count == 0 ? 0 : $suppliers_list)); // 取供货商列表
+
 
 /* 初始化$exc对象 */
 $exc = new exchange($hhs->table('bonus_type'), $db, 'type_id', 'type_name');
@@ -40,6 +45,7 @@ if ($_REQUEST['act'] == 'list')
     $smarty->assign('full_page',   1);
 
     $list = get_type_list();
+
 
     $smarty->assign('type_list',    $list['item']);
     $smarty->assign('filter',       $list['filter']);
@@ -225,8 +231,8 @@ if ($_REQUEST['act'] == 'insert')
     $use_enddate    = local_strtotime($_POST['use_end_date']);
 
     /* 插入数据库。 */
-    $sql = "INSERT INTO ".$hhs->table('bonus_type')." (only_first,number,is_share,type_name, type_money,send_start_date,send_end_date,use_start_date,use_end_date,send_type,min_amount,min_goods_amount)
-    VALUES ('$_POST[only_first]','$_POST[number]','$_POST[is_share]','$type_name',
+    $sql = "INSERT INTO ".$hhs->table('bonus_type')." (suppliers_id,only_first,number,is_share,type_name, type_money,send_start_date,send_end_date,use_start_date,use_end_date,send_type,min_amount,min_goods_amount)
+    VALUES ('$_POST[suppliers_id]','$_POST[only_first]','$_POST[number]','$_POST[is_share]','$type_name',
             '$_POST[type_money]',
             '$send_startdate',
             '$send_enddate',
@@ -302,6 +308,8 @@ if ($_REQUEST['act'] == 'update')
            "send_start_date = '$send_startdate', ".
            "send_end_date   = '$send_enddate', ".
            "use_start_date  = '$use_startdate', ".
+		   "suppliers_id  = '$_POST[suppliers_id]', ".
+		   
            "use_end_date    = '$use_enddate', ".
            "send_type       = '$_POST[send_type]', ".
            "min_amount      = '$min_amount', " .
@@ -1045,13 +1053,22 @@ function get_type_list()
         $filter['sort_by']    = empty($_REQUEST['sort_by']) ? 'type_id' : trim($_REQUEST['sort_by']);
         $filter['sort_order'] = empty($_REQUEST['sort_order']) ? 'DESC' : trim($_REQUEST['sort_order']);
 
-        $sql = "SELECT COUNT(*) FROM ".$GLOBALS['hhs']->table('bonus_type');
+		$filter['suppliers_id'] = empty($_REQUEST['suppliers_id']) ? '' : trim($_REQUEST['suppliers_id']);
+		if($filter['suppliers_id']!='')
+		{
+			$where = " where suppliers_id='$filter[suppliers_id]'";
+		}
+
+
+        $sql = "SELECT COUNT(*) FROM ".$GLOBALS['hhs']->table('bonus_type')." $where";
         $filter['record_count'] = $GLOBALS['db']->getOne($sql);
 
         /* 分页大小 */
         $filter = page_and_size($filter);
 
-        $sql = "SELECT * FROM " .$GLOBALS['hhs']->table('bonus_type'). " ORDER BY $filter[sort_by] $filter[sort_order]";
+		
+
+        $sql = "SELECT * FROM " .$GLOBALS['hhs']->table('bonus_type'). " $where ORDER BY $filter[sort_by] $filter[sort_order]";
 
         set_filter($filter, $sql);
     }
@@ -1068,6 +1085,7 @@ function get_type_list()
         $row['send_by'] = $GLOBALS['_LANG']['send_by'][$row['send_type']];
         $row['send_count'] = isset($sent_arr[$row['type_id']]) ? $sent_arr[$row['type_id']] : 0;
         $row['use_count'] = isset($used_arr[$row['type_id']]) ? $used_arr[$row['type_id']] : 0;
+		$row['suppliers_name'] = get_suppliers_name($row['suppliers_id']);
 
         $arr[] = $row;
     }
@@ -1221,6 +1239,21 @@ function add_to_maillist($username, $email, $subject, $content, $is_html)
     $sql = "INSERT INTO "  . $GLOBALS['hhs']->table('email_sendlist') . " ( email, template_id, email_content, pri, last_send) VALUES ('$email', $template_id, '$content', 1, '$time')";
     $GLOBALS['db']->query($sql);
     return true;
+}
+function get_suppliers_list()
+{
+    $sql = 'SELECT *
+            FROM ' . $GLOBALS['hhs']->table('suppliers') . '
+            WHERE is_check = 1
+            ORDER BY suppliers_name ASC';
+    $res = $GLOBALS['db']->getAll($sql);
+
+    if (!is_array($res))
+    {
+        $res = array();
+    }
+
+    return $res;
 }
 
 ?>

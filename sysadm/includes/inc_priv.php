@@ -88,6 +88,7 @@ $purview['04_suppliers_accounts']     = 'suppliers_accounts_manage';
 //    $purview['ucenter_setup']        = 'integrate_users';
 //    $purview['021_reg_fields']       = 'reg_fields';
 //	$purview['website']              = 'website';
+$purview['021_site']             = 'site_manage';
 
 //广告管理
 //    $purview['z_clicks_stats']       = 'ad_manage';

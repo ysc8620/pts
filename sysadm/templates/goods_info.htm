@@ -36,6 +36,27 @@
             </td>
           </tr>
           <tr>
+            <td class="label">显示区域：</td>
+            <td>   <select name="city_id" id="selCities"  onchange="region.changed(this, 3, 'selDistricts')">
+          <option value=''>请选择</option>
+            {foreach from=$cities item=region}
+              <option value="{$region.region_id}" {if $region.region_id eq $goods.city_id}selected="selected"{/if}>{$region.region_name}</option>
+            {/foreach}
+
+        </select>
+         <select name="district_id" id="selDistricts">
+
+				<option value="0">请选择</option>
+
+				{foreach from=$district_list item=district}
+
+				<option value="{$district.region_id}" {if $district.region_id eq $goods.district_id}selected="selected"{/if}  >{$district.region_name}</option>
+
+				{/foreach}
+
+		</select> </td>
+          </tr>
+          <tr>
             <td class="label">
             {$lang.lab_goods_sn} </td>
             <td><input type="text" name="goods_sn" value="{$goods.goods_sn|escape}" size="20" onblur="checkGoodsSn(this.value,'{$goods.goods_id}')" /><span id="goods_sn_notice"></span>
@@ -46,6 +67,10 @@
             <td><select name="cat_id" onchange="hideCatDiv()" ><option value="0">{$lang.select_please}</option>{$cat_list}</select>
                {$lang.require_field}
             </td>
+          </tr>
+          <tr>
+            <td class="label">{$lang.lab_intro}</td>
+            <td><input type="checkbox" name="is_best" value="1" {if $goods.is_best}checked="checked"{/if} />{$lang.is_best} <input type="checkbox" name="is_new" value="1" {if $goods.is_new}checked="checked"{/if} />{$lang.is_new} <input type="checkbox" name="is_hot" value="1" {if $goods.is_hot}checked="checked"{/if} />{$lang.is_hot}</td>
           </tr>
           <!-- 
           <tr>
@@ -105,7 +130,13 @@
             	<input type="radio" name="limit_buy_one" value="0" {if $goods.limit_buy_one eq 0}checked="checked"{/if}>否 &nbsp;一个会员只能购买一次
             </td>
           </tr>
-          
+          <tr>
+            <td class="label">是否关注后购买:</td>
+            <td>
+            <input type="radio" name="subscribe" value="0" {if $goods.subscribe eq 0}checked="checked"{/if}>否 
+            <input type="radio" name="subscribe" value="1" {if $goods.subscribe eq 1}checked="checked"{/if}>是 &nbsp;若选择是，必须是关注的会员才能购买,记得去系统设置/商店设置上传公众号，在公众拼团
+            </td>
+          </tr>
           
           {if $user_rank_list}
          <!-- <tr>
@@ -226,6 +257,10 @@
           <tr id="alone_sale_1">
             <td class="label" id="alone_sale_2">{$lang.lab_is_on_sale}</td>
             <td id="alone_sale_3"><input type="checkbox" name="is_on_sale" value="1" {if $goods.is_on_sale}checked="checked"{/if} /> {$lang.on_sale_desc}</td>
+          </tr>
+           <tr>
+            <td class="label">{$lang.lab_intro}</td>
+            <td><input type="checkbox" name="is_best" value="1" {if $goods.is_best}checked="checked"{/if} />{$lang.is_best} <input type="checkbox" name="is_new" value="1" {if $goods.is_new}checked="checked"{/if} />{$lang.is_new} <input type="checkbox" name="is_hot" value="1" {if $goods.is_hot}checked="checked"{/if} />{$lang.is_hot}</td>
           </tr>
        <!--   <tr>
             <td class="label">{$lang.lab_is_alone_sale}</td>

@@ -28,7 +28,21 @@ function make_json_result($content, $message='', $append=array())
 {
     make_json_response($content, 0, $message, $append);
 }
+/**
+ * 取得站点列表
+ * @param   int     $shipping_id    配送id
+ */
+function get_shipping_point_list($suppliers_id)
+{
+    $sql = "SELECT a.*,rp.region_name as province,rc.region_name as city,rd.region_name as district " .
+                " FROM " . $GLOBALS['hhs']->table('shipping_point'). " AS a left join " .
+                    $GLOBALS['hhs']->table('region') . " AS rp on a.province=rp.region_id left join ".
+                    $GLOBALS['hhs']->table('region') . " as rc on a.city=rc.region_id left join ".
+                    $GLOBALS['hhs']->table('region') ." as rd on a.district=rd.region_id  where a.suppliers_id='$suppliers_id'";
+    $list=$GLOBALS['db']->getAll($sql);
 
+    return $list;
+}
 /**
  * 创建一个JSON格式的数据
  *
@@ -60,7 +74,55 @@ function make_json_response($content='', $error="0", $message='', $append=array(
     exit($val);
 }
 
-
+/**
+ * 获得所有模块的名称以及链接地址
+ *
+ * @access      public
+ * @param       string      $directory      插件存放的目录
+ * @return      array
+ */
+function read_modules($directory = '.')
+{
+    global $_LANG;
+    $dir = @opendir($directory);
+    $set_modules = true;
+    $modules = array();
+    while (false !== ($file = @readdir($dir))) {
+        if (preg_match('/^.*?\\.php$/', $file)) {
+            include_once $directory . '/' . $file;
+        }
+    }
+    @closedir($dir);
+    unset($set_modules);
+    foreach ($modules as $key => $value) {
+        ksort($modules[$key]);
+    }
+    ksort($modules);
+    return $modules;
+}
+/**
+ * 取得配送区域列表
+ * @param   int     $shipping_id    配送id
+ */
+function get_shipping_area_list($shipping_id, $suppliers_id)
+{
+    $sql = 'SELECT * FROM ' . $GLOBALS['hhs']->table('shipping_area');
+    if ($shipping_id > 0) {
+        $sql .= " WHERE shipping_id = '{$shipping_id}'";
+    }
+    if ($suppliers_id > 0) {
+        $sql .= " AND supp_id = '{$suppliers_id}'";
+    }
+    $res = $GLOBALS['db']->query($sql);
+    $list = array();
+    while ($row = $GLOBALS['db']->fetchRow($res)) {
+        $sql = 'SELECT r.region_name ' . 'FROM ' . $GLOBALS['hhs']->table('area_region') . ' AS a, ' . $GLOBALS['hhs']->table('region') . ' AS r ' . 'WHERE a.region_id = r.region_id ' . "AND a.shipping_area_id = '{$row['shipping_area_id']}'";
+        $regions = join(', ', $GLOBALS['db']->getCol($sql));
+        $row['shipping_area_regions'] = empty($regions) ? '<a href="shipping_area.php?act=region&amp;id=' . $row['shipping_area_id'] . '" style="color:red">' . $GLOBALS['_LANG']['empty_regions'] . '</a>' : $regions;
+        $list[] = $row;
+    }
+    return $list;
+}
 
 /**
  * 获得商品类型的列表
@@ -1636,6 +1698,10 @@ function get_order_list($is_page=true,$action=null){
 	
 	$filter['action'] = $action= empty($action) ? ($_REQUEST['action']) : $action;
 	
+	$filter['team_status'] = empty($_REQUEST['team_status']) ? '' : trim($_REQUEST['team_status']);
+	
+	$filter['type'] = empty($_REQUEST['type']) ? '' : trim($_REQUEST['type']);
+	
 	$suppliers_id=$_SESSION['suppliers_id'];
 	
 	$where = 'WHERE o.suppliers_id='.$suppliers_id;
@@ -1679,6 +1745,23 @@ function get_order_list($is_page=true,$action=null){
 	
 		$where .= " AND o.tel LIKE '%" . mysql_like_quote($filter['tel']) . "%'";
 	
+	}
+	
+	if($filter['team_status'])
+	{
+		$where .=" AND team_status='$filter[team_status]' and extension_code='team_goods'";
+	}
+	if($filter['type']>0)
+	{
+		if($filter['type']==1)
+		{
+			$where .=" AND  extension_code='team_goods'";
+		}
+		else
+		{
+			$where .=" AND  extension_code=''";
+		}
+		
 	}
 	
 	if ($filter['mobile'])
@@ -1873,9 +1956,9 @@ function get_order_list($is_page=true,$action=null){
 	    $where .=$ext;
 	}*/
 	if($action=='goods_order'){
-	    $ext=" and o.shipping_id<>10 ";
+	    $ext=" and o.shipping_id<>13 ";
 	}else{
-	    $ext=" and o.shipping_id=10 ";
+	    $ext=" and o.shipping_id=13 ";
 	}
 	$where .=$ext;
 	if($is_page){
@@ -1923,7 +2006,6 @@ function get_order_list($is_page=true,$action=null){
 	if($is_page){
 		$sql.=" LIMIT $pager[start],$pager[size]";
 	}
-//echo $sql;exit;
 
 	foreach (array('order_sn', 'consignee', 'email', 'address', 'zipcode', 'tel', 'user_name') AS $val)
 	
@@ -2370,7 +2452,7 @@ function get_bonus_list($supp_id)
 	$arr['act']='bonus_list';
 	$pager  = get_pager('suppliers.php', $arr, $record_count, $page);	
 
-    $sql = "SELECT ub.*, u.user_name, u.email, o.order_sn, bt.type_name ".
+    $sql = "SELECT ub.*, u.user_name,u.uname, u.email, o.order_sn, bt.type_name ".
           " FROM ".$GLOBALS['hhs']->table('user_bonus'). " AS ub ".
           " LEFT JOIN " .$GLOBALS['hhs']->table('bonus_type'). " AS bt ON bt.type_id=ub.bonus_type_id ".
           " LEFT JOIN " .$GLOBALS['hhs']->table('users'). " AS u ON u.user_id=ub.user_id ".

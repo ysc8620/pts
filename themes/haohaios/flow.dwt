@@ -8,6 +8,7 @@
 <title>{$page_title}</title>
 <link rel="shortcut icon" href="favicon.ico" />
 <link href="{$hhs_css_path}/haohaios.css" rel="stylesheet" />
+<link href="{$hhs_css_path}/font-awesome.min.css" rel="stylesheet" />
 {* 包含脚本文件 *}
 {insert_scripts files='jquery.js,haohaios.js,shopping_flow.js,region.js'}
 </head>
@@ -138,9 +139,11 @@
                 <!-- {foreach from=$consignee_list item=consignee key=sn} -->
                 <!--ul class="selected"默认地址-->
                 
-                <ul {if $consignee.address_id eq $default_address_id}class="selected"{/if} onclick="location='flow.php?step=checkout&address_id={$consignee.address_id}'">
+                <ul {if $consignee.address_id eq $default_address_id}class="selected"{/if}>
+                    <a href="flow.php?step=checkout&address_id={$consignee.address_id}">
                     <li><span>{$consignee.address|escape}</span></li>
                     <li><strong>{$consignee.consignee|escape}</strong>{$consignee.mobile|escape}</li>
+                    </a>
                     <li><a class="edit" href="flow.php?step=edit_consignee&address_id={$consignee.address_id}" >编辑</a></li>
                 </ul>
                 <!-- {/foreach} -->
@@ -155,12 +158,87 @@
     <!-- {/if} -->
     
     
+<!--{if $step eq 'shipping_list'} -->
+    {insert_scripts files='utils.js,region.js,shopping_flow.js'}
+    <script type="text/javascript">
+      region.isAdmin = false;
+      {foreach from=$lang.flow_js item=item key=key}
+      var {$key} = "{$item}";
+      {/foreach}
+      {literal}
+      onload = function() {
+        if (!document.all)
+        {
+          document.forms['theForm'].reset();
+        }
+      }
+      {/literal}
+    </script> 
+    <div class="shipping_list">
+        <ul>
+            <!-- {foreach from=$shipping_list item=item key=key name=name} -->
+            <li{if $item.shipping_id eq $shipping_id} class="selected"{/if} onclick="location='flow.php?step=checkout&shipping_id={$item.shipping_id}'">
+                <span></span>
+                <h3>{$item.shipping_name|escape}　{if $item.free_money gt 0}{$item.free_money}元包邮{/if}</h3>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <!-- {foreachelse} -->
+            <div class="noshipping" onclick="history.go(-1);"><h3>您所填的收货地址无任何可用的配送方式</h3></div>
+            <!-- {/foreach} -->
+        </ul>
+    </div>
+<!-- {/if} --> 
+    
+<!--{if $step eq 'point_list'} -->
+{insert_scripts files='utils.js,region.js,shopping_flow.js'}
+    <div class="shipping_list">
+        <ul>
+            <!-- {foreach from=$point_list item=item key=key name=name} -->
+            <li{if $item.id eq $point_id} class="selected"{/if} onclick="location='flow.php?step=checkout&point_id={$item.id}&shipping_id={$shipping_id}'">
+                <span></span>
+                <h3>{$item.shop_name|escape}　{$item.province}{$item.city}{$item.district}{$item.address}</h3>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <!-- {foreachelse} -->
+            <div class="noshipping" onclick="history.go(-1);"><h3>无任何取货地点可选</h3></div>
+            <!-- {/foreach} -->
+        </ul>
+    </div>
+<!-- {/if} -->     
+    
     <!-- {if $step eq "checkout"} 开始订单确认界面 -->
     <form action="flow.php" method="post" name="theForm" id="theForm" >
     <script type="text/javascript">
         var flow_no_payment = "{$lang.flow_no_payment}";
     </script>
     <!-- #BeginLibraryItem "/library/consignee.lbi" --><!-- #EndLibraryItem -->
+    
+    <!-- {if $shipping_list}-->
+    <div class="shipping">
+        <h3>配送方式</h3>
+        <!-- {foreach from=$shipping_list item=item key=key name=name} -->
+        <!-- {if $smarty.foreach.name.index eq 0} -->
+         <a href="flow.php?step=shipping_list&shipping_id={$item.shipping_id}">{$item.shipping_name}{if $item.free_money gt 0}<span>({$item.free_money}元包邮)</span>{/if}<input name="shipping_id" type="hidden" value="{$item.shipping_id}" /><i class="fa fa-angle-right"></i></a>
+        <!-- {/if} -->
+        <!-- {/foreach} -->
+    </div>
+    <!-- {else} -->
+    <div class="noshipping">
+        您所在地址暂不支持配送
+        <input name="shipping_id" type="hidden" value="" />
+    </div>
+    <!-- {/if} -->
+    <!-- {if $point_list}-->
+    <div class="shipping">
+        <!-- {foreach from=$point_list item=item key=key name=name} -->
+        <!-- {if $smarty.foreach.name.index eq 0} -->
+        <a href="flow.php?step=point_list&point_id={$item.id}">{$item.shop_name}<span>({$item.province}{$item.city}{$item.district}{$item.address})</span><input name="point_id" type="hidden" value="{$item.id}" /><i class="fa fa-angle-right"></i></a>
+        <!-- {/if} -->
+        <!-- {/foreach} -->
+    </div>
+    <!-- {/if} -->
+    
+    
     <div class="order">
         <div class="order_bd">
             <div id="orderList" class="order_glist">
@@ -232,7 +310,7 @@
                        <!--  <option value="{$bonus.bonus_id}" {if $order.bonus_id eq $bonus.bonus_id}selected{/if}>{$bonus.type_name}[{$bonus.bonus_money_formated}]</option> -->
                        <!-- <option value="0" {if $order.bonus_id eq 0}selected{/if}>{$lang.please_select}</option> -->
                         <div>
-                            <b class="pin1">{$shop_name}</b>
+                            <b class="pin1">{$bonus.suppliers_name}</b>
                         </div>
                         <div class="coup_text_left1">
                             <b>{$bonus.bonus_money_formated}元代金券</b>
@@ -299,17 +377,7 @@
                 </div>
             </div>
         </div>
-        <div class="mod_footer">
-            <div class="mod_footer_lk">
 
-                <a class="on" href="index.php">{$shop_name}</a>
-                <a href="user.php?act=team_list">我的团</a>
-
-            </div>
-            <div class="mod_footer_logo">
-                <span>{$HTTP_HOST}</span>
-            </div>
-        </div>
         
 <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
@@ -320,6 +388,32 @@ window.onload=function(){
 }
 
 function done(thisObj){
+	
+   var payment=document.forms[0].payment.value;
+   var shipping_id=document.forms[0].shipping_id.value;
+   
+   var bonus=document.forms[0].bonus.value;  
+   var postscript=$("#postscript").val();
+
+   if(typeof bonus==undefined){
+	   bonus=0;
+   }
+   if(document.forms[0].point_id){
+	   var point_id=document.forms[0].point_id.value;
+   }else{
+	   var point_id=0;
+   }
+   
+   if(payment==''){
+	   alert('请选择支付方式');
+	   return false;
+   }
+   if(shipping_id==''){
+	   alert('请选择配送方式');
+	   return false;
+   }
+	
+	
 	/*
 	if(lat==null){
 		return false;
@@ -333,7 +427,7 @@ function done(thisObj){
    thisObj.value='正在支付 请稍候';
    var payment=document.forms[0].payment.value;
    var bonus=document.forms[0].bonus.value;
-	Ajax.call('flow.php?step=json_done', 'payment='+payment+'&bonus='+bonus+"&lat={$lat}&lng={$lng}", done_response, 'POST', 'JSON');
+	Ajax.call('flow.php?step=json_done', 'point_id='+point_id+'&shipping_id='+shipping_id+'&payment='+payment+'&bonus='+bonus+"&lat={$lat}&lng={$lng}", done_response, 'POST', 'JSON');
 }
 //+"&lat="+lat+"&lng="+lng
 function jsApiCall(code,returnrul){
@@ -449,6 +543,7 @@ wx.ready(function () {
     </div>
     <!-- {/if} -->
 </div>
+<!-- #BeginLibraryItem "/library/footer.lbi" --><!-- #EndLibraryItem -->
 </body>
 
 <script type="text/javascript">

@@ -1719,6 +1719,7 @@ function assign_template($ctype = '', $catlist = array())
     $smarty->assign('service_email', $GLOBALS['_CFG']['service_email']);
     $smarty->assign('service_phone', $GLOBALS['_CFG']['service_phone']);
     $smarty->assign('shop_address',  $GLOBALS['_CFG']['shop_address']);
+	$smarty->assign('subscribe_url',     $GLOBALS['_CFG']['subscribe_url']);
     $smarty->assign('licensed',      license_info());
     $smarty->assign('hhs_version',   VERSION);
     $smarty->assign('icp_number',    $GLOBALS['_CFG']['icp_number']);
@@ -1729,6 +1730,10 @@ function assign_template($ctype = '', $catlist = array())
 	$smarty->assign('categories_pro',  get_categories_tree_pro());
 	$smarty->assign('helps',           get_shop_help());
 	$smarty->assign('abouts',           get_shop_about());
+	$smarty->assign('site_list',           get_sitelists());
+	$smarty->assign('subscribe_url',    $GLOBALS['_CFG']['subscribe_url']);
+	$smarty->assign('qr_code',    $GLOBALS['_CFG']['qr_code']);
+
 
     if (!empty($GLOBALS['_CFG']['search_keywords']))
     {

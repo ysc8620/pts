@@ -9,6 +9,7 @@
 <script type="text/javascript" src="../../js/region.js"></script>
 <script type="text/javascript" src="../../js/utils.js"></script>
 <script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/haohaios.js"></script>
 <script type="text/javascript" src="templates/js/main.js"></script>
 <script type="text/javascript" src="templates/js/supp.js"></script>
 <script type="text/javascript" src="../../{$admin_path}/js/listtable.js"></script>

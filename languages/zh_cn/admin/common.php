@@ -301,6 +301,7 @@ $_LANG['ucenter_setup'] = 'UCenter设置';
 $_LANG['file_check'] = '文件校验';
 $_LANG['021_reg_fields'] = '会员注册项设置';
 $_LANG['website'] = '快捷登录管理';
+$_LANG['021_site'] = '站点管理';
 
 /* 模板管理 */
 $_LANG['mail_template_manage'] = '邮件模板';

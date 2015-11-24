@@ -310,6 +310,16 @@ else
 $db->query('UPDATE ' . $hhs->table('goods') . " SET click_count = click_count + 1 WHERE goods_id = '$_REQUEST[id]'");
 
 $sales_num = $goods['sales_num'];
+
+
+
+if ($goods['suppliers_id']){
+$stores_info = get_suppliers_info($goods['suppliers_id']);
+$smarty->assign('stores_info',$stores_info);
+}
+
+
+
 /*
 if($sales_num)
 {

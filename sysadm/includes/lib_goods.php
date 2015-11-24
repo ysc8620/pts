@@ -836,6 +836,8 @@ function goods_list($is_delete, $real_goods=1, $conditions = '')
         $filter['extension_code']   = empty($_REQUEST['extension_code']) ? '' : trim($_REQUEST['extension_code']);
         $filter['is_delete']        = $is_delete;
         $filter['real_goods']       = $real_goods;
+		$filter['city_id']   = empty($_REQUEST['city_id']) ? '' : trim($_REQUEST['city_id']);
+		$filter['district_id']   = empty($_REQUEST['district_id']) ? '' : trim($_REQUEST['district_id']);
 
         $where = $filter['cat_id'] > 0 ? " AND " . get_children($filter['cat_id']) : '';
 
@@ -869,7 +871,15 @@ function goods_list($is_delete, $real_goods=1, $conditions = '')
         {
             $where .= " AND brand_id='$filter[brand_id]'";
         }
-
+        if ($filter['city_id'])
+        {
+            $where .= " AND city_id='$filter[city_id]'";
+        }
+        if ($filter['district_id'])
+        {
+            $where .= " AND district_id='$filter[district_id]'";
+        }
+		
         /* 扩展 */
         if ($filter['extension_code'])
         {

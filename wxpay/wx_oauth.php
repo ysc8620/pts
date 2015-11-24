@@ -5,47 +5,11 @@ session_start();
 $code=$_GET['code'];
 
 $state=urldecode($_GET['state']);
-/*
-$appid = 'wx92970832ecad238a';
 
-$appsecret ='37c36d9099ee7635fe1f4ea5230412db';
 
-*/
 if($code)
 {
     
-/*
-    $state=str_replace("△","&",$state);
-    if(strrpos($state,'&')!==false){
-        $pos=strrpos($state,'&');
-        $temp=substr($state, $pos+1);
-        $t=explode("=", $temp);
-        $appsecret=$t[1];
-        $state=substr($state, 0 , $pos);
-    }
-    if(strrpos($state,'&')!==false){
-        $pos=strrpos($state,'&');
-        $temp=substr($state, $pos+1);
-        $t=explode("=", $temp);
-        $appid=$t[1];
-        $state=substr($state, 0 , $pos);
-    }
-    
-	$back_openid_arr=get_openid($appid,$appsecret,$code);
-*/
-
-	//setcookie("xaphp_sopenid",$back_openid_arr['openid'],time()+864000,'/');	
-	
-	//echo "location:http://".$_SERVER['HTTP_HOST'].str_replace("△","&",$state)."";exit;
-
-	//echo "location:http://".$_SERVER['HTTP_HOST'].str_replace("△","&",$state)."&sopenid=".$back_openid_arr['openid'];exit;
-/*
-	if(strpos($state,'?')!==false){
-	    header("location:http://".$_SERVER['HTTP_HOST'].str_replace("△","&",$state)."&sopenid=".$back_openid_arr['openid']  );
-	}else{
-	    header("location:http://".$_SERVER['HTTP_HOST'].str_replace("△","&",$state)."?sopenid=".$back_openid_arr['openid']  );
-	}
-	*/ 
     
 	if(strpos($state,'?')!==false){
 	
@@ -54,8 +18,7 @@ if($code)
 	    header("location:http://".$_SERVER['HTTP_HOST'].$state."?code=".$code  );
 	}
 	 exit();
-	//header("location:http://".$_SERVER['HTTP_HOST'].str_replace("△","&",$state));//."&sopenid=".$back_openid_arr['openid']
-
+	
 }
 
 else

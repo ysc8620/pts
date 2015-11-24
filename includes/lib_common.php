@@ -248,7 +248,7 @@ function cat_list($cat_id = 0, $selected = 0, $re_type = true, $level = 0, $is_s
         $data = read_static_cache('cat_pid_releate');
         if ($data === false)
         {
-            $sql = "SELECT c.cat_id, c.cat_name, c.measure_unit, c.parent_id, c.is_show, c.show_in_nav, c.grade, c.sort_order, COUNT(s.cat_id) AS has_children ".
+            $sql = "SELECT c.cat_id, c.cat_name,c.commission, c.measure_unit, c.parent_id, c.is_show, c.show_in_nav, c.grade, c.sort_order, COUNT(s.cat_id) AS has_children ".
                 'FROM ' . $GLOBALS['hhs']->table('category') . " AS c ".
                 "LEFT JOIN " . $GLOBALS['hhs']->table('category') . " AS s ON s.parent_id=c.cat_id ".
                 "GROUP BY c.cat_id ".
@@ -2358,14 +2358,14 @@ function get_final_price($goods_id, $goods_num = '1', $is_spec_price = false, $s
     }
 
     //如果需要加入规格价格
-    if ($is_spec_price)
-    {
-        if (!empty($spec))
-        {
-            $spec_price   = spec_price($spec);
-            $final_price  = $spec_price;
-        }
-    }
+//    if ($is_spec_price)
+//    {
+//        if (!empty($spec))
+//        {
+//            $spec_price   = spec_price($spec);
+//            $final_price  = $spec_price;
+//        }
+//    }
 
     //返回商品最终购买价格
     return $final_price;
@@ -2874,27 +2874,66 @@ function get_suppliers_info($suppliers_id)
     return $rows;
 
 }
-function get_region_name($id)
+function get_region_type($id)
+{ 
+   $sql = 'SELECT region_type FROM ' . $GLOBALS['hhs']->table('region') ." WHERE region_id = '$id' ";
+   return $GLOBALS['db']->GetOne($sql);
+}
 
+function get_site_id($ip)
 {
+    //$ip ='218.31.153.182';
+    $city_id = get_default_regin($ip, '2');
+    
+    return $city_id;
+    /*
+    $id = $GLOBALS['db']->getOne('select id from ' . $GLOBALS['hhs']->table('site') . " where city_id='{$city_id}'");
+    if ($id) {
+        return $id;
+    } else {
+        return '-1';
+    }*/
+}
 
+function get_default_regin($ip, $type)
+{
+    $url = 'http://ip.taobao.com/service/getIpInfo.php?ip=' . $ip;
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, 0);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    $contents = curl_exec($ch);
+    curl_close($ch);
+    $addr = json_decode($contents, true);
+    
+    if ($addr['code'] == 0) {
+        if ($type == 2) {
+            $region_name = str_replace(array('省', '市', '自治区', '回族', '地区'), '', $addr['data']['city']);
+            $sql = 'SELECT `region_id` from ' . $GLOBALS['hhs']->table('region') . " where `region_name` = '{$region_name}' and region_type ='{$type}'";
+            return $GLOBALS['db']->getOne($sql);
+        } elseif ($type == 3) {
+            $region_name = str_replace(array('省', '市', '自治区', '回族', '地区'), '', $addr['data']['county']);
+            $sql = 'SELECT `region_id` from ' . $GLOBALS['hhs']->table('region') . " where `region_name` = '{$region_name}'";
+            return $GLOBALS['db']->getOne($sql);
+        }
+    } else {
+        return 0;
+    }
+}
+
+
+function get_region_name($id)
+{
     $sql = 'SELECT region_name FROM ' . $GLOBALS['hhs']->table('region') .
-
     " WHERE region_id = '$id' ";
-
-
-
     return $GLOBALS['db']->GetOne($sql);
-
 }
 function get_suppliers_name($suppliers_id)
-
 {
-
     $rows =  $GLOBALS['db']->getRow("select * from ".$GLOBALS['hhs']->table('suppliers')." where suppliers_id='$suppliers_id'");
-
     return $rows['suppliers_name'];
-
 }
 
 function get_settlement_sn()
@@ -2916,5 +2955,34 @@ function settlement_action($settlement_id,  $note = '', $username = null)
     $GLOBALS['db']->query($sql);
 }
 
+function get_sitelists()
+{
+    $sql = 'select id,name,city_id,province_id from ' . $GLOBALS['hhs']->table('site') . ' where close=\'1\' order by city_id asc ';
 
+    $arr=$GLOBALS['db']->GetAll($sql);
+	foreach($arr as $k=>$v){
+		$arr[$k]['dis']=get_sub_region($v['city_id']);
+		$arr[$k]['region_id']=$v['city_id'];
+		$arr[$k]['region_name']=get_region_name($v['city_id']);
+	}
+	return $arr;
+	
+}
+
+
+function get_site_name($id)
+{
+    $sql = 'select name from ' . $GLOBALS['hhs']->table('site') . " where id='{$id}'";
+    return $GLOBALS['db']->GetOne($sql);
+}
+
+
+function get_sub_region($id)
+{
+    $sql = 'SELECT region_id, parent_id, region_name FROM ' . $GLOBALS['hhs']->table('region') .
+    " WHERE parent_id = '$id' ";
+	
+    return $GLOBALS['db']->GetAll($sql);
+
+}
 ?>

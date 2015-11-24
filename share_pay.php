@@ -35,7 +35,7 @@ if ($act=='default'){
     $smarty->assign('progress', number_format($order_info['money_paid']*100/($order_info['money_paid']+$order_info['order_amount']),2)  );
     $smarty->assign('order_info', $order_info );
 
-    if($order_info['user_id'] != $user_id){//别人的
+    if($_REQUEST['showwxpaytitle']==1){//别人的
         
         if(floatval($order_info['order_amount'])<=0.00){
             echo"<script>";
@@ -65,6 +65,7 @@ if ($act=='default'){
         $smarty->display('share_to_pay.dwt');
         
     }else{//自己
+
         $smarty->assign('imgUrl', $user_info['headimgurl']);//'http://'.$_SERVER['HTTP_HOST']."/".$goods_list[0]['goods_thumb']
         $smarty->assign('title', "找人代付");
         $smarty->assign('desc', mb_substr($order_info['wxdesc'], 0,30,'utf-8')  );//

@@ -263,9 +263,7 @@ class cls_mysql
         {
             mysql_ping($this->link_id);
         }
-        if(@$_GET['show_sql'] =='yes'){
-            echo $sql."<br/><br/>";
-        }
+
         if (!($query = mysql_query($sql, $this->link_id)) && $type != 'SILENT')
         {
             $this->error_message[]['message'] = 'MySQL Query Error';

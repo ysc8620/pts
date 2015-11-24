@@ -29,6 +29,33 @@
 </style>
 </head>
 <body>
+<div id="liu_bg"></div>
+<ul id="liu_layer">
+<li><strong>{$shop_name}提示您</strong><span id="liu_guanbi"><i class="fa fa-remove"></i></span></li>
+    <li><strong>本活动只限于关注用户</strong></li>
+    <li>请长按下图并选择识别图中的二维码关注</li>
+    <li><img src="{$qr_code}"></li>
+    <li>无法识别二维码请点击下面的按钮关注</li>
+    <li><a href="{$subscribe_url}">立即关注</a></li>
+</ul>
+<script>
+$(document).ready(function(e) {
+    var w = $(window).width();
+	var h = $(window).height();
+	var h1 = $("#liu_layer").height();
+	$("#liu_bg").height(h);
+	$("#liu_layer").css("top",(h-h1)/2);
+	$("#liu_guanbi").click(function(){
+		$("#liu_bg").hide();
+		$("#liu_layer").hide();
+	});
+});
+function weiguanzhu(){
+	//alert('sd');
+	$("#liu_bg").show();
+	$("#liu_layer").show();
+}
+</script>
 <div class="container">
     <section class="main-view">
         <div class="flexslider" style="margin-bottom:10px;">
@@ -57,28 +84,22 @@
                 </div>
             </div>
             
-            
-            <div class="spec">
+     {if $specification}       
+ <div class="spec">
       <ul>
 {foreach from=$specification item=spec key=spec_key}
       <li>
       <label>{$spec.name}：</label>
-
-				  
 {foreach from=$spec.values item=value key=key}
-
 <a {if $key eq 0}class="cattsel"{/if} onclick="changeAtt(this)" href="javascript:;" name="{$value.id}" title="[{if $value.price gt 0}{$lang.plus}{elseif $value.price lt 0}{$lang.minus}{/if} {$value.format_price|abs}]">{$value.label}<input style="display:none" id="spec_value_{$value.id}" type="radio" name="spec_{$spec_key}" value="{$value.id}" {if $key eq 0}checked{/if} /></a>
 
 {/foreach}
-
-                        <input type="hidden" name="spec_list" value="{$key}" />
-
-
+  <input type="hidden" name="spec_list" value="{$key}" />
       </li>
       {/foreach}
       </ul>
-            </div>
-         
+ </div>
+     {/if}    
    {if $goods.limit_buy_bumber eq 1}
             
             <input name="number"  type="hidden" id="number" class="text" value="1"/>
@@ -116,6 +137,23 @@
             <!-- {/if} -->
             </form>
         </div>
+        
+        <div class="mall_goods">
+            <a href="store.php?id={$goods.suppliers_id}">
+                <img src="{$stores_info.supp_logo}">
+                <div class="mall_sub">
+                    <span>{$stores_info.suppliers_name}</span>
+                    <div class="enter_button">
+                    <img src="images/mall_icon_small.png">
+                    <em>进店逛逛</em>
+                    </div>
+                </div>
+                
+            </a>
+        </div>
+            
+            
+            
         <div class="pro-detial">
             <ul class="pro_tab">
                 <li class="hover"><div>图文详情</div></li>

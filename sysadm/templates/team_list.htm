@@ -1,6 +1,6 @@
 {if $full_page}
 {include file="pageheader.htm"}
-{insert_scripts files="../js/utils.js,listtable.js"}
+{insert_scripts files="../js/utils.js,listtable.js,../js/region.js"}
 <script language="javascript" type="text/javascript" src="../js/DatePicker/WdatePicker.js"></script>
 <!-- 订单搜索 -->
 <div class="form-div">
@@ -29,6 +29,38 @@
     <input class="Wdate" type="text" name="pay_start_time" readonly="readonly" onfocus="WdatePicker({dateFmt:'yyyy-M-d HH:mm'})"/>
       ~       
       <input class="Wdate" type="text" name="pay_end_time" readonly="readonly" onfocus="WdatePicker({dateFmt:'yyyy-M-d HH:mm'})"/>
+      
+    <!-- 推荐 -->
+      区域选择
+     <select name="city_id" id="selCities"  onchange="region.changed(this, 3, 'selDistricts')">
+
+          <option value=''>请选择</option>
+
+            {foreach from=$cities item=region}
+
+              <option value="{$region.region_id}" {if $region.region_id eq $goods.city_id}selected="selected"{/if}>{$region.region_name}</option>
+
+            {/foreach}
+
+        </select>
+         <select name="district_id" id="selDistricts">
+
+				<option value="0">请选择</option>
+
+				{foreach from=$district_list item=district}
+
+				<option value="{$district.region_id}" {if $district.region_id eq $goods.district_id}selected="selected"{/if}  >{$district.region_name}</option>
+
+				{/foreach}
+
+		</select> 
+     {if $suppliers_exists eq 1}    
+      <!-- 供货商 -->
+      <select name="suppliers_id"><option value="0">自营店</option>{html_options options=$suppliers_list_name selected=$smarty.get.suppliers_id}</select>
+      {/if}      
+      
+      
+      
     <input type="submit" value="{$lang.button_search}" class="button" /><br/><br/>&nbsp;&nbsp;&nbsp;
   	
   	<a href="order.php?act=team_list&team_status=1">团购正在进行中【{$team_num1}单】</a>&nbsp;&nbsp;
@@ -112,6 +144,7 @@
 <script language="JavaScript">
 listTable.recordCount = {$record_count};
 listTable.pageCount = {$page_count};
+region.isAdmin = true;
 
 {foreach from=$filter item=item key=key}
 listTable.filter.{$key} = '{$item}';
@@ -134,6 +167,9 @@ listTable.query = "team_query";
         listTable.filter['team_status'] = document.forms['searchForm'].elements['team_status'].value;
         listTable.filter['pay_start_time'] = document.forms['searchForm'].elements['pay_start_time'].value;
         listTable.filter['pay_end_time'] = document.forms['searchForm'].elements['pay_end_time'].value;
+		listTable.filter['suppliers_id'] = document.forms['searchForm'].elements['suppliers_id'].value;
+		listTable.filter['city_id'] = document.forms['searchForm'].elements['city_id'].value;
+		listTable.filter['district_id'] = document.forms['searchForm'].elements['district_id'].value;
         listTable.filter['extension_id'] = document.forms['searchForm'].elements['extension_id'].value;
         listTable.filter['team_sign'] = document.forms['searchForm'].elements['team_sign'].value;
         listTable.filter['team_lack_num'] = document.forms['searchForm'].elements['team_lack_num'].value;

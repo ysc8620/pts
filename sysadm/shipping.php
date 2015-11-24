@@ -36,7 +36,7 @@ if ($_REQUEST['act'] == 'list')
         }
 
         /* 检查该插件是否已经安装 */
-        $sql = "SELECT shipping_id, shipping_name, shipping_desc, insure, support_cod,shipping_order FROM " .$hhs->table('shipping'). " WHERE shipping_code='" .$modules[$i]['code']. "' ORDER BY shipping_order";
+        $sql = "SELECT shipping_id, shipping_code, shipping_name, shipping_desc, insure, support_cod,shipping_order FROM " .$hhs->table('shipping'). " WHERE shipping_code='" .$modules[$i]['code']. "' ORDER BY shipping_order";
         $row = $db->GetRow($sql);
 
         if ($row)
@@ -44,6 +44,7 @@ if ($_REQUEST['act'] == 'list')
             /* 插件已经安装了，获得名称以及描述 */
             $modules[$i]['id']      = $row['shipping_id'];
             $modules[$i]['name']    = $row['shipping_name'];
+			$modules[$i]['shipping_code']    = $row['shipping_code'];
             $modules[$i]['desc']    = $row['shipping_desc'];
             $modules[$i]['insure_fee']  = $row['insure'];
             $modules[$i]['cod']     = $row['support_cod'];

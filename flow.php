@@ -76,45 +76,41 @@ if ($_REQUEST['step'] == 'add_to_cart')
     }
 
     $goods = $json->decode($_POST['goods']);
-    /*
-    $_SESSION['extension_id']=$goods->goods_id;
-    $_SESSION['team_sign']=$goods->team_sign;
-    if($goods->rec_type==5&& $goods->team_sign>0){
-        //团购检查是否已经满员
     
-        //判断是否是自己的
-        $sql="select count(*) from ".$hhs->table('order_info') ." where team_sign=".$_SESSION['team_sign']." and user_id=".$_SESSION['user_id'];
-        $temp=$db->getOne($sql);
-        if($temp>0){
-            $result['error']=1;
-            $result['url']="share.php?team_sign=".$_SESSION['team_sign'];
-            die($json->encode($result));
+    //判断是否需要关注
+    $sql="select subscribe from ".$hhs->table('goods')." where goods_id=".$goods->goods_id;
+    $subscribe=$db->getOne($sql);
+    if($subscribe==1){
+        $sql="select is_subscribe from ".$hhs->table('users')." where user_id=".$_SESSION['user_id'];
+        $is_subscribe=$db->getOne($sql);
+        if($is_subscribe==0){
+            if(!empty($_CFG['subscribe_url'])){
+                $result['message']  = "您要购买的商品需要您关注后购买，点击确定立即去关注,取消返回首页";//
+                $result['error']    =  7;
+                $result['url']    =  $_CFG['subscribe_url'];
+                $result['url2']    =  "index.php";
+                die($json->encode($result));
+                //die('<script> if(confirm("你购买的商品需要您关注后购买，点击确定立即去关注,取消返回首页")){window.location="'.$_CFG['subscribe_url'].'";}else{window.location="group.php";}</script>');
+            }else{
+                $result['message']  = "您要购买的商品需要您关注后购买";
+                $result['error']    =  8;
+                $result['url']    =  "index.php";
+                die($json->encode($result));
+                //die('<script> if(confirm("你购买的商品需要您关注后购买")) alert("你购买的商品需要您关注后购买,请先关注"); window.location="group.php";</script>');
+            }
         }
-        $sql="select team_num from ".$hhs->table('order_info') ." where order_id=".$_SESSION['team_sign'];
-        $team_num=$db->getOne($sql);
-        
-        
-        //实际人数
-        $sql="select count(*) from ".$hhs->table('order_info')." where team_sign=".$_SESSION['team_sign']." and team_status>0 ";
-        $rel_num=$db->getOne($sql);
-        
-        
-        if($team_num<=$rel_num){
-            $result['error']=1;
-            $result['url']="share.php?team_sign=".$_SESSION['team_sign'];
-            die($json->encode($result));
-        }
- 
-    }else{*/
-        //判断商品是否已经下架或删除
-        $sql="select count(*) from ".$hhs->table('goods')." where goods_id =".$goods->goods_id." and is_delete=0 and is_on_sale=1 ";
-        if($db->getOne($sql)==0){
-            $result['error']   = 3;
-            $result['message'] = $GLOBALS['_LANG']['not_on_sale'];
-            $result['url'] = "index.php";
-            die($json->encode($result));
-        }
-    //}
+         
+    }
+    
+    //判断商品是否已经下架或删除
+    $sql="select count(*) from ".$hhs->table('goods')." where goods_id =".$goods->goods_id." and is_delete=0 and is_on_sale=1 ";
+    if($db->getOne($sql)==0){
+        $result['error']   = 3;
+        $result['message'] = $GLOBALS['_LANG']['not_on_sale'];
+        $result['url'] = "index.php";
+        die($json->encode($result));
+    }
+    
 		//判断商品是否限购
         $limit_buy_one=$db->getOne("select limit_buy_one from ".$hhs->table('goods')." where goods_id =".$goods->goods_id." and  is_delete=0  ");
 		
@@ -854,7 +850,31 @@ elseif ($_REQUEST['act'] == 'act_edit_consignee')
     }
 
 }
-
+elseif ($_REQUEST['step'] == 'shipping_list')
+{
+    $consignee=$_SESSION['flow_consignee'] ;
+    if(empty($consignee)){
+    	echo"<script>";
+    	echo"alert('请选择配送地址');";
+    	echo"window.location='flow.php?step=address_list';";
+    	echo"</script>";
+    	exit();
+    }
+    $region            = array($consignee['country'], $consignee['province'], $consignee['city'], $consignee['district']);
+    $shipping_list     = available_shipping_list($region);
+    $smarty->assign('shipping_list',$shipping_list);
+    $smarty->assign('shipping_id',$_REQUEST['shipping_id']);
+    
+}
+elseif ($_REQUEST['step'] == 'point_list')
+{
+    $sql="select shipping_id from ".$hhs->table('shipping')." where shipping_code='cac' ";
+	$shipping_id=$db->getOne($sql);
+    $point_list=get_shipping_point_list();
+	$smarty->assign('point_list', $point_list);
+	$smarty->assign('point_id',$_REQUEST['point_id']);
+	$smarty->assign('shipping_id',$shipping_id);
+}
 elseif ($_REQUEST['step'] == 'checkout')
 {
     /*------------------------------------------------------ */
@@ -1054,6 +1074,64 @@ elseif ($_REQUEST['step'] == 'checkout')
         $smarty->assign('your_discount', sprintf($_LANG['your_discount'], $favour_name, price_format($discount['discount'])));
     }
 
+    /* 取得配送列表 */
+    $region            = array($consignee['country'], $consignee['province'], $consignee['city'], $consignee['district']);
+    $shipping_list     = available_shipping_list($region);
+    $cart_weight_price = cart_weight_price($flow_type);
+    $insure_disabled   = true;
+    $cod_disabled      = true;
+    //使用默认的配送方式
+    $temp=array();
+    if($_REQUEST['shipping_id']>0){
+        foreach($shipping_list as $v){
+            if($v['shipping_id']==$_REQUEST['shipping_id']){
+                $temp[]=$v;
+                break;
+            }
+        }
+    }else{
+        if(!empty($_CFG['default_shipping_id'])){
+            foreach($shipping_list as $v){
+                if($v['shipping_id']==$_CFG['default_shipping_id']){
+                    $temp[]=$v;
+                    break;
+                }
+            }
+        }
+        if(!empty($shipping_list[0]) && empty($temp) ){
+            $temp[]=$shipping_list[0];
+        }
+        
+    }
+    $shipping_list=$temp;
+    $shipping_id=$shipping_list[0]['shipping_id'];
+    $order['shipping_id']=$shipping_id;
+    $order['shipping_name']=$shipping_list[0]['shipping_name'];
+    $shipping_code=$shipping_list[0]['shipping_code'];
+   
+    /*取货点*/
+
+    $temp=array();
+    if($shipping_code=='cac'){
+    	$point_list=get_shipping_point_list();
+    	if($_REQUEST['point_id']>0){
+    		foreach($point_list as $v){
+    			if($v['id']==$_REQUEST['point_id']){
+    				$temp[]=$v;
+    				break;
+    			}
+    		}
+    	}else{
+    		if(!empty($point_list[0])){
+    			$temp[]=$point_list[0];
+    		}
+    	
+    	}
+    	$point_list=$temp;
+    	$point_id=$point_list[0]['shipping_id'];
+    	$order['point_id']=$point_id;
+    	$smarty->assign('point_list', $point_list);
+    }
     /*
      * 计算订单的费用
      */
@@ -1065,12 +1143,12 @@ elseif ($_REQUEST['step'] == 'checkout')
     $smarty->assign('shopping_money', sprintf($_LANG['shopping_money'], $total['formated_goods_price']));
     $smarty->assign('market_price_desc', sprintf($_LANG['than_market_price'], $total['formated_market_price'], $total['formated_saving'], $total['save_rate']));
 
-    /* 取得配送列表 */
+    /* 取得配送列表 
     $region            = array($consignee['country'], $consignee['province'], $consignee['city'], $consignee['district']);
     $shipping_list     = available_shipping_list($region);
     $cart_weight_price = cart_weight_price($flow_type);
     $insure_disabled   = true;
-    $cod_disabled      = true;
+    $cod_disabled      = true;*/
 
     // 查看购物车中是否全为免运费商品，若是则把运费赋为零
     $sql = 'SELECT count(*) FROM ' . $hhs->table('cart') . " WHERE `session_id` = '" . SESS_ID. "' AND `extension_code` != 'package_buy' AND `is_shipping` = 0";
@@ -1229,8 +1307,10 @@ elseif ($_REQUEST['step'] == 'checkout')
     if ((!isset($_CFG['use_bonus']) || $_CFG['use_bonus'] == '1')
         && ($flow_type != CART_GROUP_BUY_GOODS && $flow_type != CART_EXCHANGE_GOODS))
     {
+		$goodsid = $cart_goods[0][goods_id];
+		$supp_id = $db->getOne("select suppliers_id from ".$hhs->table('goods')." where goods_id='$goodsid'");
         // 取得用户可用优惠劵
-        $user_bonus = user_bonus($_SESSION['user_id'], $total['goods_price']);
+        $user_bonus = team_user_bonus($_SESSION['user_id'], $total['goods_price'],$supp_id);
         if (!empty($user_bonus))
         {
             $muse_end_time=$user_bonus[0]['use_end_date'];
@@ -1241,6 +1321,7 @@ elseif ($_REQUEST['step'] == 'checkout')
                     $muse_end_time=$val['use_end_date'];
                     $mbonus_id=$val['bonus_id'];
                 }
+				$user_bonus[$key]['suppliers_name']  = get_suppliers_name($supp_id);
                 $user_bonus[$key]['bonus_money_formated'] = price_format($val['type_money'], false);
                 $user_bonus[$key]['use_startdate']   = local_date($GLOBALS['_CFG']['date_format'], $val['use_start_date']);
                 $user_bonus[$key]['use_enddate']     = local_date($GLOBALS['_CFG']['date_format'], $val['use_end_date']);
@@ -2597,7 +2678,7 @@ elseif ($_REQUEST['step'] == 'json_done')
     }
     
     $consignee = get_consignee($_SESSION['user_id']);
-    /* 取得配送列表 */
+    /* 取得配送列表
     $region            = array($consignee['country'], $consignee['province'], $consignee['city'], $consignee['district']);
     $shipping_list   = available_shipping_list($region);
     $shipping_id=0;
@@ -2618,7 +2699,7 @@ elseif ($_REQUEST['step'] == 'json_done')
     	$result['url']="";
     	$result['message']="该地区没有匹配的物流";
     	die($json->encode($result));
-    }
+    } */
 
     /* 检查商品库存 */
     /* 如果使用库存，且下订单时减库存，则减少库存 */
@@ -2639,12 +2720,6 @@ elseif ($_REQUEST['step'] == 'json_done')
     * 如果用户已经登录了则检查是否有默认的收货地址
     * 如果没有登录则跳转到登录和注册页面
     */
-    if (empty($_SESSION['direct_shopping']) && $_SESSION['user_id'] == 0)
-    {
-        /* 用户没有登录且没有选定匿名购物，转向到登录页面 */
-        //hhs_header("Location: flow.php?step=login\n");
-        exit;
-    }
 
     
     $_POST['how_oos'] = isset($_POST['how_oos']) ? intval($_POST['how_oos']) : 0;
@@ -2655,6 +2730,8 @@ elseif ($_REQUEST['step'] == 'json_done')
     $_POST['postscript'] = isset($_POST['postscript']) ? compile_str($_POST['postscript']) : '';
 
     $order = array(
+        'shipping_id'     =>intval($_POST['shipping_id']),
+        'point_id'         =>intval($_POST['point_id']),
         'pay_id'          => intval($_POST['payment']),
         'pack_id'         => isset($_POST['pack']) ? intval($_POST['pack']) : 0,
         'card_id'         => isset($_POST['card']) ? intval($_POST['card']) : 0,
@@ -2678,10 +2755,6 @@ elseif ($_REQUEST['step'] == 'json_done')
     	'lat'			=>trim($_POST['lat']),
     	'lng'			=>trim($_POST['lng'])
     );
-    
-    $order['shipping_id']=$shipping_id;//默认
-    $order['shipping_name']=$shipping_name;
-    
    
     /* 扩展信息 */
     if (isset($_SESSION['flow_type']) && intval($_SESSION['flow_type']) != CART_GENERAL_GOODS)
@@ -4171,5 +4244,17 @@ function cart_favourable_amount($favourable)
 function get_regions_name($region_id)
 {
 	return $GLOBALS['db']->getOne("select region_name from ".$GLOBALS['hhs']->table('region')." where region_id='$region_id'");
+}
+
+function get_shipping_point_list()
+{
+    $sql = "SELECT a.*,rp.region_name as province,rc.region_name as city,rd.region_name as district " .
+        " FROM " . $GLOBALS['hhs']->table('shipping_point'). " AS a left join " .
+        $GLOBALS['hhs']->table('region') . " AS rp on a.province=rp.region_id left join ".
+        $GLOBALS['hhs']->table('region') . " as rc on a.city=rc.region_id left join ".
+        $GLOBALS['hhs']->table('region') ." as rd on a.district=rd.region_id ";
+    $list=$GLOBALS['db']->getAll($sql);
+
+    return $list;
 }
 ?>

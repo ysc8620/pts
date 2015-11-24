@@ -165,14 +165,7 @@
     <div class="express_box" id="invoice" style="display:none;">
             
     </div>
-    <footer class="footer">
-        <ul>
-            <li><a href="index.php" class="nav-controller"><i class="fa fa-home"></i>首页</a></li>
-            <li><a href="user.php?act=team_list" class="nav-controller"><i class="fa fa-group"></i>我的团</a></li>
-            <li><a href="user.php?act=order_list" class="nav-controller active"><i class="fa fa-list"></i>我的订单</a></li>
-            <li><a href="user.php" class="nav-controller"><i class="fa fa-user"></i>个人中心</a></li>
-        </ul>
-    </footer>
+
 <!--{/if}-->
 <!-- {if $action eq 'team_list'} -->
 <div class="con">
@@ -205,14 +198,6 @@
     </div>
 </div>
 <div style="height:58px;visibility:hidden "></div>
-    <footer class="footer">
-        <ul>
-            <li><a href="index.php" class="nav-controller"><i class="fa fa-home"></i>首页</a></li>
-            <li><a href="user.php?act=team_list" class="nav-controller active"><i class="fa fa-group"></i>我的团</a></li>
-            <li><a href="user.php?act=order_list" class="nav-controller"><i class="fa fa-list"></i>我的订单</a></li>
-            <li><a href="user.php" class="nav-controller"><i class="fa fa-user"></i>个人中心</a></li>
-        </ul>
-    </footer>
 <!--{/if}-->
 <!--{if $action eq order_detail} -->
     <div class="mod_container"   id="dealliststatus1">
@@ -505,15 +490,7 @@
             <div class="margin_footer"></div>
         </div>
     </div>
-    
-    <footer class="footer">
-        <ul>
-            <li><a href="index.php" class="nav-controller"><i class="fa fa-home"></i>首页</a></li>
-            <li><a href="user.php?act=team_list" class="nav-controller"><i class="fa fa-group"></i>我的团</a></li>
-            <li><a href="user.php?act=order_list" class="nav-controller"><i class="fa fa-list"></i>我的订单</a></li>
-            <li><a href="user.php" class="nav-controller active"><i class="fa fa-user"></i>个人中心</a></li>
-        </ul>
-    </footer>
+
 <!--{/if} -->
 <!--{if $action eq 'edit_address'} -->
     {insert_scripts files='utils.js,region.js,shopping_flow.js'}
@@ -596,14 +573,6 @@
               </table>
             </form>
             <!-- {/foreach} -->
-    <footer class="footer">
-        <ul>
-            <li><a href="index.php" class="nav-controller"><i class="fa fa-home"></i>首页</a></li>
-            <li><a href="user.php?act=team_list" class="nav-controller"><i class="fa fa-group"></i>我的团</a></li>
-            <li><a href="user.php?act=order_list" class="nav-controller"><i class="fa fa-list"></i>我的订单</a></li>
-            <li><a href="user.php" class="nav-controller active"><i class="fa fa-user"></i>个人中心</a></li>
-        </ul>
-    </footer>
 <!--{/if} -->
 
 
@@ -615,7 +584,6 @@
           var {$key} = "{$item}";
         {/foreach}
       </script>
-      
     <div class="nav_fixed">
         <a href="user.php?act=bonus" class="fixed_nav_item  {if $status eq '' }nav_cur{/if}"><span class="nav_txt">优惠券</span></a>
         <a href="user.php?act=bonus&status=not_start" class="fixed_nav_item {if $status eq 'not_start' }nav_cur{/if} "><span class="nav_txt nav_payment">未激活</span></a>
@@ -635,9 +603,13 @@
                     <div>
                         <p class="pin martop"></p>
                     </div>
+                    <div>
+                            <b class="pin1">{$item.suppliers_name}</b>
+                        </div>
                     <div class="coup_text_left left_next">
                         <p>{$item.type_money}元优惠劵</p>
-                        <div class="text_copus_desc">优质水果，新鲜直送<br>记得及时使用哦</div>
+                        <div class="text_copus_desc">优质水果，新鲜直送
+                                <br>记得及时使用哦~ </div>
                     </div>
                     <div class="coup_time_right">
                         <b>有效期</b>
@@ -685,10 +657,13 @@
                     <div>
                         <b class="pin"></b>
                     </div>
+                    <div>
+                            <b class="pin1">{$item.suppliers_name}</b>
+                        </div>
                     <div class="coup_text_left ">
                         <p>{$item.type_money}元优惠劵</p>
                         <div class="text_copus_desc">优质水果，新鲜直送
-                            <br>记得及时使用哦~ </div>
+                                <br>记得及时使用哦~ ~ </div>
                     </div>
                     <div class="coup_time_right add_right">
                         <b>有效期</b>
@@ -714,10 +689,13 @@
                     <div>
                         <b class="pin"></b>
                     </div>
+                       <div>
+                            <b class="pin1">{$item.suppliers_name}</b>
+                        </div>
                     <div class="coup_text_left">
                         <p class="used">{$item.type_money}元优惠劵</p>
                         <div class="text_copus_desc">优质水果，新鲜直送
-                            <br>记得及时使用哦~ </div>
+                                <br>记得及时使用哦~ ~ </div>
                     </div>
                     <div class="coup_time_right">
                         <b class="userd">使用时间</b>
@@ -738,11 +716,13 @@
                     <img src="images/frozen_b2e18e4.png" class="seal">
                     <div>
                         <b class="pin"></b>
-                    </div>
+                    </div><div>
+                            <b class="pin1">{$item.suppliers_name}</b>
+                        </div>
                     <div class="coup_text_left">
                         <p class="used">{$item.type_money}元优惠劵</p>
                         <div class="text_copus_desc">优质水果，新鲜直送
-                            <br>记得及时使用哦~ </div>
+                                <br>记得及时使用哦~ 哦~ </div>
                     </div>
                     <div class="coup_time_right" ms-class="add_right:status==0">
                         <b class="userd">有效期</b>
@@ -764,10 +744,13 @@
                     <div>
                         <b class="pin"></b>
                     </div>
+                    <div>
+                            <b class="pin1">{$item.suppliers_name}</b>
+                        </div>
                     <div class="coup_text_left">
                         <p class="used">{$item.type_money}元优惠劵</p>
                         <div class="text_copus_desc">优质水果，新鲜直送
-                            <br>记得及时使用哦~ </div>
+                                <br>记得及时使用哦~ ~ </div>
                     </div>
                     <div class="coup_time_right" ms-class="add_right:status==0">
                         <b class="userd">有效期</b>
@@ -796,18 +779,17 @@
             </div>
         </div>
     </div>
-    <footer class="footer">
-        <ul>
-            <li><a href="index.php" class="nav-controller"><i class="fa fa-home"></i>首页</a></li>
-            <li><a href="user.php?act=team_list" class="nav-controller"><i class="fa fa-group"></i>我的团</a></li>
-            <li><a href="user.php?act=order_list" class="nav-controller"><i class="fa fa-list"></i>我的订单</a></li>
-            <li><a href="user.php" class="nav-controller active"><i class="fa fa-user"></i>个人中心</a></li>
-        </ul>
-    </footer>
-      
-      
+
     <!-- {/if} -->
    <!--用户优惠劵结束-->
+</div>
+<div class="footer">
+    <ul>
+        <li><a href="index.php" class="nav-controller"><i class="fa fa-home"></i>首页</a></li>
+		<li><a href="catalog.php" class="nav-controller"><i class="fa fa-list"></i>分类</a></li>
+        <li><a href="rank.php?act=hot" class="nav-controller"><i class="fa fa-trophy"></i>热榜</a></li>
+        <li><a href="user.php" class="nav-controller active"><i class="fa fa-user"></i>个人中心</a></li>
+    </ul>
 </div>
 </body>
 <script type="text/javascript">

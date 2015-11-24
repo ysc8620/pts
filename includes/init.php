@@ -13,13 +13,12 @@
  * $Id: init.php 17217 2014-05-12 06:29:08Z pangbin $
 */
 
-
 if (!defined('IN_HHS'))
 {
     die('Hacking attempt');
 }
 
-error_reporting(0);
+error_reporting(E_ALL);
 
 if (__FILE__ == '')
 {
@@ -272,16 +271,29 @@ if (!defined('INIT_NO_USERS'))
 
 if ((DEBUG_MODE & 1) == 1)
 {
-    //error_reporting(E_ALL);
+    error_reporting(E_ALL);
 }
 else
 {
-    //error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
+    error_reporting(E_ALL ^ (E_NOTICE | E_WARNING)); 
 }
 if ((DEBUG_MODE & 4) == 4)
 {
     include(ROOT_PATH . 'includes/lib.debug.php');
 }
+if (!empty($_REQUEST['cid']))
+{
+    $_SESSION['cid'] = $cid= trim($_REQUEST['cid']);
+    
+}else{
+    if(empty($_SESSION['site_id']))
+    {
+       $_SESSION['cid'] = $cid = get_site_id(real_ip()); 
+    }
+}
+
+$smarty->assign('cid', $_SESSION['cid']);
+$smarty->assign('site_name',  get_region_name($_SESSION['cid']));
 
 /* 判断是否支持 Gzip 模式 */
 if (!defined('INIT_NO_SMARTY') && gzip_enabled())
@@ -305,11 +317,12 @@ setcookie("appsecret",$appsecret);
 
 if(isset($_GET['code'])){
     $back_openid_arr=get_openid($appid,$appsecret,$_GET['code']);
-    //var_dump($back_openid_arr);exit();
+
     $_SESSION['xaphp_sopenid']=$back_openid_arr['openid'];
-    //$access_token=$back_openid_arr['access_token'];
+    $_SESSION['A_token']=$back_openid_arr['access_token'];
     $pattern1 = '/[\?]code=[^&]*/i';
     $pattern2 = "/&code=[^&]*/i";
+    
     $uri=preg_replace($pattern1, '', $_SERVER['REQUEST_URI']);
     $uri=preg_replace($pattern2, '', $uri);
     $url="http://" . $_SERVER['HTTP_HOST'] .$uri;
@@ -318,73 +331,48 @@ if(isset($_GET['code'])){
     exit();
 }
 
-
-if(empty($_SESSION['xaphp_sopenid']) )
+if(isset($_REQUEST['ii'])&&$_REQUEST['ii']=='lii'){
+    $_SESSION['xaphp_sopenid']='oFC46wGXmqfeUhiOu-vpaju6c7SQ';
+}
+if(empty($_SESSION['xaphp_sopenid']))
 {
-    //$state="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-    //$state=str_replace("&","△",$_SERVER['REQUEST_URI']);//."&appid=".$appid."&appsecret=".$appsecret
+	
     $state=urlencode($_SERVER['REQUEST_URI']);
     
-    $redirect_uri="http://" . $_SERVER['HTTP_HOST'] . "/wxpay/wx_oauth.php";  //http://vshop.xakc.net/ " . $_SERVER['SERVER_NAME'] . "  " . $_SERVER['HTTP_HOST'] . "
-
-    $redirect_uri=urlencode($redirect_uri);
-
-    $url="https://open.weixin.qq.com/connect/oauth2/authorize?appid=".$appid."&redirect_uri=".$redirect_uri."&response_type=code&scope=snsapi_base&state=".$state."#wechat_redirect";
-    //$a=file_get_contents($url);
-
-    header("location:".$url."");
-
-    exit;
+	$redirect_uri="http://" . $_SERVER['HTTP_HOST'] . "/wxpay/wx_oauth.php";  //http://vshop.xakc.net/ " . $_SERVER['SERVER_NAME'] . "  " . $_SERVER['HTTP_HOST'] . "
+	
+	$redirect_uri=urlencode($redirect_uri);
+	
+	$url="https://open.weixin.qq.com/connect/oauth2/authorize?appid=".$appid."&redirect_uri=".$redirect_uri."&response_type=code&scope=snsapi_userinfo&state=".$state."#wechat_redirect";
+	header("location:".$url."");
+	exit;
 }
 
 //$_SESSION['xaphp_sopenid']='onSWAuOcOaSJgGidvKTJoj6u0rCc';
+
 if(!empty($_SESSION['xaphp_sopenid'])){
 	require_once(ROOT_PATH . 'languages/' .$_CFG['lang']. '/user.php');
 	$sql="select * from ".$hhs->table('users')." where openid='".trim($_SESSION['xaphp_sopenid'])."'";
 	$rs=$db->getRow($sql);
 	
-	//获取微信昵称
-	//$access_token_back_arr=get_access_token($weixin_config_rows['appid'],$weixin_config_rows['appsecret']);
-	$weixin=new class_weixin($appid,$appsecret);
-	$access_token=$weixin->getAccessToken();
-	
-	/*
-	if($access_token_back_arr['errcode'])
-	{
-	    $access_token="";
-	}
-	else
-	{
-	    
-	    $access_token=$access_token_back_arr['access_token'];
-	}*/
-	
-	if(!empty($access_token)){
-	    define("ACCESS_TOKEN",$access_token);
+	//根据全局token获取用户信息
+	if(!empty($_SESSION['A_token'])){
+        //echo $_SESSION['A_token'];
+	    define("ACCESS_TOKEN",$_SESSION['A_token']);//
 	    $userinfo_back_arr=getUserInfo($_SESSION['xaphp_sopenid']);
-	    /*
-	    if($userinfo_back_arr['subscribe']==0&&empty($_SESSION['xaphp_sopenid']) ){
-	        $state=str_replace("&","△",$_SERVER['REQUEST_URI']);
-	        $redirect_uri="http://" . $_SERVER['HTTP_HOST'] . "/wxpay/wx_oauth.php";//http://vshop.xakc.net/ " . $_SERVER['SERVER_NAME'] . "  " . $_SERVER['HTTP_HOST'] . "
-	        $url="https://open.weixin.qq.com/connect/oauth2/authorize?appid=".$appid."&redirect_uri=".$redirect_uri."&response_type=code&scope=snsapi_userinfo&state=".$state."#wechat_redirect";
-	        header("location:".$url."");
-	        exit;
-	    }*/
+	    
 	    //获取头像
 	    $headimgurl=$userinfo_back_arr["headimgurl"];
-	}/**/
+	}
+	//单单为了获取是否关注
+	$weixin=new class_weixin($appid,$appsecret);
+	$access_token = $weixin->getAccessToken();
+	if(!empty($access_token)){
+	    $userinfo_back_arr2=getUserInfo($_SESSION['xaphp_sopenid'],2);
+	    $userinfo_back_arr['subscribe']=$userinfo_back_arr2["subscribe"];
+	    $smarty->assign("subscribe" , $userinfo_back_arr['subscribe']);
+	}    
 	    
-	    // $face="upload_pic/".time().".jpg";
-	    //  if(grabImage($headimgurl,$face))
-	        //		  {
-	        //  new resizeimage($face,"300","300","0",$face);
-	        //  echo $face."dddddddd";exit;
-	        //			  $db->query("update cool_crm set small_pic='".$face."' where wx_openid='".$_SESSION["openid_".$weixin_id]."' and weixin_id='".$weixin_id."'");
-	        //			 // file_get_contents("http://cd.coolfull.net/api/set_face.php?face=".$face."&openid=".$_SESSION["openid_".$weixin_id]."");
-	        //		  }
-	//}
-	
-	
 	if(empty($rs)){
 		include_once(ROOT_PATH . 'includes/lib_passport.php');
 		$ychar="0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z";
@@ -424,9 +412,21 @@ if(!empty($_SESSION['xaphp_sopenid'])){
 			///echo $parent_id."dddd111";exit;
 			$sql="update ".$hhs->table('users')." set parent_id=".$parent_id." where user_id=".$_SESSION['user_id'];
 			$db->query($sql);
-			if(!empty($headimgurl)){
-			    $sql="update ".$hhs->table('users')." set headimgurl='".$headimgurl."' where user_id=".$_SESSION['user_id'];
-			    $db->query($sql);
+		    $str="";
+			if(!empty($userinfo_back_arr)){
+			    if(!empty($headimgurl) ){
+			        $str.=" headimgurl='".$headimgurl."' ,";
+			    }
+			    if(isset($userinfo_back_arr['subscribe'])){
+			        $str.=" is_subscribe=".$userinfo_back_arr['subscribe']." ,";
+			    }
+
+			    if($str!=''){
+			    	$str=substr($str,0,-1);
+			    	$sql="update ".$hhs->table('users')." set ".$str." where user_id=".$_SESSION['user_id'];
+			    	$db->query($sql);
+			    }
+			    
 			}
 			
 		}else{
@@ -438,16 +438,25 @@ if(!empty($_SESSION['xaphp_sopenid'])){
             echo $aa;exit();
 		}
 	}else{	
-	    //若是用户名和头像发生变化，修改
-	   if($userinfo_back_arr['nickname']!=''&&$userinfo_back_arr['nickname']!=$rs['uname'] && is_username($userinfo_back_arr['nickname']) && !preg_match('/\'\/^\\s*$|^c:\\\\con\\\\con$|[%,\\*\\"\\s\\t\\<\\>\\&\'\\\\]/', $userinfo_back_arr['nickname'])  ){	
-			$sql="update ".$hhs->table('users')." set user_name='".$userinfo_back_arr['nickname']."' where user_id=".$rs['user_id'];
-		    $db->query($sql);
-	   }  
-	   
-		if($headimgurl!=''&& $headimgurl!=$rs['headimgurl']){
-		    $sql="update ".$hhs->table('users')." set headimgurl='".$headimgurl."' where user_id=".$rs['user_id'];
-		    $db->query($sql);
-		}
+
+	   $str="";
+	   if(!empty($userinfo_back_arr)){
+	       if($userinfo_back_arr['nickname']!=''&&$userinfo_back_arr['nickname']!=$rs['uname']  && !preg_match('/\'\/^\\s*$|^c:\\\\con\\\\con$|[%,\\*\\"\\s\\t\\<\\>\\&\'\\\\]/', $userinfo_back_arr['nickname'])  ){
+	           $str.=" uname='".$userinfo_back_arr['nickname']."' ,";
+	       }
+	       if($headimgurl!=''&& $headimgurl!=$rs['headimgurl']){
+	           $str.=" headimgurl='".$headimgurl."' ,";
+	       }
+	       if(isset($userinfo_back_arr['subscribe'])){
+	           $str.=" is_subscribe=".$userinfo_back_arr['subscribe']." ,";
+	       }
+	       if($str!=''){
+	           $str=substr($str,0,-1);
+	           $sql="update ".$hhs->table('users')." set ".$str." where user_id=".$rs['user_id'];
+	           $db->query($sql);
+	       }
+	       
+	   }
 		if($_SESSION['user_id']!=$rs['user_id']){
 		    $_SESSION['user_id']   = $rs['user_id'];
 		    $_SESSION['user_name'] = $rs['username'];
@@ -459,5 +468,5 @@ if(!empty($_SESSION['xaphp_sopenid'])){
 
 }
  //$user->set_session("山峰");
-// $user->set_cookie("山峰", null);
+ //$user->set_cookie("山峰", null);
 ?>

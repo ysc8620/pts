@@ -43,7 +43,7 @@ if ($_REQUEST['act'] == 'list' || $_REQUEST['act'] == 'trash')
     {
         $smarty->assign('add_handler',      $handler_list[$code]);
     }
-
+    $smarty->assign('cities',    get_sitelists());
     /* 供货商名 */
     $suppliers_list_name = suppliers_list_name();
     $suppliers_exists = 1;
@@ -76,7 +76,7 @@ if ($_REQUEST['act'] == 'list' || $_REQUEST['act'] == 'trash')
     $suppliers_list_count = count($suppliers_list);
     $smarty->assign('suppliers_list', ($suppliers_list_count == 0 ? 0 : $suppliers_list)); // 取供货商列表
 
-    $goods_list = goods_list($_REQUEST['act'] == 'list' ? 0 : 1, ($_REQUEST['act'] == 'list') ? (($code == '') ? 1 : 0) : -1,"");
+    $goods_list = goods_list($_REQUEST['act'] == 'list' ? 0 : 1, ($_REQUEST['act'] == 'list') ? (($code == '') ? 1 : 0) : -1," and suppliers_id=0 ");
     $smarty->assign('goods_list',   $goods_list['goods']);
     $smarty->assign('filter',       $goods_list['filter']);
     $smarty->assign('record_count', $goods_list['record_count']);
@@ -437,6 +437,10 @@ elseif ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit' || $_REQUEST['ac
     {
         $smarty->assign('member_price_list', get_member_price_list($_REQUEST['goods_id']));
     }
+	
+    $smarty->assign('cities',    get_sitelists());
+	$smarty->assign('district_list',    get_regions(3,$goods['city_id']));	
+	
     $smarty->assign('link_goods_list', $link_goods_list);
     $smarty->assign('group_goods_list', $group_goods_list);
     $smarty->assign('goods_article_list', $goods_article_list);
@@ -838,18 +842,22 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
 	$suppliers_id = isset($_POST['suppliers_id']) ? $_POST['suppliers_id'] : 0;
 	$limit_buy_bumber =  $_POST['limit_buy_bumber']; 
 	$limit_buy_one =  isset($_POST['limit_buy_one']) ? $_POST['limit_buy_one'] : 0;
+	$city_id = empty($_POST['city_id']) ? '' : intval($_POST['city_id']);
+	$district_id = empty($_POST['district_id']) ? '' : intval($_POST['district_id']);
+	
+	$subscribe =  isset($_POST['subscribe']) ? $_POST['subscribe'] : 0;
 
     /* 入库 */
     if ($is_insert)
     {
         if ($code == '')
         {
-            $sql = "INSERT INTO " . $hhs->table('goods') . " (limit_buy_one,limit_buy_bumber,is_check,is_nearby,sales_num,little_img,team_num,team_price,goods_name, goods_name_style, goods_sn, " .
+            $sql = "INSERT INTO " . $hhs->table('goods') . " (subscribe,district_id,city_id,limit_buy_one,limit_buy_bumber,is_check,is_nearby,sales_num,little_img,team_num,team_price,goods_name, goods_name_style, goods_sn, " .
                     "cat_id, brand_id, shop_price, market_price, is_promote, promote_price, " .
                     "promote_start_date, promote_end_date, goods_img, goods_thumb, original_img, keywords, goods_brief, " .
                     "seller_note, goods_weight, goods_number, warn_number, integral, give_integral, is_best, is_new, is_hot, " .
                     "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, rank_integral, suppliers_id)" .
-                "VALUES ('$limit_buy_one','$limit_buy_bumber',1,'$is_nearby' ,'$sales_num','$little_img','$team_num','$team_price','$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
+                "VALUES ('$subscribe','$district_id','$city_id','$limit_buy_one','$limit_buy_bumber',1,'$is_nearby' ,'$sales_num','$little_img','$team_num','$team_price','$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
                     "'$brand_id', '$shop_price', '$market_price', '$is_promote','$promote_price', ".
                     "'$promote_start_date', '$promote_end_date', '$goods_img', '$goods_thumb', '$original_img', ".
                     "'$_POST[keywords]', '$_POST[goods_brief]', '$_POST[seller_note]', '$goods_weight', '$goods_number',".
@@ -858,12 +866,12 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
         }
         else
         {
-            $sql = "INSERT INTO " . $hhs->table('goods') . " (limit_buy_one,limit_buy_bumber,suppliers_id,is_check,is_nearby,sales_num,little_img,team_num,team_price,goods_name, goods_name_style, goods_sn, " .
+            $sql = "INSERT INTO " . $hhs->table('goods') . " (subscribe,district_id,city_id.limit_buy_one,limit_buy_bumber,suppliers_id,is_check,is_nearby,sales_num,little_img,team_num,team_price,goods_name, goods_name_style, goods_sn, " .
                     "cat_id, brand_id, shop_price, market_price, is_promote, promote_price, " .
                     "promote_start_date, promote_end_date, goods_img, goods_thumb, original_img, keywords, goods_brief, " .
                     "seller_note, goods_weight, goods_number, warn_number, integral, give_integral, is_best, is_new, is_hot, is_real, " .
                     "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, extension_code, rank_integral)" .
-                "VALUES ('$limit_buy_one','$limit_buy_bumber','$suppliers_id',1,'$is_nearby' ,'$sales_num','$little_img','$team_num','$team_price','$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
+                "VALUES ('$subscribe','$district_id','$city_id','$limit_buy_one','$limit_buy_bumber','$suppliers_id',1,'$is_nearby' ,'$sales_num','$little_img','$team_num','$team_price','$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
                     "'$brand_id', '$shop_price', '$market_price', '$is_promote','$promote_price', ".
                     "'$promote_start_date', '$promote_end_date', '$goods_img', '$goods_thumb', '$original_img', ".
                     "'$_POST[keywords]', '$_POST[goods_brief]', '$_POST[seller_note]', '$goods_weight', '$goods_number',".
@@ -897,8 +905,10 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
                 "brand_id = '$brand_id', " .
                 "shop_price = '$shop_price', " .
                 "market_price = '$market_price', " .
-				 "limit_buy_bumber = '$limit_buy_bumber', " .
-				  "limit_buy_one = '$limit_buy_one', " .
+				"limit_buy_bumber = '$limit_buy_bumber', " .
+				"limit_buy_one = '$limit_buy_one', " .
+				"city_id = '$city_id', " .
+				"district_id = '$district_id', " . 
 				
                 "is_promote = '$is_promote', " .
                 "promote_price = '$promote_price', " .
@@ -909,6 +919,7 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
                 "team_price  = '$team_price' ,".
                 "sales_num  = '$sales_num' ,".
                 "is_nearby  = '$is_nearby' ,".
+                "subscribe  = '$subscribe' ,".
                 "suppliers_id  = '$suppliers_id' ,"
         ;
 

@@ -194,7 +194,7 @@
         <div class="mod_footer">
             <div class="mod_footer_lk">
 
-                <a class="on" href="index.php">{$shop_name}</a>
+                <a class="on" href="group.php">{$shop_name}</a>
                 <a href="user.php?act=team_list">我的团</a>
 
             </div>
@@ -218,13 +218,13 @@
             
              <!-- {if $is_team eq 1 } --> 
             <div class="fixopt_item fixopt_item1">
-                <a class="fixopt_home" href="index.php" ></a>
+                <a class="fixopt_home" href="group.php" ></a>
                 <a class="fixopt_share" id="share_button" href="javascript:void(0);" onclick="document.getElementById('share_img').style.display='';"></a>
                 <a class="fixopt_btn" href="javascript:void(0);" onclick="addToCart({$team_info.extension_id},0,0,5,{$team_info.team_sign});">我也要参团</a>
             </div>
             <!-- {else} -->
             <div class="fixopt_item fixopt_item2">
-                <a class="fixopt_home" href="index.php" ></a>
+                <a class="fixopt_home" href="group.php" ></a>
                 <a class="fixopt_btn"  id="share_button" href="javascript:void(0);" onclick="document.getElementById('share_img').style.display='';">还差{$d_num}人组团成功</a>
             </div>
            <!-- {/if} -->
@@ -295,7 +295,7 @@ function clock()
 	 
   }else{//已结束
   /*
-	  document.getElementById('handler').innerHTML="<button type='button' onclick='window.location=\'index.php\';'>我也要开个团，点此到商品列表</button>";
+	  document.getElementById('handler').innerHTML="<button type='button' onclick='window.location=\'group.php\';'>我也要开个团，点此到商品列表</button>";
 	  
 	   document.getElementById('flag_0_a').style.display ="none";
 	   document.getElementById('flag_0_b').style.display ="none";*/

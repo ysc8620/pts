@@ -25,6 +25,12 @@
     <th><a href="javascript:listTable.sort('team_num'); ">参团人数</a>{$sort_team_num}</th>
     <th><a href="javascript:listTable.sort('team_price'); ">团购价格</a>{$sort_team_price}</th>
     <th>团购销量</th>
+    
+        <th><a href="javascript:listTable.sort('is_best'); ">{$lang.is_best}</a>{$sort_is_best}</th>
+    <th><a href="javascript:listTable.sort('is_new'); ">{$lang.is_new}</a>{$sort_is_new}</th>
+    <th><a href="javascript:listTable.sort('is_hot'); ">{$lang.is_hot}</a>{$sort_is_hot}</th>
+
+    
     <th><a href="javascript:listTable.sort('is_on_sale'); ">{$lang.is_on_sale}</a>{$sort_is_on_sale}</th>
     <th><a href="javascript:listTable.sort('is_check'); ">审核</a>{$sort_is_check}</th>
 
@@ -53,6 +59,9 @@
     <td align="center"><span onclick="listTable.edit(this, 'edit_sales_num', {$goods.goods_id})">{$goods.sales_num}
 
     </span></td>
+      <td align="center"><img src="images/{if $goods.is_new}yes{else}no{/if}.gif" onclick="listTable.toggle(this, 'toggle_new', {$goods.goods_id})" /></td>
+    <td align="center"><img src="images/{if $goods.is_hot}yes{else}no{/if}.gif" onclick="listTable.toggle(this, 'toggle_hot', {$goods.goods_id})" /></td>
+    <td align="center"><img src="images/{if $goods.is_on_sale}yes{else}no{/if}.gif" onclick="listTable.toggle(this, 'toggle_on_sale', {$goods.goods_id})" /></td>
     <td align="center"><img src="images/{if $goods.is_on_sale}yes{else}no{/if}.gif" onclick="listTable.toggle(this, 'toggle_on_sale', {$goods.goods_id})" /></td>
    <td align="center">
         {if $goods.is_check eq 1}已审核&nbsp;&nbsp;<a href="suppliers_goods.php?act=check&id={$goods.goods_id}&is_check=1&page={$filter.page}">取消审核</a>{/if}

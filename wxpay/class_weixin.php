@@ -25,9 +25,7 @@ class class_weixin
     public function getAccessToken(){
         
         if(empty($_SESSION['access_token']) ||  (gmtime()-intval($_SESSION['access_token'])>7000) ){
-            
-            $code=@$_GET['code'];
-            
+         
             $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$this->appid."&secret=".$this->appsecret;
             
             $tmpInfo=$this->httpGet($url);

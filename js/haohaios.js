@@ -491,6 +491,20 @@ function addToCartResponse(result)
     {
       openSpeDiv(result.message, result.goods_id, result.parent);
     }
+    else if (result.error == 7)
+    {
+       if(confirm(String(result.message) )){
+    	   window.location=result.url;
+       }else{
+    	   window.location=result.url2;
+       }
+    }
+    else if (result.error == 8)
+    {
+       if(confirm(String(result.message))){
+    	   window.location=result.url;
+       }
+    }
     else if (result.error == 3)
     {
       alert(result.message);

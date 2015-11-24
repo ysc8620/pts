@@ -61,6 +61,9 @@
       <a href="javascript:confirm_redirect(lang_removeconfirm,'shipping.php?act=uninstall&code={$module.code}')">{$lang.uninstall}</a>
       <a href="shipping_area.php?act=list&shipping={$module.id}">{$lang.shipping_area}</a>
       <a href="shipping.php?act=edit_print_template&shipping={$module.id}">{$lang.shipping_print_edit}</a>
+      {if $module.shipping_code eq 'cac'}
+      <a href="shipping_point.php?act=list&shipping={$module.id}"><font color="#ff3300">设置取货点</font></a>
+      {/if}
       {else}
       <a href="shipping.php?act=install&code={$module.code}">{$lang.install}</a>
       {/if}

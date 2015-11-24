@@ -113,19 +113,30 @@ function check_delivery_person()
 		<div class="maincon">
     	<div class="contitleedit"><span>顾客提货</span></div>
 			<div class="conbox" >
+
+
 				<table cellspacing="0" cellpadding="0" class="edittable">
+					
+
 					<tr>
                            <td class="right">订单号：</td>
 						<td><input type="text" id="order_sn" value="" class="input" size="35"></td>
 					</tr>
+					<!-- 
+					<tr>
+                         <td class="right">扫描二维码验证：</td>
+						<td>
+						<img src="http://qr.liantu.com/api.php?text={$link}&w=100&m=10">
+						</td>
+					</tr>
+					 -->
 
-					
                     
                     <tr>
                     						<td class="right">请输入用户提货码：</td>
 						<td><input type="text" id="order_code" value="" class="input" size="35"></td>
 
-</tr>
+</tr> 
                        
 					<tr>
 						<td class="right"></td>
@@ -456,6 +467,102 @@ function check_delivery_person()
 
    <!--{/if}-->
 
+<!--{if $action eq 'shipping_delivery_list'}-->
+
+<div class="main" id="main">
+  <div class="maintop"> <img src="templates/images/title_goods.png" /><span>订单管理</span> </div>
+  <div class="maincon">
+    <div class="contitlelist"> <span>发货列表</span>
+      <div class="searchdiv">
+        <form action="suppliers.php"  name="searchForm">
+          <input name="order_sn"  placeholder='订单号' value="{$filter.order_sn}" type="text" id="order_sn" size="15">
+          <input name="consignee" placeholder='{$lang.consignee|escape}' value="{$filter.consignee}" type="text" id="consignee" size="15">
+          <select name="status" id="status">
+            <option value="-1" selected="selected">发货状态</option>
+            <option value="0">已发货</option>
+            <option value="1">退货</option>
+            <option value="2">未发货</option>
+          </select>
+          {if $smarty.session.role_id neq ''}
+
+          {else}
+          <select name="supp_account_id" id="supp_account_id">
+            <option value="-1" selected="selected">分店</option>
+       
+ {foreach from=$supp_account_list item=supp_account}
+
+            <option value="{$supp_account.account_id}" {if $supp_account.account_id eq $filter.supp_account_id} selected='selected'{/if}>{$supp_account.name}</option>
+     
+ {/foreach}
+
+          </select>
+          {/if}
+          <input name="act" type="hidden" value="shipping_delivery_list" />
+          <input type="submit" value="查询" class="btn" />
+        </form>
+      </div>
+      <div class="titleright"> <a href="javascript:void(0);" id="delivery_download">导出</a> <a href="javascript:void(0);" id="delivery_print" target="_blank">打印</a> </div>
+      <script >
+
+var str;
+
+var order_sn=document.forms['searchForm'].order_sn.value;
+
+var consignee=document.forms['searchForm'].consignee.value;
+
+var status=document.forms['searchForm'].status.value;
+
+str="order_sn="+order_sn+"&consignee="+consignee+"&status="+status;
+
+
+{if $smarty.session.role_id eq ''}
+
+var supp_account_id=document.forms['searchForm'].supp_account_id.value;
+
+str+="&supp_account_id="+supp_account_id;
+
+{/if}
+
+
+document.getElementById('delivery_download').href="suppliers.php?act=delivery_download&shipping_type=0&"+str;
+
+document.getElementById('delivery_print').href="suppliers.php?act=delivery_print&shipping_type=0&"+str;
+
+
+</script> 
+    </div>
+    <div class="conbox">
+      <table cellspacing="0" cellpadding="0" class="listtable">
+        <tr>
+          <th>分店</th>
+          <th>{$lang.order_sn}</th>
+          <th>{$lang.label_add_time}</th>
+          <th class="left">{$lang.consignee}</th>
+          <th class="left">发货时间</th>
+          <th class="left">发货状态</th>
+          <th class="left">操作</th>
+        </tr>
+        {foreach from=$delivery_list item=delivery key=dkey}
+        <tr>
+          <td class="middle">{if $delivery.supp_account_name}{$delivery.supp_account_name}{else}未指派{/if}</td>
+          <td class="middle">{$delivery.order_sn}</td>
+          <td  class="middle">{$delivery.add_time}</td>
+          <td><a href="mailto:{$delivery.email}"> {$delivery.consignee|escape}</a></td>
+          <td>{$delivery.update_time}</td>
+          <td>{if $delivery.status eq '0'}已发货{elseif $delivery.status eq '2'}未发货{else}退货{/if}</td>
+          <td><a href="suppliers.php?act=delivery_info&delivery_id={$delivery.delivery_id}&shipping_type=0">详情</a> 
+            
+            <!--                   <a onclick="{if(confirm('{$lang.confirm_delete}')){return true;}return false;}" href="delivery_info.php?act=operate&remove_invoice=1&delivery_id={$delivery.delivery_id}">{$lang.remove}</a>
+
+--></td>
+        </tr>
+        {/foreach}
+      </table>
+    </div>
+    <!-- #BeginLibraryItem "/library/pages.lbi" --><!-- #EndLibraryItem --> </div>
+</div>
+
+<!--{/if}--> 
     <!--{if $action eq 'delivery_list'}-->
 
        <div class="main" id="main">
@@ -1222,23 +1329,31 @@ onclick="return confirm('确定要此操作吗');">取消申请</a>{else}已完�
 						<form id="" name="form_order" method="get" action="suppliers.php">
 				<div>订单状态：</div>
 				<select name="composite_status" id="composite_status">
-
                 <option value="-1">请选择</option>
-            
                   {html_options options=$status_list selected=$filter.composite_status}
-            
                 </select>
-<div>订单状态：</div>
+
 <input type="text" value="{$filter.order_sn}" placeholder='订单号' class="input" name="order_sn">
 
 <div>起止时间：</div>
 <input class="Wdate" value="{$filter.start_date}" type="text" onfocus="WdatePicker({dateFmt:'yyyy-M-d HH:mm'})" readonly="readonly" name="start_time">
 <div>~</div>
-<input class="Wdate" value="{$filter.end_date}" type="text" onfocus="WdatePicker({dateFmt:'yyyy-M-d HH:mm'})" readonly="readonly" name="end_time">          
-
+<input class="Wdate" value="{$filter.end_date}" type="text" onfocus="WdatePicker({dateFmt:'yyyy-M-d HH:mm'})" readonly="readonly" name="end_time">  
+ <div>开团状态</div>
+    <select name="team_status" id="team_status">
+      <option value="">请选择</option>
+	 <option {if $filter.team_status eq 0} selected="selected"{/if} value="0">团购待付款</option>
+     <option {if $filter.team_status eq 1} selected="selected"{/if} value="1">团购正在进行中</option>
+	<option  {if $filter.team_status eq 2} selected="selected"{/if}value="2">团购成功</option>
+	<option  {if $filter.team_status eq 3} selected="selected"{/if}value="3">团购失败</option>
+    </select>        
+   <div> 购买类型</div>
+    <select name="type" id="type">
+      <option value="-1">全部</option>
+      <option value="1" {if $filter.type eq 1} selected="selected"{/if}>团购购买</option>
+      <option value="2" {if $filter.type eq 2} selected="selected"{/if}>单独购买</option>
 
                                 <input name="act" type="hidden" value="{$action}" />
-
                                 <input type="submit" class="btn" name="" value="搜索">
 
                             </form>
@@ -1286,7 +1401,7 @@ function order_d(){
 
 					<tr>
 						<td align="center"><input type="checkbox"  name="order_id[]" id="order_id" value="{$order_list.order_sn}" style="height:36px;line-height:36px;" /> </td>
-					  <td align="center"><a href="?act=order_info&order_id={$order_list.order_id}">{$order_list.order_sn}</a><!--&nbsp;&nbsp;$order_list.msg_code--></td>
+					  <td align="center"><a href="?act=order_info&order_id={$order_list.order_id}">{$order_list.order_sn}{if $order_list.extension_code eq 'team_goods'}<span style="color:#F00;">[团]</span>{/if}</a><!--&nbsp;&nbsp;$order_list.msg_code--></td>
 
                       <td align="center">{$order_list.buyer}<br />{$order_list.short_order_time}</td>
 
@@ -1326,30 +1441,16 @@ function order_d(){
       
 
       <!--{if $action eq 'order_info'}-->
-
-      
-
       <div class="main" id="main">
-
 		<div class="maintop">
-
 			<img src="templates/images/title_pics.png" /><span>订单管理</span>
-
 		</div>
-
 		<div class="maincon">
-
 			<div class="contitlelist">
-
-
 				<span>订单详情</span>
-
                 <div class="titleright">
-
 					<a href="suppliers.php?act=goods_order
-
 ">订单列表</a>
-
 				</div>
 
 				
@@ -1649,6 +1750,8 @@ function order_d(){
 
 </table>
 </div>
+
+
 <div class="list-div" style="margin-bottom: 5px">
 <table cellpadding="3" cellspacing="1">
   <tr>
@@ -1668,9 +1771,35 @@ function order_d(){
         {/if} {if $operable_list.pay}
        等待付款
         {/if} 
-    {if $operable_list.split}
+    {if $operable_list.split }
+      {if $order.extension_code eq 'team_goods'}
+      	{if $order.team_status eq 2}
+      <div>
+	<img src="http://qr.liantu.com/api.php?text={$link}&w=100&m=10" >
+	<p>扫描二维码</p>
+</div>
+      
+  <!-- -->  
         <input name="ship" type="submit" value="{$lang.op_split}" class="button" />
-        {/if} <!--{if $operable_list.unship}
+      	{elseif $order.team_status eq 1}
+       <span style="color:#F00;"> 团购进行中...</span>
+      	{elseif $order.team_status eq 4}
+        <span style="color:#F00;"> 团购失败</span>
+        
+        {/if}
+      
+      {else}
+<div>
+	<img src="http://qr.liantu.com/api.php?text={$link}&w=100&m=10" >
+	<p>扫描二维码</p>
+</div>
+      
+  <!-- -->  
+        <input name="ship" type="submit" value="{$lang.op_split}" class="button" />
+         {/if}
+        {/if} 
+        
+        <!--{if $operable_list.unship}
         <input name="unship" type="submit" value="{$lang.op_unship}" class="button" />
         {/if} -->{if $operable_list.receive}
         <input name="receive" type="submit" value="{$lang.op_receive}" class="button" />
@@ -3786,11 +3915,7 @@ function rowClicked(obj)
 
 				</a>-->
 
-				
-
 			</div>
-
-			
 
 		</div>
 
@@ -3800,30 +3925,29 @@ function rowClicked(obj)
 	<!--{if $action eq 'add_goods' or $action eq 'edit_goods'}-->
     <script type="text/javascript" src="../../js/goods_cat_region.js"></script>
     <!--<script type="text/javascript" src="templates/js/jquery_common.min.js"></script>-->
+   <script type="text/javascript" src="/js/transport.js"></script>
     <script>
+	region.isAdmin = true;
     	goods_cat_region.isAdmin = true;
 		function checkgoodsinfo()
-
 		{
-			
-			
 			var goods_desc = document.getElementById('desc_num').value;
 			var is_promote = document.myform.is_promote.checked;
 			var promote_price = document.myform.promote_price.value;
 			var goods_number  = document.myform.goods_number.value;
 			var goods_img_url  = document.getElementById('goods_img_url').value;
+			var city_id  = document.getElementById('city_id').value;
 			
-			
-		  var msg = '';
-			 
-			 
+		    var msg = '';
 		  if(document.myform.goods_name.value=='')
 		  {
 			msg += '请输入商品名称。\n';
 		  }
 		  
-		  
-		  
+ 		 if(document.myform.city_id.value=='')
+		  {
+			msg += '请选择城市。\n';
+		  }		  
 		  if(document.myform.shop_price.value =='')
 		  {
 			msg += '请输入商品价格。\n';
@@ -3833,9 +3957,6 @@ function rowClicked(obj)
 		  {
 			msg += '商品价格不能小于0.01。\n';
 		  }
-		  
-		  
-		  
 			if(is_promote == true)
 			{
 				if(promote_price <= 0)
@@ -3898,117 +4019,38 @@ function rowClicked(obj)
 						<td class="right" width="100">商品名称：</td>
 						<td><input type="text" value="{$goods.goods_name}" name="goods_name" class="input" size="35"><font style="color:#F00">*</font></td>
 					</tr>
-					<!--{if 0} -->
-                    <tr>
-                    	<td class="right">显示站点：</td>
+
+                     <tr>
+						<td class="right">区域选择：</td>
                         <td>
-                        全选:
-                        <input type="checkbox" name="checkbox" value="checkbox"  onclick='listTable.selectAll(this, "site_id")' />
-                        <br />
-                        
-                        	{if $action eq 'add_goods'}
-                           <!-- {foreach from=$site_lists item=item} -->
-                           <input name="site_id[]"  type="checkbox" value="{$item.id}" id='site_id'>&nbsp;&nbsp;{$item.name}
-                           <!--{/foreach}-->
-                            {else}
-                            {$site_html}
-                            {/if}
+                  
+
+		  <select name="city_id" id="selCities"  onchange="region.changed(this, 3, 'selDistricts')">
+
+          <option value=''>请选择</option>
+
+            {foreach from=$cities item=region}
+
+              <option value="{$region.region_id}" {if $region.region_id eq $goods.city_id}selected="selected"{/if}>{$region.region_name}</option>
+
+            {/foreach}
+
+        </select>
+         <select name="district_id" id="selDistricts">
+
+				<option value="0">请选择</option>
+
+				{foreach from=$district_list item=district}
+
+				<option value="{$district.region_id}" {if $district.region_id eq $goods.district_id}selected="selected"{/if}  >{$district.region_name}</option>
+
+				{/foreach}
+
+		</select>                
                         </td>
-                    </tr>
-                    
+					</tr>
+
                    
-                     <tr>
-                     <td class="right">厂家：</td>
-                        <td>
-                          <select name="companys_id">
-            				<option value="0">请选择...</option>
-            			  <!-- {foreach from=$supp_companys_list item=companys} -->	
-                            <option value="{$companys.companys_id}" {if $goods.companys_id eq $companys.companys_id} selected="selected"{/if}>{$companys.companys_name}</option>
-                            <!--{/foreach}-->
-            			</select>
-                        </td>
-                    
-                     </tr>
-                      <!--{/if} -->
-                     
-        	<!--{if 0} --> 
-        {if $goods.cat_name}
-        <tr>
-        	<td class="right">当前商品分类为：</td>
-            <td>{$goods.cat_name}</td>
-        </tr>
-        {/if}          
-                     
-                     
-                     <tr>
-                     
-                     <td class="right">商品分类：</td>      
-    <td>
-    
-    				 
-    	<div style="float:left;width:150px;margin-right:40px;"> 
-    	<div style="float:left;">
-        
-        <input type='text' style="width:150px;"  onKeyUp="search_cat(this.value,'cat_one')" placeholder="输入名称">
-        </div> 
-        
-        <div style="float:left;">
-        <select name="cat_one" id="cat_one" onchange="goods_cat_region.changed(this, 1, 'cat_two')" size="10" style="width:172px;height:150px;" placeholder="输入名称" >
-          <!--<option value="-1">请选择...</option>-->
-          {foreach from=$cat_one item=c_one}
-          <option value="{$c_one.cat_id}" {if $c_one.cat_id eq $each_cat[1]}selected='selected'{/if}>{$c_one.cat_name|escape:html}</option>
-          {/foreach}
-        </select>
-        </div>     
-        </div>
-		
-        <div id='cat2' style="float:left;width:150px;margin-right:40px;{if $cat_two}{else}display:none;{/if}"> 
-    	<div style="float:left;">
-        <input type='text' style="width:150px;"  onKeyUp="search_cat(this.value,'cat_two')" placeholder="输入名称" >
-        </div>
-        <div style="float:left;">
-        <select name="cat_two" id="cat_two" onchange="goods_cat_region.changed(this, 2, 'cat_three')" size="10" style="width:172px;height:150px;">
-        <option value=''>请选择...</option>  
-        {foreach from=$cat_two item=item}
-        <option value="{$item.cat_id}" {if $item.cat_id eq $each_cat[2]}selected='selected'{/if}>{$item.cat_name|escape:html}</option>
-          {/foreach}
-        </select>
-        </div>
-        
-        </div>
-        
-	    <div id='cat3'  style="float:left;width:150px;margin-right:40px;{if $cat_three}{else}display:none;{/if}">
-    	<div style="float:left;">
-        <input type='text' style="width:150px;"  onKeyUp="search_cat(this.value,'cat_three')" placeholder="输入名称" >
-        </div>
-        <div style="float:left;">
-        <select name="cat_three" id="cat_three" onchange="goods_cat_region.changed(this, 3, 'cat_four')" size="10" style="width:172px;height:150px;">
-          <option value=''>请选择...</option>
-          {foreach from=$cat_three item=item}
-        <option value="{$item.cat_id}" {if $item.cat_id eq $each_cat[3]}selected='selected'{/if}>{$item.cat_name|escape:html}</option>
-          {/foreach}
-        </select>
-        </div>        
-        </div>
-        
-        
-        <div id='cat4' style="float:left;width:150px;margin-right:40px;{if $cat_four}{else}display:none;{/if}">
-    	<div style="float:left;">
-        <input type='text' style="width:150px;"  onKeyUp="search_cat(this.value,'cat_four')" placeholder="输入名称">
-        </div>
-        <div style="float:left;">
-        <select name="cat_four" id="cat_four" size="10" style="width:172px;height:150px;">
-          <option value=''>请选择...</option>
-          {foreach from=$cat_four item=item}  
-        <option value="{$item.cat_id}" {if $item.cat_id eq $each_cat[4]}selected='selected'{/if}>{$item.cat_name|escape:html}</option>
-          {/foreach}
-        </select>
-        </div>
-        </div>
-        
-        
-    </td>
-  </tr> <!--{/if} -->
                      
                       <tr>
 						<td class="right">商品分类：</td>
@@ -4019,36 +4061,7 @@ function rowClicked(obj)
             			</select>
                         </td>
 					</tr>
-                     <!--{if 0} -->
-                  <tr>
-                    <td class="right">加入推荐：</td>
-                    <td><input type="checkbox" name="is_season" value="1" {if $goods.is_season}checked="checked"{/if} />当季商品</td>
-                  </tr>
-                     <tr>
-						<td class="right">商品品牌：</td>
-						<td>
-                        <select name="brand_id">
-            				<option value="0">请选择...</option>
-            			  <!-- {foreach from=$supp_brand_list item=brand} -->	
-                            <option value="{$brand.brand_id}" {if $goods.brand_id eq $brand.brand_id} selected="selected"{/if}>{$brand.brand_name}</option>
-                            <!--{/foreach}-->
-            			</select>
-                        </td>
-					</tr>
-                    <tr>
-						<td class="right">我的分类：</td>
-						<td>
-                        <select name="my_cat_id" >
-            				<option value="0" >请选择...</option>
-            				
-                            <!-- {foreach from=$cate_list item=c_list} -->
-                            <option value="{$c_list.cat_id}" {if  $goods.my_cat_id eq $c_list.cat_id}selected="selected"{/if}>{$c_list.cat_name}</option>
-                            <!-- {/foreach} -->
-                        
-            			</select>
-                        </td>
-					</tr>
-					<!--{/if} -->
+                  
                     <tr>
 						<td class="right">商品价格：</td>
 						<td><input type="text" value="{$goods.shop_price}" name="shop_price" class="input" size="35"><font style="color:#F00">*</font>
@@ -4091,6 +4104,13 @@ function rowClicked(obj)
                     
                      </tr>
                      <!--{/if} -->
+           <tr>
+            <td class="label">是否关注后购买:</td>
+            <td>
+            <input type="radio" name="subscribe" value="0" {if $goods.subscribe eq 0}checked="checked"{/if}>否 
+            <input type="radio" name="subscribe" value="1" {if $goods.subscribe eq 1}checked="checked"{/if}>是 &nbsp;若选择是，必须是关注的会员才能购买
+            </td>
+          </tr>
                       <tr>
 						<td class="right">商品规格：</td>
 						<td><input type="text" value="{$goods.guige}" name="guige" class="input" size="35">
@@ -4659,9 +4679,7 @@ listTable.supp_toggle = function(obj, act, id)
 {if $action eq 'supp_info'}
 
     <script type="text/javascript" src="/js/transport.js"></script>
-
     <script>
-
 	region.isAdmin = true;
 	</script>
 
@@ -4692,15 +4710,22 @@ listTable.supp_toggle = function(obj, act, id)
                   &nbsp;&nbsp;大小建议158像素*86像素&nbsp;&nbsp;   {if $supp_list.supp_logo}<a  href="./../{$supp_list.supp_logo}" target="_blank">查看</a>{/if}
                   </td>
                 </tr>
-                   <!-- {if 0} --> 
-                 <tr>
-						<td class="right">二级域名：</td>
+                
+                
+                  <tr>
+						<td class="right">经度：</td>
 						<td>
-            <input name="url_name" type="text" size="10" id="url_name"  class="input" value="{$supp_list.url_name}" />.900nong.com
-                       注：必须是3-10位字母组合而成                        </td>
+            <input name="longitude" type="text" size="10" id="longitude"  class="input" value="{$supp_list.longitude}" />                      </td>
 					</tr>
-                    
-                    
+                    <tr>
+						<td class="right">纬度：</td>
+						<td>
+            <input name="latitude" type="text" size="10" id="latitude"  class="input" value="{$supp_list.latitude}" />
+                      <a href="http://api.map.baidu.com/lbsapi/getpoint/" target="_blank">获取坐标</a>               </td>
+					</tr>
+                
+                 
+          
                
 
           <tr>
@@ -4711,30 +4736,13 @@ listTable.supp_toggle = function(obj, act, id)
                   {if $supp_list.supp_banner}<a  href="./../{$supp_list.supp_banner}" target="_blank">查看</a>{/if}
             </td>
           </tr>
-          {if $supp_type neq 'user'}
-          <tr>
-          <td  align="right">店长姓名：</td>
-          <td>
-          <input name="real_name" type="text" size="40" id="real_name"  class="input" value="{$supp_list.real_name}" />
-          </td>
-        </tr>  
-          <tr>
-          <td  align="right">店长手机号码：</td>
-          <td>
-          <input name="shopowner_phone" type="text" size="40" id="shopowner_phone"  class="input" value="{$supp_list.shopowner_phone}" />
-          </td>
-        </tr>  
+         
         
         
                      <tr>
 						<td class="right">区域选择：</td>
                         <td>
-                         <select name="province_id" id="selProvinces" onchange="region.changed(this, 2, 'selCities')">
-           <option value=''>请选择</option>
-             {foreach from=$provinces item=region}
-               <option value="{$region.region_id}" {if $region.region_id eq $supp_list.province_id} selected="selected"{/if}> {$region.region_name}</option>
-             {/foreach}
-         </select>
+                  
 
 		  <select name="city_id" id="selCities"  onchange="region.changed(this, 3, 'selDistricts')">
 
@@ -4760,9 +4768,9 @@ listTable.supp_toggle = function(obj, act, id)
 		</select>                
                         </td>
 					</tr>
-                    {/if}
+                   
                    <tr>
-                   <!-- {/if} -->
+                
           <td width="30%" align="right">详细地址：</td>
           <td>
           <input name="address" type="text" size="40" id="address"  class="input"  value="{$supp_list.address}"/>

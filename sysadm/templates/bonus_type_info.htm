@@ -10,6 +10,17 @@
       <input type='text' name='type_name' maxlength="30" value="{$bonus_arr.type_name}" size='20' />    </td>
   </tr>
   <tr>
+    <td class="label">选择商家</td>
+    <td>   <select name="suppliers_id"  id="suppliers_id">
+
+    	<option value="">请选择</option>
+        <option value="0">自营店</option>
+        {foreach from=$suppliers_list item=suppliers}
+        <option value="{$suppliers.suppliers_id}" {if $bonus_arr.suppliers_id eq $suppliers.suppliers_id} selected="selected"{/if}>{$suppliers.suppliers_name}</option>
+        {/foreach}
+    </select></td>
+  </tr>
+  <tr>
     <td class="label">
       <a href="javascript:showNotice('Type_money_a');" title="{$lang.form_notice}">
       <img src="images/notice.gif" width="16" height="16" border="0" alt="{$lang.form_notice}"></a>{$lang.type_money}</td>
@@ -53,7 +64,6 @@
     </td>
   </tr>
   
- 
   <tr id="1" style="display:none">
     <td class="label">
       <a href="javascript:showNotice('Order_money_a');" title="{$lang.form_notice}">

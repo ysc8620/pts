@@ -1484,7 +1484,7 @@ elseif ($_REQUEST['act'] == 'remove')
         */
         // 删除商家信息通知
         
-        //$content = '尊敬的珍佰商家，您的店铺已被强制删除，如有疑问，请致电客服' . $_CFG['service_phone'];
+        //$content = '尊敬的商家，您的店铺已被强制删除，如有疑问，请致电客服' . $_CFG['service_phone'];
         
         // 发邮箱通知
         
@@ -2212,21 +2212,21 @@ elseif ($_REQUEST['act'] == 'check_act')
 
         {
             
-            $content = '尊敬的珍佰商家，您的店铺正在审核中，请您耐心等待！' . $desc;
+            $content = '尊敬的商家，您的店铺正在审核中，请您耐心等待！' . $desc;
         }
         
         if ($is_check == 1) 
 
         {
             
-            $content = '尊敬的珍佰商家，您提交的店铺申请已审核通过，请您尽快登录时上传商品！如有疑问，请致电客服' . $_CFG['service_phone'] . $desc;
+            $content = '尊敬的商家，您提交的店铺申请已审核通过，请您尽快登录时上传商品！如有疑问，请致电客服' . $_CFG['service_phone'] . $desc;
         }
         
         if ($is_check == 2) 
 
         {
             
-            $content = '尊敬的珍佰商家，您的申请未通过审核，请致电客服' . $_CFG['service_phone'] . '' . $desc;
+            $content = '尊敬的商家，您的申请未通过审核，请致电客服' . $_CFG['service_phone'] . '' . $desc;
         }
         
         $send = $sms->send($rows['phone'], $content, '', 1);
@@ -2241,7 +2241,58 @@ elseif ($_REQUEST['act'] == 'check_act')
     
     sys_msg('操作成功', 0, $links);
 }
+elseif($_REQUEST['act'] =='ad_del')
+{
+    admin_priv('suppliers_list_manage');
+	$suppliers_id = $_REQUEST['suppliers_id'];
+	$photo_id =  $_REQUEST['photo_id'];
+	$photo_file = $_REQUEST['photo_file'];
+	$sql = $db->query("delete from ".$hhs->table('supp_photo')." where photo_id='$photo_id'");
+	unlink(ROOT_PATH . $photo_file);
+    $links = array(
+        array(
+            'href' => 'suppliers.php?act=ad&suppliers_id=' . $suppliers_id,
+            'text' => '返回列表'
+        )
+    );
+    
+    sys_msg('操作成功', 0, $links);
+}
+/* ------------------------------------------------------ */
 
+// -- 商家广告
+
+/* ------------------------------------------------------ */
+elseif ($_REQUEST['act'] == 'ad') 
+{
+	
+	$suppliers_id = $_REQUEST['suppliers_id'];
+    /* 检查权限 */
+    
+    admin_priv('suppliers_list_manage');
+    
+    /* 查询 */
+    
+    
+    //$smarty->assign('ranks', get_suppliers_type_list());
+    
+    /* 模板赋值 */
+    
+    $smarty->assign('ur_here', '商家广告'); // 当前导航
+    
+    $smarty->assign('action_link', array(
+        'href' => 'suppliers.php?act=add',
+        'text' => '返回列表'
+    ));
+    
+    $list = $db->getAll("select * from ".$hhs->table('supp_photo')." where supp_id='$suppliers_id'");
+	$smarty->assign('supp_photo',$list);
+    /* 显示模板 */
+    assign_query_info();
+    
+    $smarty->display('suppliers_ad.htm');	
+	
+}
 /* ------------------------------------------------------ */
 
 // -- 提交添加、编辑供货商
@@ -2333,6 +2384,12 @@ elseif (in_array($_REQUEST['act'], array(
             'phone' => trim($_POST['phone']),
             
             'rank_id' => $_POST['rank_id'],
+			
+			'longitude' => $_POST['longitude'],
+			'latitude' => $_POST['latitude'],
+			
+			
+			
             
             'announcement' => $_POST['announcement'],
             
@@ -2487,6 +2544,9 @@ elseif (in_array($_REQUEST['act'], array(
             'show_type' => $_POST['show_type'],
             
             'qq' => $_POST['qq'],
+			'longitude' => $_POST['longitude'],
+			'latitude' => $_POST['latitude'],
+
             
             'suppliers_desc' => trim($_POST['suppliers_desc']),
             

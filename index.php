@@ -29,6 +29,8 @@ if (!$smarty->is_cached('index.dwt', $cache_id))
     assign_dynamic('index');
 } 
 */
+
+    
 $sql="select * from ".$hhs->table('users')." where user_id=".$_SESSION['user_id'];
 $user_info=$db->getRow($sql);
 //$appid=$weixin_config_rows['appid'];
@@ -59,13 +61,33 @@ $smarty->assign('link2', urlencode($link) );
 $loading=$smarty->fetch('loading.html');
 $smarty->assign('loading',    $loading);
 
+#print_r(get_sitelists());
+#print_r(get_site_id($ip));
+/*
+if ($_REQUEST['act'] == 'test')
+{
+    $redirect_uri="http://" . $_SERVER['HTTP_HOST'] . "/wxpay/wx_oauth2.php"; 
+    $redirect_uri=urlencode($redirect_uri);
+    $smarty->assign('redirect_uri', $redirect_uri );
+    
+    $smarty->display('test.dwt');exit();
+}*/
 $smarty->display('index.dwt');
 
 
 
 function get_goodslist()
 {
-	$where = "g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_delete = 0";
+    
+	$where = "g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_delete = 0 ";
+	//获得区域级别
+	$current_region_type=get_region_type($_SESSION['cid']); 
+	if($current_region_type==2){
+	     $where.=" and g.city_id=".$_SESSION['cid'];
+	}elseif($current_region_type==3){
+	    $where.=" and g.district_id=".$_SESSION['cid'];
+	}
+	
     $sql = 'SELECT g.goods_id, g.goods_name,g.suppliers_id, g.goods_name_style, g.market_price, g.shop_price AS org_price, ' .
                 "IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS shop_price, g.promote_price, g.goods_type, " .
                 'g.promote_start_date, g.promote_end_date, g.goods_brief, g.goods_thumb , g.goods_img,g.little_img ' .

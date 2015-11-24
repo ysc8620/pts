@@ -100,7 +100,7 @@ class cls_template
     function display($filename, $cache_id = '')
     {
         $this->_seterror++;
-        error_reporting(0);
+        error_reporting(E_ALL ^ E_NOTICE);
 
         $this->_checkfile = false;
         $out = $this->fetch($filename, $cache_id);
@@ -117,7 +117,7 @@ class cls_template
             }
             $out = implode('', $k);
         }
-        error_reporting(0);
+        error_reporting($this->_errorlevel);
         $this->_seterror--;
 
         echo $out;
@@ -136,7 +136,7 @@ class cls_template
     {
         if (!$this->_seterror)
         {
-            error_reporting(0);
+            error_reporting(E_ALL ^ E_NOTICE);
         }
         $this->_seterror++;
 
@@ -208,7 +208,7 @@ class cls_template
         $this->_seterror--;
         if (!$this->_seterror)
         {
-            error_reporting(0);
+            error_reporting($this->_errorlevel);
         }
 
         return $out; // 返回html数据

@@ -3456,4 +3456,5 @@ elseif ($action == 'clear_history')
 {
     setcookie('HHS[history]',   '', 1);
 }
+
 ?>

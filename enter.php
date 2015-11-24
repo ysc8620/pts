@@ -93,6 +93,8 @@ $image = new cls_image($_CFG['bgcolor']);
 		//$data['certificate'] = $image->upload_image($_FILES['certificate'],'business_file');
 		$data['is_check'] =0;
 		$data['password'] =md5($data['password']);
+		$data['user_id'] =$_SESSION['user_id'];
+		$data['openid'] =$_SESSION['xaphp_sopenid'];
 		$db->autoExecute($hhs->table('suppliers'), $data, 'INSERT');
 		$suppliers_id = $db->insert_id();
 	    $dir = 'business/uploads/'.$suppliers_id;

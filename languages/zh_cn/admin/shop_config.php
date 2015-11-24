@@ -453,6 +453,7 @@ $_LANG['cfg_desc']['team_suc_time'] =  '以天为单位';
 $_LANG['cfg_name']['affirm_received_time'] = '自动确认收货';
 $_LANG['cfg_desc']['affirm_received_time'] =  '以天为单位';
 
+$_LANG['cfg_name']['subscribe_url'] =  '关注引导页面链接地址';
 
-
+$_LANG['cfg_name']['qr_code'] =  '公众号二维码';
 ?>

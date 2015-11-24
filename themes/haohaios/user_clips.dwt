@@ -29,9 +29,9 @@
         <div>
             <div class="nav">
                 <ul class="nav_list">
-                    <li class="nav_item nav_order">
+                    <li>
                         <a href="user.php?act=order_list">
-                            <div class="nav_item_hd">我的订单</div>
+                            <div class="nav_item_hd"><i class="fa fa-reorder"></i>我的订单</div>
                         </a>
                         <div class="nav_item_bd">
                             <a href="user.php?act=order_list"><span class="nav_item_txt">全部</span></a>
@@ -43,32 +43,38 @@
                             </a>
                         </div>
                     </li>
-                    <li class="nav_item nav_cheap">
-                        <div class="nav_item_hd"><a href="user.php?act=team_list"> 我的拼团 </a></div>
+                    <li>
+                        <div class="nav_item_hd"><a href="user.php?act=team_list"><i class="fa fa-group"></i>我的拼团 </a></div>
                     </li>
-                    <li class="nav_item nav_cart">
-                        <div class="nav_item_hd"><a href="user.php?act=address_list">我的地址 </a></div>
+                    <li>
+                        <div class="nav_item_hd"><a href="user.php?act=address_list"><i class="fa fa-map-marker"></i>我的地址 </a></div>
                     </li>
-                    <li class="nav_item nav_cart">
-                        <div class="nav_item_hd_coupons"><a class="coupons_a" href="user.php?act=bonus">我的优惠券 </a></div>
+                    <li>
+                        <div class="nav_item_hd"><a href="user.php?act=bonus"><i class="fa fa-tags"></i>我的优惠券 </a></div>
                     </li>
-                    <li class="nav_item nav_cart">
-                        <div class="nav_item_hd_coupons_sale"><a class="coupons_a" href="article.php?id=38">售后服务 </a></div>
+                    <li>
+                        <!--div class="nav_item_hd"><a href="store.php?id={}"><i class="fa fa-inbox"></i>我的小店 </a></div-->
+                        <div class="nav_item_hd"><a href="enter.php"><i class="fa fa-sitemap"></i>申请入驻 </a></div>
+                    </li>
+                    <li>
+                        <div class="nav_item_hd"><a href="article.php?id=37"><i class="fa fa-comments"></i>售后服务 </a></div>
                     </li>
                 </ul>
             </div>
         </div>
     </section>
-    <footer class="footer">
-        <ul>
-            <li><a href="index.php" class="nav-controller"><i class="fa fa-home"></i>首页</a></li>
-            <li><a href="user.php?act=team_list" class="nav-controller"><i class="fa fa-group"></i>我的团</a></li>
-            <li><a href="user.php?act=order_list" class="nav-controller"><i class="fa fa-list"></i>我的订单</a></li>
-            <li><a href="user.php" class="nav-controller active"><i class="fa fa-user"></i>个人中心</a></li>
-        </ul>
-    </footer>
 <!-- {/if} -->
 </div>
-
+{if $subscribe==0}
+        <div class="guanzhu"><a href="{$subscribe_url}">您还未关注我们，立即去关注</a></div>
+        {/if}
+<div class="footer">
+    <ul>
+        <li><a href="index.php" class="nav-controller"><i class="fa fa-home"></i>首页</a></li>
+		<li><a href="catalog.php" class="nav-controller"><i class="fa fa-list"></i>分类</a></li>
+        <li><a href="rank.php?act=hot" class="nav-controller"><i class="fa fa-trophy"></i>热榜</a></li>
+        <li><a href="user.php" class="nav-controller active"><i class="fa fa-user"></i>个人中心</a></li>
+    </ul>
+</div>
 </body>
 </html>

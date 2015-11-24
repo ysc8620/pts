@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<title>{$page_title}</title>
+<link rel="shortcut icon" href="favicon.ico" />
+<link href="{$hhs_css_path}/haohaios.css" rel="stylesheet" />
+<link href="{$hhs_css_path}/font-awesome.min.css" rel="stylesheet" />
+{insert_scripts files='jquery.js,haohaios.js'}
+
+</head>
+<body >
+<div class="container">
+    <div class="categories">
+        <!--{foreach from=$categories item=cat}-->
+        <dl>
+            <dt><a href="{$cat.url}"><img src="{$cat.img}" alt="{$cat.name|escape:html}" /></a></dt>
+            <dd>
+                <h3><a href="{$cat.url}">{$cat.name|escape:html}</a></h3>
+                <p>
+                <!--{foreach from=$cat.cat_id item=child}-->
+                <a href="{$child.url}">{$child.name|escape:html}</a>
+                <!--{/foreach}-->
+                </p>
+            </dd>
+        </dl>
+        <!--{/foreach}-->
+    </div>
+</div>
+<div class="footer">
+    <ul>
+        <li><a href="index.php" class="nav-controller"><i class="fa fa-home"></i>首页</a></li>
+		<li><a href="catalog.php" class="nav-controller active"><i class="fa fa-list"></i>分类</a></li>
+        <li><a href="rank.php?act=hot" class="nav-controller"><i class="fa fa-trophy"></i>热榜</a></li>
+        <li><a href="user.php" class="nav-controller"><i class="fa fa-user"></i>个人中心</a></li>
+    </ul>
+</div>
+</body>
+</html>

@@ -58,7 +58,7 @@ function get_categories_tree($cat_id = 0)
     if ($GLOBALS['db']->getOne($sql) || $parent_id == 0)
     {
         /* 获取当前分类及其子分类 */
-        $sql = 'SELECT cat_id,cat_name ,parent_id,is_show ' .
+        $sql = 'SELECT cat_id,cat_name ,parent_id,cat_img,is_show ' .
                 'FROM ' . $GLOBALS['hhs']->table('category') .
                 "WHERE parent_id = '$parent_id' AND is_show = 1 ORDER BY sort_order ASC, cat_id ASC";
 
@@ -71,7 +71,7 @@ function get_categories_tree($cat_id = 0)
                 $cat_arr[$row['cat_id']]['id']   = $row['cat_id'];
                 $cat_arr[$row['cat_id']]['name'] = $row['cat_name'];
                 $cat_arr[$row['cat_id']]['url']  = build_uri('category', array('cid' => $row['cat_id']), $row['cat_name']);
-
+				$cat_arr[$row['cat_id']]['img'] = $row['cat_img'];
                 if (isset($row['cat_id']) != NULL)
                 {
                     $cat_arr[$row['cat_id']]['cat_id'] = get_child_tree($row['cat_id']);

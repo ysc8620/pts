@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<title>{$page_title}</title>
+<link rel="shortcut icon" href="favicon.ico" />
+<link href="{$hhs_css_path}/haohaios.css" rel="stylesheet" />
+<link href="{$hhs_css_path}/font-awesome.min.css" rel="stylesheet" />
+<link href="{$hhs_css_path}/swiper.min.css" rel="stylesheet" />
+{* 包含脚本文件 *}
+{insert_scripts files='jquery.js,haohaios.js,jquery.mmenu.js,swiper.min.js'}
+</head>
+<body>
+<div class="container">
+
+    <div class="mall_page_head">
+        <img src="{$stores_info.supp_logo}">
+        <div class="mall_detail_info">
+            <div class="mall_name">{$stores_info.suppliers_name}</div>
+            <ul class="mall_detail_icons">
+                <li class="mall_detail_sales">销量：265918</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <!--{foreach from=$supp_photo item=item name=photo}-->
+            <div class="swiper-slide">
+                <a href="{$item.link}"><img src="{$item.photo_file}" width="100%"></a>
+            </div>
+            <!--{/foreach}-->
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+    <script type="text/javascript">
+        $(function() {
+            var swiper = new Swiper('.swiper-container', {
+                pagination: '.swiper-pagination',
+                paginationClickable: true,
+                spaceBetween: 30,
+                centeredSlides: true,
+                autoplay: 2500,
+                autoplayDisableOnInteraction: false
+            });
+        });
+    </script>
+<div class="tuan" style="padding-top:10px; display: block;">
+    <div ms-repeat-item="goods_list">
+    <!--{foreach from=$goods_list item=goods}-->
+    <!-- {if $goods.goods_id} -->
+                <div class="tuan_g" >
+                    <a href="{if $goods.goods_number gt 0}{$goods.url}{else}javascript:void(0);{/if}">
+                        <div class="tuan_g_img">
+                            <img src="{$goods.little_img}">
+                            {if $goods.goods_number lt 1}
+                            <span class="sell_f"></span>
+                            {/if}
+                            <span class="tuan_mark tuan_mark2">
+                            <b>{$goods.team_discount}折</b>
+                            <span>{$goods.team_num}人团</span>
+                            </span>
+                        </div>
+                        <div class="tuan_g_info">
+                            <p class="tuan_g_name">{$goods.goods_name}</p>
+                            <p class="tuan_g_cx">{$goods.goods_brief}</p>
+                        </div>
+                        <div class="tuan_g_core">
+                            <div class="tuan_g_price">
+                                <span>{$goods.team_num}人团</span>
+                                <b>¥{$goods.team_price}</b>
+                            </div>
+                            <div class="tuan_g_btn">去开团</div>
+                        </div>
+                        <div class="tuan_g_mprice">市场价：
+                            <del>¥{$goods.market_price}</del>
+                        </div>
+                    </a>
+                </div>
+    <!--{/if}-->
+    <!--{/foreach}-->
+    
+             </div>
+        </div>
+</div>
+<div class="footer">
+    <ul>
+        <li><a href="index.php" class="nav-controller active"><i class="fa fa-home"></i>首页</a></li>
+		<li><a href="catalog.php" class="nav-controller"><i class="fa fa-list"></i>分类</a></li>
+        <li><a href="rank.php?act=hot" class="nav-controller"><i class="fa fa-trophy"></i>热榜</a></li>
+        <li><a href="user.php" class="nav-controller"><i class="fa fa-user"></i>个人中心</a></li>
+    </ul>
+</div>
+</body>
+</html>
