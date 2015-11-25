@@ -688,6 +688,7 @@ class wechatCallbackapi{
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_TIMEOUT, 1);
         curl_setopt($ch, CURLOPT_USERAGENT, _USERAGENT_);
+        curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
         curl_setopt($ch, CURLOPT_REFERER, _REFERER_);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -702,6 +703,7 @@ class wechatCallbackapi{
         curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
         curl_setopt($ch, CURLOPT_TIMEOUT, 40);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
         if ($proxystatus == 'true'){
             curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, TRUE);
             curl_setopt($ch, CURLOPT_PROXY, $proxy);

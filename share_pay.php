@@ -89,7 +89,6 @@ elseif($act=='go_to_pay'){
     $order_user_info = $db->getRow($sql);
     $smarty->assign('order_user_info', $order_user_info );
     $smarty->display("go_share_pay.dwt");
-   
 }
 
 elseif($act=='success'){
