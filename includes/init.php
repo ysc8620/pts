@@ -444,8 +444,8 @@ if(!empty($_SESSION['xaphp_sopenid'])){
 		}
 	}else{	
 	    //若是用户名和头像发生变化，修改
-	   if($userinfo_back_arr['nickname']!=''&&$userinfo_back_arr['nickname']!=$rs['uname'] && is_username($userinfo_back_arr['nickname']) && !preg_match('/\'\/^\\s*$|^c:\\\\con\\\\con$|[%,\\*\\"\\s\\t\\<\\>\\&\'\\\\]/', $userinfo_back_arr['nickname'])  ){	
-			$sql="update ".$hhs->table('users')." set user_name='".$userinfo_back_arr['nickname']."' where user_id=".$rs['user_id'];
+	   if($userinfo_back_arr['nickname']!=''&&$userinfo_back_arr['nickname']!=$rs['uname'] && is_username($userinfo_back_arr['nickname']) ){
+			$sql="update ".$hhs->table('users')." set uname='".$userinfo_back_arr['nickname']."' where user_id=".$rs['user_id'];
 		    $db->query($sql);
 	   }  
 	   
