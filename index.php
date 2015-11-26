@@ -51,7 +51,7 @@ $smarty->assign('signature', $signature);
 
 //$smarty->assign('signature', jssdk($appid,$secret, $timestamp));
 
-$smarty->assign('imgUrl', $user_info['headimgurl'] );
+$smarty->assign('imgUrl', '/images/logo.jpg');
 $smarty->assign('title', $_CFG['index_share_title']);
 $smarty->assign('desc', mb_substr($_CFG['index_share_dec'], 0,30,'utf-8')  );
 /*
