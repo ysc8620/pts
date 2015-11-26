@@ -442,7 +442,7 @@ if(!empty($_SESSION['xaphp_sopenid'])){
 
 	   $str="";
 	   if(!empty($userinfo_back_arr)){
-	       if($userinfo_back_arr['nickname']!=''&&$userinfo_back_arr['nickname']!=$rs['uname']  && !preg_match('/\'\/^\\s*$|^c:\\\\con\\\\con$|[%,\\*\\"\\s\\t\\<\\>\\&\'\\\\]/', $userinfo_back_arr['nickname'])  ){
+	       if($userinfo_back_arr['nickname']!=''&&$userinfo_back_arr['nickname']!=$rs['uname']   ){
 	           $str.=" uname='".$userinfo_back_arr['nickname']."' ,";
 	       }
 	       if($headimgurl!=''&& $headimgurl!=$rs['headimgurl']){
