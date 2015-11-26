@@ -478,7 +478,7 @@ elseif($action == 'other_login')
 
 /* 微信用户自动登陆 */
 
-elseif ($act == 'weixin_login')
+elseif ($action == 'weixin_login')
 
 {
 
@@ -1419,7 +1419,7 @@ elseif ($action == 'team_detail')
     $order['order_status'] = $_LANG['os'][$order['order_status']];
     $order['pay_status'] = $_LANG['ps'][$order['pay_status']];
     $order['shipping_status'] = $_LANG['ss'][$order['shipping_status']];
-
+	$smarty->assign('team_suc_time',$_CFG['team_suc_time']);
     //参团的人
     $sql="select u.user_name,u.headimgurl,o.pay_time from ".$hhs->table('order_info')." as o left join ".$hhs->table('users')." as u on o.user_id=u.user_id where team_sign=".$order['team_sign']." order by order_id";
 	$team_mem=$db->getAll($sql);
@@ -1430,7 +1430,7 @@ elseif ($action == 'team_detail')
 	$team_start=$team_mem[0]['pay_time'];
 	$smarty->assign('team_start', $team_start);
 	$smarty->assign('systime', gmtime());
-	$smarty->assign('team_suc_time',$_CFG['team_suc_time']);
+	
     $smarty->assign('order',      $order);
     $smarty->assign('goods_list', $goods_list);
     $smarty->display('user_transaction.dwt');
@@ -1651,6 +1651,8 @@ elseif ($action == 'act_edit_consignee')
         'province'   => isset($_POST['province'])  ? intval($_POST['province']) : 0,
         'city'       => isset($_POST['city'])      ? intval($_POST['city'])     : 0,
         'district'   => isset($_POST['district'])  ? intval($_POST['district']) : 0,
+		
+		 'address_type'   => isset($_POST['address_type'])  ? intval($_POST['address_type']) : 0,
         'address'    => isset($_POST['address'])   ? compile_str(trim($_POST['address']))    : '',
         'consignee'  => isset($_POST['consignee']) ? compile_str(trim($_POST['consignee']))  : '',
         'email'      => isset($_POST['email'])     ? compile_str(trim($_POST['email']))      : '',
@@ -1978,7 +1980,7 @@ elseif ($action == 'affirm_received')
     
     $order_id = isset($_GET['order_id']) ? intval($_GET['order_id']) : 0;
 
-  if (affirm_received($order_id, $user_id))
+    if (affirm_received($order_id, $user_id))
     {
         
         $bonus_list=send_order_bonus($order_id);
@@ -2738,6 +2740,8 @@ elseif ($action == 'bonus')
 
     $page = isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 1;
     $record_count = $db->getOne("SELECT COUNT(*) FROM " .$hhs->table('user_bonus'). " WHERE user_id = '$user_id'");
+	
+	$smarty->assign('send_bouns',$_REQUEST['send_bouns']);
 
     //$pager = get_pager('user.php', array('act' => $action), $record_count, $page);
     $bonus = get_user_bouns_list2($user_id);
@@ -3456,5 +3460,4 @@ elseif ($action == 'clear_history')
 {
     setcookie('HHS[history]',   '', 1);
 }
-
 ?>

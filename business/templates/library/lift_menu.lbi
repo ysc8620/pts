@@ -80,7 +80,6 @@
                     
                    <a href="?act=my_order" class="goods  {if $action eq 'my_order'}choise{/if}">订单结算</a>
 
-                    
                 </div>
 
             </li>

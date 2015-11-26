@@ -164,7 +164,16 @@ function region_result($parent, $sel_name, $type)
     $select_obj =& $cp->add_node('select');
     $select_obj->set_data($sel_name);
 }
-
+function get_city_id()
+{
+	$current_region_type=get_region_type($_SESSION['cid']); 
+	if($current_region_type==2){
+	     $city_id=$_SESSION['cid'];
+	}elseif($current_region_type==3){
+	    $city_id=$GLOBALS['db']->getOne("select parent_id from ". $GLOBALS['hhs']->table('region')." where region_id='$_SESSION[cid]'");
+	}
+	return $city_id;
+}
 /**
  * 获得指定国家的所有省份
  *

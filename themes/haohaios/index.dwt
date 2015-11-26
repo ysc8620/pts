@@ -18,7 +18,7 @@
     <div class="swiper-container">
         <div class="swiper-wrapper">
             <!--{foreach from=$playerdb item=item key=key name=fnum}-->
-            <div class="swiper-slide">
+            <div class="swiper-slide" style="padding:0 10px;">
                 <a href="{$item.url}"><img src="{$item.src}" width="100%"></a>
             </div>
             <!--{/foreach}-->
@@ -38,7 +38,7 @@
                         </span>
                     </div>
                     <div class="tuan_g_info">
-                        <p class="tuan_g_name">{$goods.goods_name}({if $goods.suppliers_name}由“{$goods.suppliers_name}”提供{else}由平台提供{/if})</p>
+                        <p class="tuan_g_name">{$goods.goods_name}</p>
                         <p class="tuan_g_cx">{$goods.goods_brief}</p>
                     </div>
                     <div class="tuan_g_core">

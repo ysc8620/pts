@@ -442,6 +442,9 @@ elseif ($_REQUEST['act'] == 'add' || $_REQUEST['act'] == 'edit' || $_REQUEST['ac
     {
         $smarty->assign('member_price_list', get_member_price_list($_REQUEST['goods_id']));
     }
+    $smarty->assign('cities',    get_sitelists());
+	$smarty->assign('district_list',    get_regions(3,$goods['city_id']));	
+	
     $smarty->assign('link_goods_list', $link_goods_list);
     $smarty->assign('group_goods_list', $group_goods_list);
     $smarty->assign('goods_article_list', $goods_article_list);

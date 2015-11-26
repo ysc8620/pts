@@ -36,7 +36,8 @@ if($user_id > 0)
         $w_url = $cfg_baseurl.'share.php?team_sign='.$team_sign;
         $w_description="恭喜您荣升为团长！马上叫小伙伴来参团，组团成功才能享受优惠哦~";
         $picurl='';
-	}elseif($wxch_order_name=='warn'){
+	}
+	elseif($wxch_order_name=='warn'){
 	    $w_title = '参团人数不足提醒';
 	    $w_url = $cfg_baseurl.'share.php?team_sign='.$team_sign;
 	    $w_description="您参加的 ".$goods_name."还剩10小时，目前人数不足，尚未组团成功！快去叫身边的小伙伴一起来参团吧";
@@ -53,6 +54,19 @@ if($user_id > 0)
 	    $w_description='亲爱的'.$uname.'您好！恭喜您获得了'.$count.'个红包，金额分别为'.$money;
 	    $picurl='';
 	}
+	elseif($wxch_order_name=='refund_team_first'){
+	    $w_title = '团长免单活动';
+	    $w_url = $cfg_baseurl.'user.php?act=order_detail&order_id='.$order_id;
+	    $w_description="您参加的团长免单优惠活动团购成功，现已将您的金额退回您的微信钱包，请注意查收";
+	    $picurl='';
+	}
+	elseif($wxch_order_name=='refund_team_discount'){
+	    $w_title = '团长优惠活动';
+	    $w_url = $cfg_baseurl.'user.php?act=order_detail&order_id='.$order_id;
+	    $w_description="您参加的团长优惠活动团购成功，现已将您的优惠金额退回您的微信钱包，请注意查收";
+	    $picurl='';
+	}
+	
 	elseif($wxch_order_name=='shipping'){
 		$orders = $db->getRow("SELECT * FROM " . $hhs->table('order_info') . " WHERE `order_id` = '$order_id' ");
 		$order_goods = $db->getAll("SELECT * FROM " . $hhs->table('order_goods') . "  WHERE `order_id` = '$order_id'");
@@ -110,11 +124,11 @@ if($user_id > 0)
             ]
        }
    }';
- 
 	
 	$ret_json = curl_grab_page($url, $post_msg);
 	$ret = json_decode($ret_json);
 	//var_dump($ret);exit();
+	
 	
 	if($ret->errmsg != 'ok') 
 	{

@@ -4,6 +4,9 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>店铺管理平台</title>
 	<link href="templates/css/login.css" rel="stylesheet" type="text/css" />
+{if $auto_redirect}
+<meta http-equiv="refresh" content="3;URL={$message.back_url}" />
+{/if}	
 </head>
 <body>
 	
@@ -30,6 +33,7 @@
 <!--		<p><b>您不是代理商？ 您点击<a href="./../business_user.php">申请</a>，成为我们的代理商。</b></p>
 -->		<p> copyright&copy;2005-2014 版权所有 www.xaphp.cn &nbsp; </p>
 	</div>
+
 
 </body>
 </html>

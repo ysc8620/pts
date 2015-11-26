@@ -53,8 +53,19 @@
                         <div class="nav_item_hd"><a href="user.php?act=bonus"><i class="fa fa-tags"></i>我的优惠券 </a></div>
                     </li>
                     <li>
-                        <!--div class="nav_item_hd"><a href="store.php?id={}"><i class="fa fa-inbox"></i>我的小店 </a></div-->
+                        <!-- {if $is_check gte 0} -->
+                            <!-- {if $is_check eq 1} -->
+                            <div class="nav_item_hd"><a href="store.php?id={$suppliers_id}"><i class="fa fa-inbox"></i>我的小店 </a></div>
+                            <!-- {elseif $is_check eq 2} -->
+                            <div class="nav_item_hd"><i class="fa fa-inbox"></i>审核中</div>
+                            <!-- {elseif $is_check eq 3} -->
+                            <div class="nav_item_hd"><i class="fa fa-inbox"></i>审核未过</div>
+                            <!-- {else} -->
+                            <div class="nav_item_hd"><a href="enter.php"><i class="fa fa-sitemap"></i>申请入驻 </a></div>
+                            <!-- {/if} -->
+                        <!-- {else} -->
                         <div class="nav_item_hd"><a href="enter.php"><i class="fa fa-sitemap"></i>申请入驻 </a></div>
+                        <!-- {/if} -->
                     </li>
                     <li>
                         <div class="nav_item_hd"><a href="article.php?id=37"><i class="fa fa-comments"></i>售后服务 </a></div>
@@ -66,7 +77,7 @@
 <!-- {/if} -->
 </div>
 {if $subscribe==0}
-        <div class="guanzhu" style="display:none"><a href="{$subscribe_url}">您还未关注我们，立即去关注</a></div>
+        <div class="guanzhu"><a href="{$subscribe_url}">您还未关注我们，立即去关注</a></div>
         {/if}
 <div class="footer">
     <ul>

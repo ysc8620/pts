@@ -667,7 +667,7 @@ elseif ($_REQUEST['act'] == 'settlement_act2')
     $smarty->assign('ur_here', '商家结算'); // 当前导航
     
     $smarty->assign('action_link', array(
-        'href' => 'suppliers.php?act=account_download',
+        'href' => 'suppliers.php?act=account_download&uselastfilter=1',
         'text' => '结算单下载'
     ));
     
@@ -2155,7 +2155,7 @@ elseif ($_REQUEST['act'] == 'check_act')
 
 {
     
-    $is_check = $_REQUEST['is_check'];
+    $is_check = intval($_REQUEST['is_check']);
     
     $is_sms = $_REQUEST['is_sms'];
     
@@ -2165,7 +2165,14 @@ elseif ($_REQUEST['act'] == 'check_act')
     
     $check_desc = $_REQUEST['check_desc'];
     
-    $rows = $db->getRow("select phone,email,suppliers_name from " . $hhs->table('suppliers') . " where suppliers_id='$id'");
+    $rows = $db->getRow("select phone,email,suppliers_name,user_id from " . $hhs->table('suppliers') . " where suppliers_id='$id'");
+
+    if($rows['user_id'] && in_array($is_check, array(1,-1))){
+        $user_id=$rows['user_id'];
+        $wxch_order_name='send_checked_result';
+        include_once(ROOT_PATH . 'wxch_order.php');
+        unset($user_id);
+    }
     
     $sql = $db->query("update " . $hhs->table('suppliers') . " set is_check='$is_check',check_desc='$check_desc' where suppliers_id='$id'");
     
@@ -2231,6 +2238,8 @@ elseif ($_REQUEST['act'] == 'check_act')
         
         $send = $sms->send($rows['phone'], $content, '', 1);
     }
+
+
     
     $links = array(
         array(
@@ -2715,7 +2724,6 @@ function suppliers_accounts_list()
 
 {
     $result = get_filter();
-    
     if ($result === false) 
 
     {

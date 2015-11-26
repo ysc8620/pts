@@ -137,7 +137,7 @@ function weiguanzhu(){
             <!-- {/if} -->
             </form>
         </div>
-        
+        {if $goods.suppliers_id}
         <div class="mall_goods">
             <a href="store.php?id={$goods.suppliers_id}">
                 <img src="{$stores_info.supp_logo}">
@@ -151,6 +151,7 @@ function weiguanzhu(){
                 
             </a>
         </div>
+        {/if}
             
             
             

@@ -232,7 +232,9 @@
     <div class="shipping">
         <!-- {foreach from=$point_list item=item key=key name=name} -->
         <!-- {if $smarty.foreach.name.index eq 0} -->
-        <a href="flow.php?step=point_list&point_id={$item.id}">{$item.shop_name}<span>({$item.province}{$item.city}{$item.district}{$item.address})</span><input name="point_id" type="hidden" value="{$item.id}" /><i class="fa fa-angle-right"></i></a>
+        <a href="flow.php?step=point_list&point_id={$item.id}">{$item.shop_name}<span>({$item.province}{$item.city}{$item.district}{$item.address})</span>
+        <input name="point_id" type="hidden" value="{$item.id}" />
+        <i class="fa fa-angle-right"></i></a>
         <!-- {/if} -->
         <!-- {/foreach} -->
     </div>
@@ -243,6 +245,7 @@
         <div class="order_bd">
             <div id="orderList" class="order_glist">
                 <!-- {foreach from=$goods_list item=goods} -->
+                <input name="suppliers_id" type="hidden" value="{$goods.suppliers_id}" />
                 <div class="only">
                     <div class="order_goods">
                         <div class="order_goods_img">
@@ -253,7 +256,7 @@
                             <div class="order_goods_attr">
                                 <div class="order_goods_attr_item">
                                     <span class="order_goods_attr_tit">数量：</span>
-                                    <div class="order_goods_num">{$goods.goods_number}</div>
+                                    <div class="order_goods_num"><font id="goods_number">{$goods.goods_number}</font></div>
                                     <div id="goodsPrice" class="order_goods_price">{$goods.formated_goods_price}<i>/件</i></div>
                                 </div>
                                 
@@ -266,23 +269,76 @@
             </div>
         </div>
     </div>
+	<script>
+	function select_pay(thisobj,pay_id){
+		$(thisobj).parent().children().removeClass('pay2_selected');
+		$(thisobj).addClass('pay2_selected');
+		$('#payment').val(pay_id);
+	}
+	
+	
+	/*修改数量*/
+	function add_number()
+	{
+		document.getElementById("number").value++;
+		var number = document.getElementById("number").value;
+		Ajax.call('flow.php', 'step=update_cart&rec_id={$goods_list[0].rec_id}&number=' + number+'&goods_id={$goods_list[0].goods_id}' , changePriceResponse, 'GET', 'JSON');
+		
+	}
+	function cut_number()
+	{
 
+		if (document.getElementById("number").value>1)
+		{
+			document.getElementById("number").value--;
+			var number = document.getElementById("number").value;
+			Ajax.call('flow.php', 'step=update_cart&rec_id={$goods_list[0].rec_id}&number=' + number+'&goods_id={$goods_list[0].goods_id}' , changePriceResponse, 'GET', 'JSON');
+		}
+		
+	}  
+	function changePriceResponse(res)
+	{
+		
+		if(res.error>0)
+		{
+			alert(res.message);
+			document.getElementById("number").value =res.number;
+		}
+		else
+		{
+			document.getElementById('content').innerHTML = res.content;//购物车商品价
+		}
+		document.getElementById("goods_number").innerHTML =res.number;
+		
+	}  
+	</script>
     <div id="pay_area">
+       <!-- {if $teammem} -->
+           <div class="makeorder_from">
+               <div class="makeorder_from_num_box">
+                   <li class="reduce" onclick="cut_number();"><a href="javascript:void(0);" >-</a></li>
+                   <li class="in"><input id="number"  type="text" value="{$goods_list[0].goods_number}" size="2" readonly="true">件</li>
+                   <li class="add" onclick="add_number();"><a href="javascript:void(0);" >+</a></li>
+               </div>
+           	</div>
+        <!-- {/if} -->
+        <div id="content">
         <!-- #BeginLibraryItem "/Library/order_total.lbi" --><!-- #EndLibraryItem -->
+        </div>
         <div class="pay2">
             <div class="pay2_hd">支付方式</div>
-            <div id="payList" class="pay2_list">
-                <div class="pay2_item pay2_wx pay2_selected">
+             <div id="payList" class="pay2_list">
+            	<!-- {foreach from=$payment_list item=payment name=name} -->
+                
+                <div onclick="select_pay(this,{$payment.pay_id})" class="pay2_item {if $payment.pay_code eq 'wxpay'} pay2_wx pay2_selected{elseif $payment.pay_code eq 'alipay'} pay2_cft{/if}"><!--  -->
                     <span class="pay2_item_state"></span>
                     <span class="pay2_item_ico"></span>
-                    <span class="pay2_item_tit">微信支付</span>
+                    <span class="pay2_item_tit">{$payment.pay_name}</span>
                 </div>
-                <!-- {foreach from=$payment_list item=payment} -->
-                <!--{if $payment.pay_code eq wxpay}-->
-                <input type="hidden" name="payment" value="{$payment.pay_id}"  />
-                <!--{/if}-->
                 <!-- {/foreach} -->
+                <input type="hidden" id="payment" name="payment" value="{$default_pay_id}"  />
             </div>
+            
             <input type='hidden' value="{$mbonus_id}" name="bonus" id="HHS_BONUS" >
             <!-- {if $allow_use_bonus and $bonus_list} 是否使用红包 -->
             <div class="pay3_list" >
@@ -459,9 +515,12 @@ function jsApiCall(code,returnrul){
 
 function done_response(result){
 	if(result.error==0){
-		
-		callpay(result.content.jsApiParameters,result.content.returnrul);
-		
+		if(result.pay_code=='wxpay'){
+			callpay(result.content.jsApiParameters,result.content.returnrul);
+		}
+		else if(result.pay_code=='alipay'){
+			window.location='toalipay.php?order_id='+result.order_id;
+		}
 	}else if(result.error==1){
 		//alert(result.url);
 		window.location=result.url;

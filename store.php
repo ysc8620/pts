@@ -43,7 +43,17 @@ else
 	
 	$sql = "select * from ".$hhs->table('supp_photo')." where is_check = 1 AND supp_id = ".$store_id;
 	$supp_photo = $db->getAll($sql);
-	$smarty->assign('supp_photo',$supp_photo);
+    $smarty->assign('supp_photo',$supp_photo);
+
+    /**
+     * 销量
+     * @var string
+     */
+    $sql = "SELECT sum(`sales_num`) FROM ".$hhs->table('goods')." WHERE `suppliers_id` = " .$store_id;
+    $sales_num = $db->getOne($sql);
+    $sql = "SELECT count(*) FROM  ".$hhs->table('order_goods')." as o,".$hhs->table('goods')." as g WHERE g.`goods_id` = o.`goods_id` and g.`suppliers_id` = " .$store_id;
+    $sales_num += $db->getOne($sql);
+	$smarty->assign('sales_num',$sales_num);
 
 
 

@@ -152,7 +152,6 @@ class WxPayConf_pub
 
 		$payment    = get_payment('wxpay');
 
-
 //		
 
 //    $sql = 'SELECT * FROM ' . $GLOBALS['ecs']->table('payment').
@@ -295,12 +294,15 @@ function refund($order_sn,$refund_fee){
     //商户退款单号，商户自定义，此处仅作举例
     $time_stamp=time();
    
+    //$out_refund_no = "$out_trade_no"."$time_stamp";
+    
     $out_refund_no = "$out_trade_no"."$time_stamp";
     
     //总金额需与订单号out_trade_no对应，demo中的所有订单的总金额为1分
     $order_info=order_info(0,$order_sn);
-    $total_fee = $order_info['money_paid']*100 ;
-   
+    
+    $total_fee = intval($order_info['total_fee']*100) ;
+    $refund_fee=intval($refund_fee);
     //使用退款接口
     $refund = new Refund_pub();
     
@@ -358,10 +360,33 @@ function refund($order_sn,$refund_fee){
     $refundResult = $refund->getResult();
     
     //商户根据实际情况设置相应的处理流程,此处仅作举例
+    /*
+    if($refundResult["return_code"] == "FAIL"){
+        $status=0;
+    }elseif($refundResult['result_code']=='SUCCESS'){
+        $status=1;
+    }
+    
+    $sql="select count(*) from ".$GLOBALS['hhs']->table("account_log")." where out_refund_no='$out_refund_no' ";
+    if($GLOBALS['db']->getOne()>0){
+    	$sql="update ".$GLOBALS['hhs']->table("account_log")." set transaction_id='$refundResult[transaction_id]', status='$status',note='".serialize($refundResult)."' where out_refund_no='$out_refund_no' ";
+    	$GLOBALS['db']->query($sql);
+    }else{
+        
+        $sql="insert into ".$GLOBALS['hhs']->table("account_log")." (order_sn,out_refund_no,refund_fee,transaction_id,status,note)".
+            " values ('$refundResult[out_trade_no]','$refundResult[out_refund_no]','$refundResult[refund_fee]','$refundResult[transaction_id]','$status','".serialize($refundResult)."' )";
+        $GLOBALS['db']->query($sql);
+    }*/
+    $sql="insert into ".$GLOBALS['hhs']->table("refund_log")." (order_sn,out_refund_no,refund_fee,transaction_id,status,note)".
+        " values ('$order_sn','$out_refund_no','$refund_fee','$refundResult[transaction_id]',0,'".serialize($refundResult)."' )";
+    $GLOBALS['db']->query($sql);
+    
+    //echo $refundResult['result_code'];
     
     if ($refundResult["return_code"] == "FAIL") {
     
        // echo "通信出错：".$refundResult['return_msg']."<br>";
+       
        return false;
     
     }
@@ -405,7 +430,6 @@ function refund($order_sn,$refund_fee){
     */
     }
 }
-
 
 
 /**
@@ -504,12 +528,13 @@ class wxpay
 
 	//echo $uid;exit;
 
-	$openid=$_SESSION['xaphp_sopenid'];//测试	
-
+    if(!empty($_SESSION['xaphp_sopenid'])){
+	    $openid=$_SESSION['xaphp_sopenid'];
+	}else{
+	    $openid=$_COOKIE['xaphp_sopenid'];
+	}
 	if(empty($openid)){
-
 		return "";
-
 	}
 
 	//$openid = "oSxZVuNcC7qArMKsIgPeHeoHOydA";
@@ -545,9 +570,12 @@ class wxpay
 	$unifiedOrder->setParameter("notify_url",$conf->notifyurl);//通知地址 
 
 	$unifiedOrder->setParameter("trade_type","JSAPI");//交易类型
-	
+
 	$unifiedOrder->setParameter("is_subscribe","Y");//交易类型
 
+    if(!empty($order['goods_name'])){
+	    $unifiedOrder->setParameter("body",  mb_strlen($order['goods_name'],"utf-8")>30 ? mb_substr($order['goods_name'],0,30,'utf-8') : $order['goods_name'] );
+	}
 	
 	//非必填参数，商户可根据实际情况选填
 
@@ -567,7 +595,7 @@ class wxpay
 
 	//$unifiedOrder->setParameter("product_id","XXXX");//商品ID
 
-
+	
 	$prepay_id = $unifiedOrder->getPrepayId();
 
 	$jsApi = new JsApi_pub();
@@ -576,19 +604,20 @@ class wxpay
 
 	$jsApiParameters = $jsApi->getParameters();
 
+	/*
 	if($direct){
-	    $pay_online=$jsApi->getbutton2($jsApiParameters,$returnrul);    
-	}else{
-	    $pay_online=$jsApi->getbutton($jsApiParameters,$returnrul);    
-	}
+	    $pay_online=$jsApi->getbutton2($jsApiParameters,$returnrul,$order);    
+	}else{*/
+	    $pay_online=$jsApi->getbutton($jsApiParameters,$returnrul,$order);    
+	    
+	//}
 	
      return $pay_online;
 
 }
 
-    
-
-function get_code2($order, $payment)
+ 
+function get_code2($order, $payment )
 
 {
 
@@ -622,12 +651,18 @@ function get_code2($order, $payment)
 
 	$conf = new WxPayConf_pub();
 
-	if($order['extension_code']=='team_goods'){
-	    $returnrul = $conf->successurl.$order["order_id"]."&team=1";
-	}else{
-	    $returnrul = $conf->successurl.$order["order_id"];
-	}
 	
+	if($order['share_pay_type']>0){
+	    
+	    $returnrul = "share_pay.php?act=success&id=".$order["order_id"];
+	}
+	else{
+	    if($order['extension_code']=='team_goods'){
+	        $returnrul = $conf->successurl.$order["order_id"]."&team=1";
+	    }else{
+	        $returnrul = $conf->successurl.$order["order_id"];
+	    }
+	}
 	//var_dump($returnrul);
 
 	//exit;
@@ -651,8 +686,13 @@ function get_code2($order, $payment)
 	$unifiedOrder->setParameter("notify_url",$conf->notifyurl);//通知地址
 
 	$unifiedOrder->setParameter("trade_type","JSAPI");//交易类型
+	
+	$unifiedOrder->setParameter("is_subscribe","Y");//交易类型
 
-
+    if(!empty($order['goods_name'])){
+	    $unifiedOrder->setParameter("body",  mb_strlen($order['goods_name'],"utf-8")>30 ? mb_substr($order['goods_name'],0,30,'utf-8') : $order['goods_name'] );
+	}
+	
 	//非必填参数，商户可根据实际情况选填
 
 	//$unifiedOrder->setParameter("sub_mch_id","XXXX");//子商户号

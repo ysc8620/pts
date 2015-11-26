@@ -98,7 +98,7 @@
                     <!-- {/foreach} -->
                     
                     <!-- {foreach from=$d_num_arr item=item} -->
-                    <a class="pp_users_item pp_users_blank" href="#"><img alt="" src="http://static.paipaiimg.com/fd/qqpai/tuan/img/avatar_4_64.png"></a>
+                    <a class="pp_users_item pp_users_blank" href="#"><img alt="" src="themes/haohaios/images/avatar_4_64.png"></a>
                      <!-- {/foreach} -->
                   
                 </div>
@@ -194,7 +194,7 @@
         <div class="mod_footer">
             <div class="mod_footer_lk">
 
-                <a class="on" href="group.php">{$shop_name}</a>
+                <a class="on" href="i.php">{$shop_name}</a>
                 <a href="user.php?act=team_list">我的团</a>
 
             </div>
@@ -236,7 +236,7 @@
 
 </div>
 
-<div id="share_img" class="share_img"{if $is_team eq 1} style="display:none;"{/if} onclick="document.getElementById('share_img').style.display='none';">
+<div id="share_img" class="share_img"{if $is_team eq 1 or $team_info.team_status neq 1} style="display:none;"{/if} onclick="document.getElementById('share_img').style.display='none';">
     <p><img class="arrow" src="themes/haohaios/images/share.png" ></p>
     <p style="margin-top:120px; margin-right:50px;">点击右上角，</p>
     <p style="margin-right:50px;">将它分享给好友</p>

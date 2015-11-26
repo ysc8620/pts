@@ -45,7 +45,7 @@ var process_request = "{$lang.process_request}";
             </td>
           </tr>
           
-          <tr>
+<!--           <tr>
             <td class="right">经度：</td>
             <td><input type="text" class="input"  name="longitude" value="{$point.longitude}" size="30" /></td>
           </tr>
@@ -55,7 +55,7 @@ var process_request = "{$lang.process_request}";
             <a href="http://api.map.baidu.com/lbsapi/getpoint/" target="_blank">获取坐标</a>
             
             </td>
-          </tr>
+          </tr> -->
           <tr>
             <td class="right">地址：</td>
             <td><input type="text" class="input"  name="address" value="{$point.address|escape}" size="30" />&nbsp;

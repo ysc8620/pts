@@ -71,7 +71,7 @@ function get_goodslist($type)
         $arr[$idx]['team_num']    = $row['team_num'];
         $arr[$idx]['team_price']    = price_format($row['team_price'],false);
         
-        $arr[$idx]['team_discount']    = number_format($row['team_price']/$row['market_price']*10,1);
+        $arr[$idx]['team_discount']    = @number_format($row['team_price']/$row['market_price']*10,1);
         
     }
 

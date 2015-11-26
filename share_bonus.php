@@ -94,8 +94,12 @@ if ($act == 'default'){
 	    echo'order_id参数错误';
 		exit();
 	}
+	//查询订单的商家id
+	$suppliers_id = $GLOBALS['db']->getOne("select 	suppliers_id from ". $GLOBALS['hhs']->table('order_info') ." where order_id='$order_id'");
+    $suppliers_id = $suppliers_id>0 ? $suppliers_id : 0;
+
 	$arr=array();
-	$bonus_list = order_bonus($order_id);
+	$bonus_list = order_bonus($order_id, $suppliers_id);
 	
 	$bonus_list1=array();
 	$bonus_list2=array();
@@ -105,7 +109,7 @@ if ($act == 'default'){
 		    $bonus['use_end_date']=local_date("Y-m-d", $bonus['use_end_date']);
 		    $bonus_list1[]=$bonus;
 		}elseif($bonus['is_share']==1){//好友券
-		    //$bonus_list2[]=$bonus;
+		    $bonus_list2[]=$bonus;
 		}
 	}
 	
@@ -136,7 +140,7 @@ if ($act == 'default'){
 	
 	$smarty->assign('shop_name', $_CFG['shop_title'] );
 	$smarty->display('share_bonus.dwt');
-}
+} 
 
 
 

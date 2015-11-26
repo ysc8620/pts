@@ -34,14 +34,14 @@ if (!isset($_REQUEST['step']))
 /*------------------------------------------------------ */
 //-- PROCESSOR
 /*------------------------------------------------------ */
-
-assign_template();
-assign_dynamic('flow');
+// echo $_SESSION['goods_suppliers_id'];
+//assign_template();
+//assign_dynamic('flow');
 $position = assign_ur_here(0, $_LANG['shopping_flow']);
 $smarty->assign('page_title',       $position['title']);    // 页面标题
 $smarty->assign('ur_here',          $position['ur_here']);  // 当前位置
 
-$smarty->assign('categories',       get_categories_tree()); // 分类树
+//$smarty->assign('categories',       get_categories_tree()); // 分类树
 
 $smarty->assign('lang',             $_LANG);
 $smarty->assign('show_marketprice', $_CFG['show_marketprice']);
@@ -200,7 +200,7 @@ if ($_REQUEST['step'] == 'add_to_cart')
         if (addto_cart($goods->goods_id, $goods->number, $goods->spec, $goods->parent,$goods->rec_type,$goods->team_sign ))
         {
 
-            $rows = $GLOBALS['db']->getRow("select goods_brief,shop_price,goods_name,goods_thumb from ".$GLOBALS['hhs']->table('goods')." where goods_id=".$goods->goods_id);
+            $rows = $GLOBALS['db']->getRow("select goods_brief,shop_price,goods_name,goods_thumb,suppliers_id from ".$GLOBALS['hhs']->table('goods')." where goods_id=".$goods->goods_id);
 			$result['shop_price'] = price_format($rows['shop_price']);
 			$result['goods_name'] = $rows['goods_name'];
 			$result['goods_thumb'] = $rows['goods_thumb'];
@@ -214,6 +214,10 @@ if ($_REQUEST['step'] == 'add_to_cart')
 			$result['goods_number'] = $rowss['number'];
 			//$result['cart_num'] = insert_cart_num();
             $result['content'] = insert_cart_info();
+            /**
+             * 添加商品suppliers_id到session，方便选择配送地址
+             */
+            $_SESSION['goods_suppliers_id'] = $rows['suppliers_id'];
         }
         else
         {
@@ -951,11 +955,9 @@ elseif ($_REQUEST['step'] == 'checkout')
      * 如果用户已经登录了则检查是否有默认的收货地址
      * 如果没有登录则跳转到登录和注册页面
      */
-    if (empty($_SESSION['direct_shopping']) && $_SESSION['user_id'] == 0)
-    {
-        /* 用户没有登录且没有选定匿名购物，转向到登录页面 */
-        hhs_header("Location: flow.php?step=login\n");
-        exit;
+    if($_SESSION['extension_code']=='team_goods' && !empty($_SESSION['team_sign']) ){
+    	//通过团购分享购物显示更改数量的按钮
+        $smarty->assign("teammem", 1  );
     }
 
     $consignee = get_consignee($_SESSION['user_id']);
@@ -1136,7 +1138,7 @@ elseif ($_REQUEST['step'] == 'checkout')
      * 计算订单的费用
      */
     $order_f=$order;
-    $order_f['shipping_id']=0;
+    // $order_f['shipping_id']=0;
     $total = order_fee($order_f, $cart_goods, $consignee);
 
     $smarty->assign('total', $total);
@@ -1257,6 +1259,12 @@ elseif ($_REQUEST['step'] == 'checkout')
                         $smarty->assign('disable_surplus', 1);
                     }
                 }
+            }
+            
+            if ($payment['pay_code'] == 'wxpay')
+            {
+                $smarty->assign('default_pay_id', $payment['pay_id']);
+            
             }
         }
     }
@@ -2083,7 +2091,7 @@ elseif ($_REQUEST['step'] == 'done')
     /* 取得配送列表 */
     $region            = array($consignee['country'], $consignee['province'], $consignee['city'], $consignee['district']);
     $shipping_list   = available_shipping_list($region);
-    $shipping_id=0;
+    // $shipping_id=0;
     if(!empty($shipping_list)){
     	foreach($shipping_list as $v){
     		if($v[shipping_id]==$_CFG['default_shipping_id']){
@@ -2100,7 +2108,7 @@ elseif ($_REQUEST['step'] == 'done')
     	echo"<script>";
     	echo"alert('该地区没有匹配的物流');";
     	echo"window.location='flow.php?step=checkout';";
-    	echo"<script>";
+    	echo"</script>";
     	//hhs_header("Location: flow.php?step=checkout\n");
     	//exit();
     	/*
@@ -2159,9 +2167,11 @@ elseif ($_REQUEST['step'] == 'done')
         'lat'			=>trim($_POST['lat']),
         'lng'			=>trim($_POST['lng'])
     );
-    $order['shipping_id']=$shipping_id;//默认
-    $order['shipping_name']=$shipping_name;
-    
+    // $order['shipping_id']=$shipping_id;//默认
+    // $order['shipping_name']=$shipping_name;
+    $order['suppliers_id']=intval($_POST['suppliers_id']);
+    $order['shipping_id']=intval($_POST['shipping_id']);
+    $order['shipping_name']= $db->getOne('select `shipping_name` from '.$hhs->table('shipping').' where `shipping_id` = ' . $order['shipping_id']);
    
     /* 扩展信息 */
     if (isset($_SESSION['flow_type']) && intval($_SESSION['flow_type']) != CART_GENERAL_GOODS)
@@ -2275,7 +2285,7 @@ elseif ($_REQUEST['step'] == 'done')
     }
     /* 订单中的总额 */
     $order_f=$order;
-    $order_f['shipping_id']=0;
+    // $order_f['shipping_id']=0;
     $total = order_fee($order_f, $cart_goods, $consignee);
     $order['bonus']        = $total['bonus'];
     $order['goods_amount'] = $total['goods_price'];
@@ -2731,6 +2741,7 @@ elseif ($_REQUEST['step'] == 'json_done')
 
     $order = array(
         'shipping_id'     =>intval($_POST['shipping_id']),
+        'suppliers_id'     =>intval($_POST['suppliers_id']),
         'point_id'         =>intval($_POST['point_id']),
         'pay_id'          => intval($_POST['payment']),
         'pack_id'         => isset($_POST['pack']) ? intval($_POST['pack']) : 0,
@@ -2871,7 +2882,7 @@ elseif ($_REQUEST['step'] == 'json_done')
     }
     /* 订单中的总额 */
     $order_f=$order;
-    $order_f['shipping_id']=0;
+    // $order_f['shipping_id']=0;
     $total = order_fee($order_f, $cart_goods, $consignee);
     $order['bonus']        = $total['bonus'];
     $order['goods_amount'] = $total['goods_price'];
@@ -3153,13 +3164,20 @@ elseif ($_REQUEST['step'] == 'json_done')
     {
         $payment = payment_info($order['pay_id']);
 
-        include_once('includes/modules/payment/' . $payment['pay_code'] . '.php');
-
-        $pay_obj    = new $payment['pay_code'];
-
-        $pay_online = $pay_obj->get_code2($order, unserialize_config($payment['pay_config']));
-
-        $order['pay_desc'] = $payment['pay_desc'];
+        if($payment['pay_code']!='alipay'){
+            include_once('includes/modules/payment/' . $payment['pay_code'] . '.php');
+        
+            $pay_obj    = new $payment['pay_code'];
+        
+            if($order['extension_id']){
+                $sql="select goods_name from ".$hhs->table('goods')." where goods_id=".$order['extension_id'];
+                $order['goods_name']=$db->getOne($sql);
+            }
+        
+            $pay_online = $pay_obj->get_code2($order, unserialize_config($payment['pay_config']));
+        
+            $order['pay_desc'] = $payment['pay_desc'];
+        }
 
         //$smarty->assign('pay_online', $pay_online);
         
@@ -3232,8 +3250,15 @@ elseif ($_REQUEST['step'] == 'json_done')
     unset($_SESSION['flow_order']);
     unset($_SESSION['direct_shopping']);
 
+    if($pay_online){
+        $result['content']=$pay_online;
+    }
+    if($payment['pay_code']){
+        $result['pay_code']=$payment['pay_code'];
+        $result['order_id']=$order['order_id'];
     
-    $result['content']=$pay_online;
+    }
+    
     die($json->encode($result));
     
     //去支付
@@ -3248,7 +3273,7 @@ elseif($_REQUEST['step'] == 'update_cart')
 {
     include_once('includes/cls_json.php');
     $json = new JSON();
-    $result = array('error' => '', 'content' => '');
+    $result = array('error' => 0, 'content' => '');
 	$rec_id = $_GET['rec_id'];
 	$number = $_GET['number'];
   	$goods_id = $_GET['goods_id'];
@@ -3259,32 +3284,42 @@ elseif($_REQUEST['step'] == 'update_cart')
 		$goods_number = $GLOBALS['db']->getOne("select goods_number from ".$GLOBALS['hhs']->table('goods')." where goods_id='$goods_id'");
 		if($number>$goods_number)
 		{
-			 $result['error'] = '1';
+			 $result['error'] = 1 ;
 			 $result['content'] ='对不起,您选择的数量超出库存您最多可购买'.$goods_number."件";
 			 $result['number']=$goods_number;
 			 die($json->encode($result));
 		}
 	}
+
+	$limit_buy_bumber = $db->getOne("select limit_buy_bumber from ".$hhs->table('goods')." where goods_id='$goods_id'");
+	if ($number == 0)
+	{
+	    $result['error'] = 1 ;
+	    $result['number'] = $number = 1;
+	    die($json->encode($result));
+	}
+	
+	if($number>$limit_buy_bumber&&$limit_buy_bumber>0)
+	{
+	    $result['error'] = 1 ;
+	    $result['message'] = '购买数量不可大于限购数量';
+	    $result['number'] = $limit_buy_bumber;
+	    die($json->encode($result));
+	}
+
     $sql = "UPDATE " . $GLOBALS['hhs']->table('cart') . " SET goods_number = '$number' WHERE rec_id = $rec_id";
     $GLOBALS['db']->query($sql);
-    /*计算此订单总价*/
-    $subtotal = $GLOBALS['db']->getONE("select goods_price * goods_number AS subtotal from ".$GLOBALS['hhs']->table('cart')." where rec_id = $rec_id");
-    /*购物车商品总金额*/
-    $cart_goods = get_cart_goods();
-    //$smarty->assign('total', $cart_goods['total']);
-    $result['goods_price'] = $cart_goods['total']['goods_price'];
-    $result['goods_number'] = $cart_goods['total']['real_goods_count'];
-    /* 计算折扣 */
-    if ($flow_type != CART_EXCHANGE_GOODS && $flow_type != CART_GROUP_BUY_GOODS)
-    {
-        $discount = compute_discount();
-        $smarty->assign('discount', $discount['discount']);
-        $favour_name = empty($discount['name']) ? '' : join(',', $discount['name']);
-        $your_discount = sprintf($_LANG['your_discount'], $favour_name, price_format($discount['discount']));
-    }
-	$content ='购物金额小计 '.$cart_goods['total']['goods_price'];
-    $result['subtotal'] = price_format($subtotal, false);
-    $result['content'] = $content;
+
+    /* 获得收货人信息 */
+    $consignee = get_consignee($_SESSION['user_id']);
+    $order = flow_order_info();
+    
+    $cart_goods = cart_goods($_SESSION['flow_type']); // 取得商品列表，计算合计
+    $total = order_fee($order, $cart_goods, $consignee);
+    $smarty->assign('total', $total);
+
+    $result['content'] =$smarty->fetch("library/order_total.lbi");
+    $result['number'] = $number ;
     die($json->encode($result));
 }
 
@@ -4248,11 +4283,17 @@ function get_regions_name($region_id)
 
 function get_shipping_point_list()
 {
+    if($_SESSION['goods_suppliers_id']){
+        $andwhere = " WHERE `suppliers_id` = " . $_SESSION['goods_suppliers_id'];
+    }
+    else{
+        $andwhere = '';
+    }
     $sql = "SELECT a.*,rp.region_name as province,rc.region_name as city,rd.region_name as district " .
         " FROM " . $GLOBALS['hhs']->table('shipping_point'). " AS a left join " .
         $GLOBALS['hhs']->table('region') . " AS rp on a.province=rp.region_id left join ".
         $GLOBALS['hhs']->table('region') . " as rc on a.city=rc.region_id left join ".
-        $GLOBALS['hhs']->table('region') ." as rd on a.district=rd.region_id ";
+        $GLOBALS['hhs']->table('region') ." as rd on a.district=rd.region_id " . $andwhere;
     $list=$GLOBALS['db']->getAll($sql);
 
     return $list;

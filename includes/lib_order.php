@@ -102,13 +102,20 @@ function team_user_bonus($user_id, $goods_amount = 0,$supp_id)
  */
 function available_shipping_list($region_id_list)
 {
+    if($_SESSION['goods_suppliers_id']){
+        $andwhere = " and a.`supp_id` = " . $_SESSION['goods_suppliers_id'] .
+            " and a.`shipping_id` = s.`shipping_id` ";
+    }
+    else{
+        $andwhere = " and a.`supp_id` = 0 ";
+    }
     $sql = 'SELECT s.shipping_id, s.shipping_code, s.shipping_name, ' .
-                's.shipping_desc, s.insure, s.support_cod, a.configure ' .
-            'FROM ' . $GLOBALS['hhs']->table('shipping') . ' AS s, ' .
-                $GLOBALS['hhs']->table('shipping_area') . ' AS a, ' .
-                $GLOBALS['hhs']->table('area_region') . ' AS r ' .
-            'WHERE r.region_id ' . db_create_in($region_id_list) .
-            ' AND r.shipping_area_id = a.shipping_area_id AND a.shipping_id = s.shipping_id AND s.enabled = 1 ORDER BY s.shipping_order';
+            's.shipping_desc, s.insure, s.support_cod, a.configure ' .
+        'FROM ' . $GLOBALS['hhs']->table('shipping') . ' AS s, ' .
+            $GLOBALS['hhs']->table('shipping_area') . ' AS a, ' .
+            $GLOBALS['hhs']->table('area_region') . ' AS r ' .
+        'WHERE r.region_id ' . db_create_in($region_id_list) .
+        ' AND r.shipping_area_id = a.shipping_area_id AND a.shipping_id = s.shipping_id AND s.enabled = 1 '.$andwhere.' ORDER BY s.shipping_order';
 
     return $GLOBALS['db']->getAll($sql);
 }
@@ -3106,5 +3113,112 @@ function judge_package_stock($package_id, $package_num = 1)
     }
 
     return false;
+}
+
+
+function pay_team_action($orsn){
+    /*是团购改变订单*/
+
+    $sql="select * from ".$GLOBALS['hhs']->table('order_info')."  where order_sn='".$orsn."'";
+    $order_info=$GLOBALS['db']->getRow($sql);
+    include_once ROOT_PATH."languages/zh_cn/wx_msg.php";
+
+    if(!empty($order_info)&&$order_info['extension_code']=='team_goods'){
+        $team_sign=$order_info['team_sign'];
+        $weixin=new class_weixin($GLOBALS['appid'],$GLOBALS['appsecret']);
+        $openid=$GLOBALS['db']->getOne("select openid from ".$GLOBALS['hhs']->table('users')." where user_id=".$order_info['user_id'] );
+        $t_openid = $GLOBALS['db']->getOne("select u.openid from ".$GLOBALS['hhs']->table('order_info')." as oi left join ".$GLOBALS['hhs']->table('users')." as u on oi.user_id=u.user_id where oi.team_first=1 and oi.team_sign=".$team_sign);
+        
+        $sql="select team_num,discount_type,discount_amount from ".$GLOBALS['hhs']->table('goods')." where goods_id=".$order_info['extension_id'];
+        $rs=$GLOBALS['db']->getRow($sql);
+        $team_num=$rs['team_num'];
+        $discount_type=$rs['discount_type'];
+        $discount_amount=$rs['discount_amount'];
+
+        if($order_info['team_first']==1){
+            //若是团长记录下团的人数
+            if($discount_type==1&&$order_info['refund_sign']==0){
+                $sql = "UPDATE ". $GLOBALS['hhs']->table('order_info') ." SET team_num='$team_num',discount_type ='$discount_type',discount_amount=money_paid+order_amount WHERE order_id=".$order_info['order_id'];
+            }elseif($discount_type==2&&$order_info['refund_sign']==0){
+                $sql = "UPDATE ". $GLOBALS['hhs']->table('order_info') ." SET team_num='$team_num',discount_type ='$discount_type', discount_amount='$discount_amount' WHERE order_id=".$order_info['order_id'];
+            }else{
+                $sql = "UPDATE ". $GLOBALS['hhs']->table('order_info') ." SET team_num='$team_num', discount_amount=0  WHERE order_id=".$order_info['order_id'];
+            }
+            
+            $GLOBALS['db']->query($sql);
+        }
+        $sql="select team_num from ".$GLOBALS['hhs']->table('order_info') ." where order_id=".$order_info['team_sign'];
+        $team_num=$GLOBALS['db']->getOne($sql);
+        //团共需人数和状态
+        $sql = "UPDATE ". $GLOBALS['hhs']->table('order_info') ." SET team_status=1,team_num='$team_num' WHERE order_id=".$order_info['order_id'];
+        $GLOBALS['db']->query($sql);
+        //实际人数
+        $sql="select count(*) from ".$GLOBALS['hhs']->table('order_info')." where team_sign=".$team_sign." and team_status>0 ";
+        $rel_num=$GLOBALS['db']->getOne($sql);
+        //存储实际人数
+        $sql="update ".$GLOBALS['hhs']->table('order_info')." set teammen_num='$rel_num' where team_sign=".$team_sign;
+        $GLOBALS['db']->query($sql);
+         
+        if($team_num<=$rel_num){
+            $sql = "UPDATE ". $GLOBALS['hhs']->table('order_info') ." SET team_status=2 WHERE team_status=1 and team_sign=".$team_sign;
+            $GLOBALS['db']->query($sql);
+            //取消未参团订单
+            $sql = "UPDATE ". $GLOBALS['hhs']->table('order_info') ." SET order_status=2 WHERE team_status=0 and team_sign=".$team_sign;
+            $GLOBALS['db']->query($sql);
+            //判断团长是否有优惠，要重新取数据
+            $sql="select order_id,user_id,refund_sign,discount_type, discount_amount, money_paid,order_amount,order_sn from ".$GLOBALS['hhs']->table('order_info')." where order_id=".$team_sign;
+            $r=$GLOBALS['db']->getRow($sql);
+            //目前只有微信可以退款
+            $payment=payment_info($order_info['pay_id']);
+            if($payment['pay_code']=='wxpay'){
+                if($r['discount_type']==1&&$r['refund_sign']==0){//团长免单
+                    $f=refund($r['order_sn'], $r['money_paid']*100);
+                    if($f){
+                        $arr['pay_status']  = 3;
+                        $arr['refund_sign']  = 1;
+                        $arr['money_paid']  = 0;
+                        $arr['order_amount']= $r['money_paid'] + $r['order_amount'];
+                        update_order($team_sign, $arr);
+
+                        $weixin->send_wxmsg($t_openid, $_team_msg['refund_team_first']['title'], 'share.php?team_sign='.$team_sign , $_team_msg['refund_team_first']['desc']);
+
+                    }
+
+                }elseif($r['discount_type']==2&&$r['refund_sign']==0){
+                    $f=refund($r['order_sn'], $r['discount_amount']*100);
+                    if($f){
+                        $arr['refund_sign']  = 1;
+                        $arr['money_paid']  = $r['money_paid']-$r['discount_amount'];
+                        $arr['order_amount']= $r['discount_amount'] + $r['order_amount'];
+                        update_order($team_sign, $arr);
+
+                        $weixin->send_wxmsg($t_openid, $_team_msg['refund_team_discount']['title'],  'share.php?team_sign='.$team_sign , $_team_msg['refund_team_discount']['desc'] );
+                    }
+
+                }
+            }
+
+        }
+
+        if($order_info['team_first']==1){
+            $fp=fopen('a.txt','a');
+            fputs($fp,'sad');
+            fclose($fp);
+            $weixin->send_wxmsg($openid, $_team_msg['pay']['title'] , 'share.php?team_sign='.$team_sign , $_team_msg['pay']['desc']  );
+        }
+        elseif($order_info['team_first']==2)
+        {
+            if($team_num<=$rel_num){
+                $weixin->send_wxmsg($openid, $_team_msg['team_suc_mem']['title'] , 'share.php?team_sign='.$team_sign , $_team_msg['team_suc_mem']['desc']);
+                
+                $weixin->send_wxmsg($t_openid, $_team_msg['team_suc_first']['title'] , 'share.php?team_sign='.$team_sign , $_team_msg['team_suc_first']['title'] );
+                 
+            }else{
+                $weixin->send_wxmsg($openid, $_team_msg['mem_pay']['title'] , 'share.php?team_sign='.$team_sign , $_team_msg['mem_pay']['title'] );
+            }
+        }
+
+    }
+
 }
 ?>

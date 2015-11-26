@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+error_reporting(E_ALL ^ E_NOTICE);
 
 if($_REQUEST['token']) {
     //2.x 第二步, Prism服务器根据token获取配置参数

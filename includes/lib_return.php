@@ -212,16 +212,18 @@ function get_user_orders_ex($user_id, $num = 10, $start = 0,$ext=null)
                 $row['log_id']    = get_paylog_id($row['order_id'], $pay_type = PAY_ORDER);
                 $row['user_name'] = $_SESSION['user_name'];
                 $row['pay_desc']  = $payment_info['pay_desc'];
-                /* 调用相应的支付方式文件 */
-                include_once(ROOT_PATH . 'includes/modules/payment/' . $payment_info['pay_code'] . '.php');
-        
-        
+                
                 /* 取得在线支付方式的支付按钮 */
-    
                 if($row['order_amount']>0){
-                    $pay_obj    = new $payment_info['pay_code'];
-                    
-                    $pay_online = $pay_obj->get_code($row, $payment);   
+                    if($payment_info['pay_code']!='alipay'){
+                        /* 调用相应的支付方式文件 */
+                        include_once(ROOT_PATH . 'includes/modules/payment/' . $payment_info['pay_code'] . '.php');
+                        $pay_obj    = new $payment_info['pay_code'];
+                        $pay_online = $pay_obj->get_code($row, $payment);
+                
+                    }else{
+                        $pay_online ='<a class="state_btn_2" href="toalipay.php?order_id='.$row['order_id'].'"   >支付宝支付</a>';
+                    }
                 }
             }
         }

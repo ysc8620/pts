@@ -29,7 +29,7 @@ else
 {
     $_REQUEST['act'] = trim($_REQUEST['act']);
 }
-
+ $smarty->assign('cities',    get_sitelists());
 /*------------------------------------------------------ */
 //-- 广告列表页面
 /*------------------------------------------------------ */
@@ -54,6 +54,22 @@ if ($_REQUEST['act'] == 'list')
 
     assign_query_info();
     $smarty->display('ads_list.htm');
+}
+
+if ($_REQUEST['act'] == 'edit_sort_order')
+{
+    $id = intval($_POST['id']);
+    $val = intval($_POST['val']);
+
+    if ($db->query("update ".$hhs->table('ad')." set order_sort='$val' where ad_id='$id'"))
+    {
+        clear_cache_files(); // 清除缓存
+        make_json_result($val);
+    }
+    else
+    {
+        make_json_error($db->error());
+    }
 }
 
 /*------------------------------------------------------ */
@@ -233,8 +249,10 @@ elseif ($_REQUEST['act'] == 'insert')
     }
 
     /* 插入数据 */
-    $sql = "INSERT INTO ".$hhs->table('ad'). " (position_id,media_type,ad_name,ad_link,ad_code,start_time,end_time,link_man,link_email,link_phone,click_count,enabled)
-    VALUES ('$_POST[position_id]',
+    $sql = "INSERT INTO ".$hhs->table('ad'). " (city_id,position_id,media_type,ad_name,ad_link,ad_code,start_time,end_time,link_man,link_email,link_phone,click_count,enabled)
+    VALUES (
+			'$_POST[city_id]',
+			'$_POST[position_id]',
             '$_POST[media_type]',
             '$ad_name',
             '$ad_link',
@@ -444,6 +462,8 @@ elseif ($_REQUEST['act'] == 'update')
     $sql = "UPDATE " .$hhs->table('ad'). " SET ".
             "position_id = '$_POST[position_id]', ".
             "ad_name     = '$_POST[ad_name]', ".
+			"city_id     = '$_POST[city_id]', ".
+			
             "ad_link     = '$ad_link', ".
             $ad_code.
             "start_time  = '$start_time', ".
@@ -559,12 +579,25 @@ function get_adslist()
     $filter = array();
     $filter['sort_by']    = empty($_REQUEST['sort_by']) ? 'ad.ad_name' : trim($_REQUEST['sort_by']);
     $filter['sort_order'] = empty($_REQUEST['sort_order']) ? 'DESC' : trim($_REQUEST['sort_order']);
+	
+	$filter['city_id'] = empty($_REQUEST['sort_order']) ? '' : trim($_REQUEST['city_id']);
+	$filter['position_id'] = empty($_REQUEST['position_id']) ? '' : trim($_REQUEST['position_id']);
 
     $where = 'WHERE 1 ';
     if ($pid > 0)
     {
         $where .= " AND ad.position_id = '$pid' ";
     }
+	if($filter['city_id'] )
+	{
+        $where .= " AND ad.city_id = '$filter[city_id]' ";
+	}
+	
+	if($filter['position_id'] )
+	{
+        $where .= " AND ad.position_id = '$filter[position_id]' ";
+	}
+	
 
     /* 获得总记录数据 */
     $sql = 'SELECT COUNT(*) FROM ' .$GLOBALS['hhs']->table('ad'). ' AS ad ' . $where;

@@ -2,6 +2,11 @@
 define('IN_HHS', true);
 require(dirname(__FILE__) . '/includes/init.php');
 
+$cid = isset($_GET['cid']) ? intval($_GET['cid']) : null;
+
+if($cid){
+    $_SESSION['cid'] = $cid;
+}
 /*
 if ((DEBUG_MODE & 2) != 2)
 {
@@ -125,29 +130,18 @@ function get_goodslist()
 
 
 
-function get_flash_xml()
+function get_flash_xml($type = 1)
 {
-    $flashdb = array();
-    if (file_exists(ROOT_PATH . DATA_DIR . '/flash_data.xml'))
-    {
-
-        // 兼容v2.7.0及以前版本
-        if (!preg_match_all('/item_url="([^"]+)"\slink="([^"]+)"\stext="([^"]*)"\ssort="([^"]*)"/', file_get_contents(ROOT_PATH . DATA_DIR . '/flash_data.xml'), $t, PREG_SET_ORDER))
-        {
-            preg_match_all('/item_url="([^"]+)"\slink="([^"]+)"\stext="([^"]*)"/', file_get_contents(ROOT_PATH . DATA_DIR . '/flash_data.xml'), $t, PREG_SET_ORDER);
-        }
-
-        if (!empty($t))
-        {
-            foreach ($t as $key => $val)
-            {
-                $val[4] = isset($val[4]) ? $val[4] : 0;
-                $flashdb[] = array('src'=>$val[1],'url'=>$val[2],'text'=>$val[3],'sort'=>$val[4]);
-            }
-        }
-    }
+    $city_id = get_city_id();
+    // $city_id = get_city_id();
+    $flashdb = $GLOBALS['db']->getAll("select * from ".$GLOBALS['hhs']->table('ad')." where position_id='$type' and city_id='$city_id' order by order_sort");
+	foreach($flashdb as $idx=>$v)
+	{
+		$flashdb[$idx]['url'] = $v['ad_link'];
+		$flashdb[$idx]['src'] = '../data/afficheimg/'.$v['ad_code'];
+		
+	}
     return $flashdb;
+
 }
-
-
 ?>

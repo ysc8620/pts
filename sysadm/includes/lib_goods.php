@@ -825,7 +825,7 @@ function goods_list($is_delete, $real_goods=1, $conditions = '')
         $filter['stock_warning']    = empty($_REQUEST['stock_warning']) ? 0 : intval($_REQUEST['stock_warning']);
         $filter['brand_id']         = empty($_REQUEST['brand_id']) ? 0 : intval($_REQUEST['brand_id']);
         $filter['keyword']          = empty($_REQUEST['keyword']) ? '' : trim($_REQUEST['keyword']);
-        $filter['suppliers_id'] = isset($_REQUEST['suppliers_id']) ? (empty($_REQUEST['suppliers_id']) ? '' : trim($_REQUEST['suppliers_id'])) : '';
+        $filter['suppliers_id'] = isset($_REQUEST['suppliers_id']) ? intval($_REQUEST['suppliers_id']) : '';
         $filter['is_on_sale'] = isset($_REQUEST['is_on_sale']) ? ((empty($_REQUEST['is_on_sale']) && $_REQUEST['is_on_sale'] === 0) ? '' : trim($_REQUEST['is_on_sale'])) : '';
         if (isset($_REQUEST['is_ajax']) && $_REQUEST['is_ajax'] == 1)
         {
@@ -906,9 +906,10 @@ function goods_list($is_delete, $real_goods=1, $conditions = '')
         /* 供货商 */
         if (!empty($filter['suppliers_id']))
         {
-            $where .= " AND (suppliers_id = '" . $filter['suppliers_id'] . "')";
+            $where .= " AND (suppliers_id = " . $filter['suppliers_id'] . ")";
         }
-        
+
+        if(!$filter['suppliers_id'])
         $where .= $conditions;
         
         /* 记录总数 */

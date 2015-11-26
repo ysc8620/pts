@@ -16,19 +16,11 @@ if ($_SESSION['user_id'] > 0)
 /* 载入语言文件 */
 require_once(ROOT_PATH . 'languages/' .$_CFG['lang']. '/user.php');
 
-assign_template();
+
 $user_id = $_SESSION['user_id'] ? $_SESSION['user_id'] : '';
 
 $act = isset($_REQUEST['act']) ? trim($_REQUEST['act']) : 'default';
 
-/* 用户中心 */
-if ($user_id <= 0){
-
-	$smarty->assign('gourl', "share.php");
-
-	$smarty->display('login.dwt');
-	exit;
-}
 
 /*我要分享和我要参团  */
 if ($act == 'default'){
@@ -164,6 +156,24 @@ if ($act == 'default'){
 		echo json_encode($arr);
 		die();
 	}
+}
+elseif($act == 'toalipay'){
+
+    $order_id=isset($_REQUEST['order_id'])?$_REQUEST['order_id']:'';
+    if(empty($order_id)){
+        die('参数错误');
+    }
+    $sql=" SELECT * FROM ".$hhs->table('order_info')." where order_id=".$order_id;
+    $order=$db->getRow($sql);
+
+    if(!empty($order['team_sign']) && $order['team_status']!=0 && !empty($order['pay_time']) ){
+        hhs_header("location:share.php?team_sign=".$order['team_sign']);
+        exit();
+    }else{
+        hhs_header("location:user.php?act=order_detail&order_id=".$order['order_id']);
+        exit();
+    }
+
 }
 
 ?>

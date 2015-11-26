@@ -688,7 +688,7 @@ function user_list()
 
         $filter['sort_by']    = empty($_REQUEST['sort_by'])    ? 'user_id' : trim($_REQUEST['sort_by']);
         $filter['sort_order'] = empty($_REQUEST['sort_order']) ? 'DESC'     : trim($_REQUEST['sort_order']);
-
+		$filter['is_subscribe'] = !isset($_REQUEST['is_subscribe']) ? ''     : trim($_REQUEST['is_subscribe']);
         $ex_where = ' WHERE 1 ';
         if ($filter['keywords'])
         {
@@ -696,7 +696,7 @@ function user_list()
         }
         if ($filter['rank'])
         {
-            $sql = "SELECT min_points, max_points, special_rank FROM ".$GLOBALS['hhs']->table('user_rank')." WHERE rank_id = '$filter[rank]'";
+            $sql = "SELECT min_points, max_points,is_subscribe, special_rank FROM ".$GLOBALS['hhs']->table('user_rank')." WHERE rank_id = '$filter[rank]'";
             $row = $GLOBALS['db']->getRow($sql);
             if ($row['special_rank'] > 0)
             {
@@ -716,12 +716,15 @@ function user_list()
         {
             $ex_where .=" AND pay_points < '$filter[pay_points_lt]' ";
         }
-
+        if ($filter['is_subscribe']!='')
+        {
+             $ex_where .=" AND is_subscribe = '$filter[is_subscribe]' ";
+        }
         $filter['record_count'] = $GLOBALS['db']->getOne("SELECT COUNT(*) FROM " . $GLOBALS['hhs']->table('users') . $ex_where);
 
         /* 分页大小 */
         $filter = page_and_size($filter);
-        $sql = "SELECT user_id, user_name,uname, email, is_validated, user_money, frozen_money, rank_points, pay_points, reg_time ".
+        $sql = "SELECT user_id, user_name,is_subscribe,uname, email, is_validated, user_money, frozen_money, rank_points, pay_points, reg_time ".
                 " FROM " . $GLOBALS['hhs']->table('users') . $ex_where .
                 " ORDER by " . $filter['sort_by'] . ' ' . $filter['sort_order'] .
                 " LIMIT " . $filter['start'] . ',' . $filter['page_size'];

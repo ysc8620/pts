@@ -25,7 +25,7 @@ $modules['01_suppliers']['04_suppliers_accounts']   = 'suppliers.php?act=supplie
 
 
 $modules['02_cat_and_goods']['01_goods_list']       = 'goods.php?act=list';         // 商品列表
-$modules['02_cat_and_goods']['020_suppliers_goods_list']       = 'suppliers_goods.php?act=list';         // 商品列表
+$modules['02_cat_and_goods']['020_suppliers_goods_list']       =    'suppliers_goods.php?act=list';   //'goods.php?act=list&is_supplier=1';       // 商品列表
 
 
 $modules['02_cat_and_goods']['02_goods_add']        = 'goods.php?act=add';          // 添加商品
@@ -71,8 +71,8 @@ $modules['04_order']['03_suppliers_order_list']               = 'order.php?act=s
 $modules['04_order']['09_delivery_order']           = 'order.php?act=delivery_list';
 $modules['04_order']['10_back_order']               = 'order.php?act=back_list';
 
-//$modules['05_banner']['ad_position']                = 'ad_position.php?act=list';
-//$modules['05_banner']['ad_list']                    = 'ads.php?act=list';
+$modules['05_banner']['01_ad_position']                = 'ad_position.php?act=list';
+$modules['05_banner']['02_ad_list']                    = 'ads.php?act=list';
 
 
 $modules['06_stats']['report_guest']                = 'guest_stats.php?act=list';
@@ -115,7 +115,7 @@ $modules['11_system']['05_area_list']               = 'area_manage.php?act=list'
 //$modules['11_system']['navigator']                  = 'navigator.php?act=list';
 //$modules['11_system']['021_reg_fields']             = 'reg_fields.php?act=list';
 //$modules['11_system']['website']                    = 'website.php?act=list';
-$modules['11_system']['flashplay']                  = 'flashplay.php?act=list';
+//$modules['11_system']['flashplay']                  = 'flashplay.php?act=list';
 $modules['11_system']['021_site']                   = 'site.php?act=list';
 
 //$modules['12_template']['05_edit_languages']        = 'edit_languages.php?act=list';

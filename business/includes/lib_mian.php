@@ -1519,7 +1519,7 @@ function get_supp_account_name($supp_account_id)
 	$sql = $GLOBALS['db']->getOne("select name from ".$GLOBALS['hhs']->table('supp_account')." where account_id='$supp_account_id'");
 	return $sql;
 }
-function get_delivery_list($is_page=true){
+function get_delivery_list($is_page=true,$shipping_id = null){
 	$suppliers_id=$_SESSION['suppliers_id'];
 	$aiax = isset($_GET['is_ajax']) ? $_GET['is_ajax'] : 0;
 	/* 过滤信息 */
@@ -1571,6 +1571,14 @@ function get_delivery_list($is_page=true){
 	{
 		$where .=" AND delivery_pic='' ";
 	}
+
+    /**
+     * 增加deliver_id
+     */
+    if($shipping_id)
+    {
+        $where .=" AND shipping_id= " . offlineID . " ";
+    }
 	/* 分页大小 */
 	if($is_page){
 		$filter['page'] = empty($_REQUEST['page']) || (intval($_REQUEST['page']) <= 0) ? 1 : intval($_REQUEST['page']);
@@ -1606,7 +1614,8 @@ function get_delivery_list($is_page=true){
 		$page = isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 1;
 		$arr=$filter;
 		unset($arr['page']);
-		$arr['act']='delivery_list';		
+        // $arr['act']='delivery_list';        
+		$arr['act']= trim($_REQUEST['act']);
 		$pager  = get_pager('suppliers.php', $arr,$record_count, $page,$filter['page_size']);
 	}
 	
@@ -1956,9 +1965,9 @@ function get_order_list($is_page=true,$action=null){
 	    $where .=$ext;
 	}*/
 	if($action=='goods_order'){
-	    $ext=" and o.shipping_id<>13 ";
+	    $ext=" and o.shipping_id<> " . offlineID;
 	}else{
-	    $ext=" and o.shipping_id=13 ";
+	    $ext=" and o.shipping_id= " . offlineID;
 	}
 	$where .=$ext;
 	if($is_page){

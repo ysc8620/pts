@@ -9,7 +9,7 @@
 */
 	define('IN_HHS', true);	
 require('../../includes/init2.php');
-require('../../includes/lib_payment.php');
+require('../../includes/lib_payment.php');require('../../includes/lib_order.php');
 require('../../includes/modules/payment/wxpay.php');	
     //使用通用通知接口
 	$notify = new Notify_pub();
@@ -49,10 +49,10 @@ require('../../includes/modules/payment/wxpay.php');
 		}
 		else{
 			$order = $notify->getData();						$transaction_id = $order["transaction_id"];//微信订单号			$orsn = $order["out_trade_no"];			
-			$odid=get_order_id_by_sn($orsn); 
-			order_paid($odid);						$sql="update ".$GLOBALS['hhs']->table('order_info')." set transaction_id='$transaction_id' where order_sn='$orsn' ";			$GLOBALS['db']->query($sql);			/*是团购改变订单*/			$sql="select * from ".$hhs->table('order_info')."  where order_sn='".$orsn."'";			$order_info=$db->getRow($sql);			if(!empty($order_info)&&$order_info['extension_code']=='team_goods'){			    $team_sign=$order_info['team_sign'];			    $sql="select team_num from ".$hhs->table('goods')." where goods_id=".$order_info['extension_id'];			    $team_num=$db->getOne($sql);			                    if($order_info['team_first']==1){                	//若是团长记录下团的人数                    $sql = "UPDATE ". $hhs->table('order_info') ." SET team_num='$team_num' WHERE order_id=".$order_info['order_id'];                    $db->query($sql);                }                $sql="select team_num from ".$hhs->table('order_info') ." where order_id=".$order_info['team_sign'];                $team_num=$db->getOne($sql);                //团共需人数和状态                $sql = "UPDATE ". $hhs->table('order_info') ." SET team_status=1,team_num='$team_num' WHERE order_id=".$order_info['order_id'];                $db->query($sql);                //实际人数                $sql="select count(*) from ".$hhs->table('order_info')." where team_sign=".$team_sign." and team_status>0 ";                $rel_num=$db->getOne($sql);                //存储实际人数                $sql="update ".$hhs->table('order_info')." set teammen_num='$rel_num' where team_sign=".$team_sign;                $db->query($sql);                                if($team_num<=$rel_num){                    $sql = "UPDATE ". $hhs->table('order_info') ." SET team_status=2 WHERE team_status=1 and team_sign=".$team_sign;                    $db->query($sql);                    //取消未参团订单                    $sql = "UPDATE ". $hhs->table('order_info') ." SET order_status=2 WHERE team_status=0 and team_sign=".$team_sign;                    $db->query($sql);                }                if($order_info['team_first']==1){                    $user_id=$order_info['user_id'];                    $team_sign=$order_info['team_sign'];                    $wxch_order_name='pay';                    include_once(ROOT_PATH . 'wxch_order.php');                }			}			//代付			if($order_info['share_pay_type']>0){			    $sql="update ". $hhs->table('share_pay_info') ." set is_paid=1 where   order_id=".$order_info['order_id'];			    			    $db->query($sql);			    			}			
+			$odid=get_order_id_by_sn($orsn); 			//确保只发一次			$sql="select pay_status from ".$hhs->table('order_info')." where order_sn='$orsn' ";			$pay_status=$db->getOne($sql);			
+			order_paid($odid);						$sql="update ".$GLOBALS['hhs']->table('order_info')." set transaction_id='$transaction_id' where order_sn='$orsn' ";			$GLOBALS['db']->query($sql);						//确保只发一次			if($pay_status!=2){			    pay_team_action($orsn);			}							//代付			$sql="select * from ".$hhs->table('order_info')."  where order_sn='".$orsn."'";			$order_info=$db->getRow($sql);			//代付			if($order_info['share_pay_type']>0){			    $sql="update ". $hhs->table('share_pay_info') ." set is_paid=1 where   order_id=".$order_info['order_id'];			    			    $db->query($sql);			    			}			
 			//此处应该更新一下订单状态，商户自行增删操作
-			$log_->log_result($log_name,"【支付成功】:\n".$order["out_trade_no"]."\n");
+			///$log_->log_result($log_name,"【支付成功】:\n".$order["out_trade_no"]."\n");
 		}
 		
 		//商户自行增加处理流程,

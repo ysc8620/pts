@@ -1710,13 +1710,13 @@ function assign_template($ctype = '', $catlist = array())
     $smarty->assign('points_name',   $GLOBALS['_CFG']['integral_name']);
     $smarty->assign('qq',            explode(',', $GLOBALS['_CFG']['qq']));
     $smarty->assign('ww',            explode(',', $GLOBALS['_CFG']['ww']));
-    $smarty->assign('ym',            explode(',', $GLOBALS['_CFG']['ym']));
-    $smarty->assign('msn',           explode(',', $GLOBALS['_CFG']['msn']));
-    $smarty->assign('skype',         explode(',', $GLOBALS['_CFG']['skype']));
+    // $smarty->assign('ym',            explode(',', $GLOBALS['_CFG']['ym']));
+    // $smarty->assign('msn',           explode(',', $GLOBALS['_CFG']['msn']));
+    // $smarty->assign('skype',         explode(',', $GLOBALS['_CFG']['skype']));
     $smarty->assign('stats_code',    $GLOBALS['_CFG']['stats_code']);
     $smarty->assign('copyright',     sprintf($GLOBALS['_LANG']['copyright'], date('Y'), $GLOBALS['_CFG']['shop_name']));
     $smarty->assign('shop_name',     $GLOBALS['_CFG']['shop_name']);
-    $smarty->assign('service_email', $GLOBALS['_CFG']['service_email']);
+    // $smarty->assign('service_email', $GLOBALS['_CFG']['service_email']);
     $smarty->assign('service_phone', $GLOBALS['_CFG']['service_phone']);
     $smarty->assign('shop_address',  $GLOBALS['_CFG']['shop_address']);
 	$smarty->assign('subscribe_url',     $GLOBALS['_CFG']['subscribe_url']);
@@ -2104,27 +2104,28 @@ function get_navigator($ctype = '', $catlist = array())
  */
 function license_info()
 {
-    if($GLOBALS['_CFG']['licensed'] > 0)
-    {
-        /* 获取HOST */
-        if (isset($_SERVER['HTTP_X_FORWARDED_HOST']))
-        {
-            $host = $_SERVER['HTTP_X_FORWARDED_HOST'];
-        }
-        elseif (isset($_SERVER['HTTP_HOST']))
-        {
-            $host = $_SERVER['HTTP_HOST'];
-        }
-        $url_domain=url_domain();
-        $host = 'http://' . $host .$url_domain ;
-        $license = '<a href="http://www.xaphp.cn/license.php?product=hhshop_b2c&url=' . urlencode($host) . '" target="_blank"
->&nbsp;&nbsp;Licensed</a>';
-        return $license;
-    }
-    else
-    {
-        return '';
-    }
+    return '';
+//     if($GLOBALS['_CFG']['licensed'] > 0)
+//     {
+//         /* 获取HOST */
+//         if (isset($_SERVER['HTTP_X_FORWARDED_HOST']))
+//         {
+//             $host = $_SERVER['HTTP_X_FORWARDED_HOST'];
+//         }
+//         elseif (isset($_SERVER['HTTP_HOST']))
+//         {
+//             $host = $_SERVER['HTTP_HOST'];
+//         }
+//         $url_domain=url_domain();
+//         $host = 'http://' . $host .$url_domain ;
+//         $license = '<a href="http://www.xaphp.cn/license.php?product=hhshop_b2c&url=' . urlencode($host) . '" target="_blank"
+// >&nbsp;&nbsp;Licensed</a>';
+//         return $license;
+//     }
+//     else
+//     {
+//         return '';
+//     }
 }
 function url_domain()
 {

@@ -56,7 +56,9 @@
 		</select> 
      {if $suppliers_exists eq 1}    
       <!-- 供货商 -->
-      <select name="suppliers_id"><option value="0">自营店</option>{html_options options=$suppliers_list_name selected=$smarty.get.suppliers_id}</select>
+      <select name="suppliers_id">
+      <option value="">请选择</option>
+      <option value="0">自营店</option>{html_options options=$suppliers_list_name selected=$smarty.get.suppliers_id}</select>
       {/if}      
       
       

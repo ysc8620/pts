@@ -187,7 +187,17 @@ function get_attr_list($cat_id, $goods_id = 0)
 }
 
 
-
+/**
+ * 取得重量单位列表
+ * @return  array   重量单位列表
+ */
+function get_unit_list()
+{
+    return array(
+        '1'     => '千克',
+        '0.001' => '克',
+    );
+}
 
 
 

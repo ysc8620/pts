@@ -15,6 +15,16 @@
     <td><input name="img_url" type="text" value="{if $smarty.get.ad_link}{$smarty.get.ad_link}{else}{$rt.img_url}{/if}" size="40" /></td>
   </tr>
   <tr>
+    <td class="label">选择站点：</td>
+    <td>  <select name="city_id" id="selCities" >
+          <option value=''>请选择</option>
+            {foreach from=$cities item=region}
+              <option value="{$region.region_id}" {if $region.region_id eq $rt.city_id}selected="selected"{/if}>{$region.region_name}</option>
+            {/foreach}
+
+        </select></td>
+  </tr>
+  <tr>
     <td class="label">{$lang.schp_imgdesc}</td>
     <td><input name="img_text" type="text" value="{$rt.img_txt}" size="40" /></td>
   </tr>

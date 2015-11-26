@@ -8,7 +8,14 @@
     <img src="images/icon_search.gif" width="26" height="22" border="0" alt="SEARCH" />
    <!-- &nbsp;{$lang.label_rank_name} <select name="user_rank"><option value="0">{$lang.all_option}</option>{html_options options=$user_ranks }</select>-->
     &nbsp;{$lang.label_pay_points_gt}&nbsp;<input type="text" name="pay_points_gt" size="8" />&nbsp;{$lang.label_pay_points_lt}&nbsp;<input type="text" name="pay_points_lt" size="10" />
-    &nbsp;{$lang.label_user_name} &nbsp;<input type="text" name="keyword" /> <input type="submit" value="{$lang.button_search}" />
+    &nbsp;{$lang.label_user_name} &nbsp;<input type="text" name="keyword" />
+       &nbsp;微信粉丝&nbsp;<select name="is_subscribe">
+     <option value="">请选择</option>
+     					<option value="1">已关注</option>
+                        <option value="0">未关注</option>
+                         </select>
+    
+     <input type="submit" value="{$lang.button_search}" />
   </form>
 </div>
 
@@ -37,7 +44,7 @@
   {foreach from=$user_list item=user}
   <tr>
     <td align="center"><input type="checkbox" name="checkboxes[]" value="{$user.user_id}" notice="{if $user.user_money ne 0}1{else}0{/if}"/>{$user.user_id}</td>
-    <td align="center" class="first-cell">{$user.user_name|escape}[{if $user.uname}{$user.uname}{else}{$user.user_name|escape}{/if}]</td>
+    <td align="center" class="first-cell">{if $user.is_subscribe eq 1}<span style="color:#F00;">[粉丝]</span>{/if}{$user.user_name|escape}[{if $user.uname}{$user.uname}{else}{$user.user_name|escape}{/if}]</td>
     <td align="center"><span onclick="listTable.edit(this, 'edit_email', {$user.user_id})">{$user.email}</span></td>
     <td align="center">{$user.user_money}</td>
    
@@ -93,6 +100,8 @@ onload = function()
 function searchUser()
 {
     listTable.filter['keywords'] = Utils.trim(document.forms['searchForm'].elements['keyword'].value);
+	listTable.filter['is_subscribe'] = Utils.trim(document.forms['searchForm'].elements['is_subscribe'].value);
+	
     //listTable.filter['rank'] = document.forms['searchForm'].elements['user_rank'].value;
     listTable.filter['pay_points_gt'] = Utils.trim(document.forms['searchForm'].elements['pay_points_gt'].value);
     listTable.filter['pay_points_lt'] = Utils.trim(document.forms['searchForm'].elements['pay_points_lt'].value);

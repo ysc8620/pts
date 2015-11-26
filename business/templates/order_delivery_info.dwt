@@ -30,7 +30,7 @@ var process_request = "{$lang.process_request}";
 		</div>
         <div class="maincon">
 			<div class="contitlelist">
-            	<span>生成提货单</span>
+            	<span>生成发货单</span>
             </div>
 		  <div class="conbox">
 

@@ -18,7 +18,7 @@ if (!defined('IN_HHS'))
     die('Hacking attempt');
 }
 
-error_reporting(0);
+error_reporting(E_ALL);
 
 if (__FILE__ == '')
 {
@@ -133,7 +133,6 @@ if (!defined('INIT_NO_SMARTY'))
     header('Cache-control: private');
     header('Content-type: text/html; charset='.EC_CHARSET);
 
-  
     require(ROOT_PATH . 'includes/cls_template.php');
     $smarty = new cls_template;
 
@@ -159,7 +158,7 @@ if (!defined('INIT_NO_SMARTY'))
 	$smarty->assign('hhs_img_path', 'themes/' . $_CFG['template'].'/images');
 
 }
-
+/**/
 
 
 if (!defined('INIT_NO_USERS'))
@@ -248,11 +247,11 @@ if (!defined('INIT_NO_USERS'))
 
 if ((DEBUG_MODE & 1) == 1)
 {
-    //error_reporting(E_ALL);
+    error_reporting(E_ALL);
 }
 else
 {
-    //error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
+    error_reporting(E_ALL ^ (E_NOTICE | E_WARNING)); 
 }
 if ((DEBUG_MODE & 4) == 4)
 {

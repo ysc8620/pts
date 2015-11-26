@@ -21,7 +21,7 @@
         <div class="mall_detail_info">
             <div class="mall_name">{$stores_info.suppliers_name}</div>
             <ul class="mall_detail_icons">
-                <li class="mall_detail_sales">销量：265918</li>
+                <li class="mall_detail_sales">销量：{$sales_num}</li>
             </ul>
         </div>
     </div>

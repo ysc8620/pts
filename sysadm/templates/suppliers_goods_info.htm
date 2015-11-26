@@ -1,6 +1,6 @@
 <!-- $Id: goods_info.htm 17126 2010-04-23 10:30:26Z liuhui $ -->
 {include file="pageheader.htm"}
-{insert_scripts files="../js/utils.js,selectzone.js,colorselector.js"}
+{insert_scripts files="../js/utils.js,selectzone.js,colorselector.js,../js/region.js"}
 <script language="javascript" type="text/javascript" src="../js/DatePicker/WdatePicker.js"></script>
 {if $warning}
 <ul style="padding:0; margin: 0; list-style-type:none; color: #CC0000;">
@@ -34,6 +34,31 @@
             <td class="label">{$lang.lab_goods_name}</td>
             <td><input type="text" name="goods_name" value="{$goods.goods_name|escape}" style="float:left;color:{$goods_name_color};" size="30" />&nbsp;
             </td>
+          </tr>
+            <tr>
+            <td class="label">{$lang.lab_goods_brief}</td>
+            <td><textarea name="goods_brief" cols="40" rows="3">{$goods.goods_brief|escape}</textarea></td>
+          </tr>
+          <tr>
+            <td class="label">显示区域：</td>
+            <td>   <select name="city_id" id="selCities"  onchange="region.changed(this, 3, 'selDistricts')">
+          <option value=''>请选择</option>
+            {foreach from=$cities item=region}
+              <option value="{$region.region_id}" {if $region.region_id eq $goods.city_id}selected="selected"{/if}>{$region.region_name}</option>
+            {/foreach}
+
+        </select>
+         <select name="district_id" id="selDistricts">
+
+				<option value="0">请选择</option>
+
+				{foreach from=$district_list item=district}
+
+				<option value="{$district.region_id}" {if $district.region_id eq $goods.district_id}selected="selected"{/if}  >{$district.region_name}</option>
+
+				{/foreach}
+
+		</select> </td>
           </tr>
           <tr>
             <td class="label">
@@ -206,10 +231,10 @@
             <td><input type="text" name="warn_number" value="{$goods.warn_number}" size="20" /></td>
           </tr>
           {/if}
-      <!--    <tr>
+    <tr>
             <td class="label">{$lang.lab_intro}</td>
             <td><input type="checkbox" name="is_best" value="1" {if $goods.is_best}checked="checked"{/if} />{$lang.is_best} <input type="checkbox" name="is_new" value="1" {if $goods.is_new}checked="checked"{/if} />{$lang.is_new} <input type="checkbox" name="is_hot" value="1" {if $goods.is_hot}checked="checked"{/if} />{$lang.is_hot}</td>
-          </tr>-->
+          </tr>
           <tr id="alone_sale_1">
             <td class="label" id="alone_sale_2">{$lang.lab_is_on_sale}</td>
             <td id="alone_sale_3"><input type="checkbox" name="is_on_sale" value="1" {if $goods.is_on_sale}checked="checked"{/if} /> {$lang.on_sale_desc}</td>
@@ -417,6 +442,8 @@
 {insert_scripts files="validator.js,tab.js"}
 
 <script language="JavaScript">
+  region.isAdmin = true;
+
   var goodsId = '{$goods.goods_id}';
   var elements = document.forms['theForm'].elements;
   var sz1 = new SelectZone(1, elements['source_select1'], elements['target_select1']);

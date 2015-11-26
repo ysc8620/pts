@@ -100,7 +100,7 @@ $image = new cls_image($_CFG['bgcolor']);
 	    $dir = 'business/uploads/'.$suppliers_id;
 	    is_dir($dir) or mkdir($dir, 0777);
 		chmod($dir,0777);
-		show_message('入驻成功，请等待工作人员审核!','返回主站', 'index.php', 'info');
+		show_message('入驻成功，请等待工作人员审核!','返回首页', 'index.php', 'info');
 	}elseif($_REQUEST['act'] =='is_suppliers_name'){
 	    $suppliers_name=$_REQUEST['suppliers_name'];
 	    $c = $db->getOne("select count(*) from ".$hhs->table('suppliers')." where suppliers_name='$suppliers_name'");

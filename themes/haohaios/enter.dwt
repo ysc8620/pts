@@ -10,14 +10,14 @@
 <link href="{$hhs_css_path}/haohaios.css" rel="stylesheet" />
 <link href="{$hhs_css_path}/font-awesome.min.css" rel="stylesheet" />
 {* 包含脚本文件 *}
-{insert_scripts files='jquery.js,common.js,region.js'}
+{insert_scripts files='jquery.js,common.js,region.js,haohaios.js'}
 <script language="javascript">
+// what a fuck!!
 	function regs()
 	{
 		 var reg = /^[0-9]+/;
-		 var reg2 = /^1[3458]\d{9}$/;
-		 if(second ==2)
-		{
+		 var reg2 = /^1[345678]\d{9}$/;
+		
 			var suppliers_name =  $("#suppliers_name").val();
 			var address =  $("#address").val();
 			var real_name = $("#real_name").val();
@@ -104,7 +104,6 @@
 			}
 			$('#setp'+first).hide();
 			$('#setp'+second).show();
-		}
 	}
 	function check_suppliers_name(value)
 	{
@@ -170,7 +169,7 @@
 	}
 	function check_phone(value)
 	{
-		var reg2 = /^1[3458]\d{9}$/;
+		var reg2 = /^1[345678]\d{9}$/;
 		if(value=='')
 		{
 			$("#phone_notice").html("请输入店长手机号码!");
@@ -194,7 +193,7 @@
             <p>
                 <label>商家名称：</label>
                 <input name="suppliers_name" type="text" onblur="check_suppliers_name(this.value);" id="suppliers_name" class="inp"/>
-                 <span id="suppliers_name_notice"></span>
+                 <span id="suppliers_name_notice" style="color:#F00;"></span>
                 
             </p>
             <p>
@@ -222,33 +221,33 @@
             </p>
             <p>
                 <label>详细地址：</label>
-                <input name="address" onblur="check_address(this.value);" type="text" id="address" class="inp" />    <span id="address_notice"></span>  
+                <input name="address" onblur="check_address(this.value);" type="text" id="address" class="inp" />    <span id="address_notice"  style="color:#F00;"></span>  
             </p>
 
             <p>
                 <label>店长：</label>
                 <input name="real_name" type="text" onblur="checkreal_name(this.value);" id="real_name" class="inp" />
-           		 <span id="real_name_notice"></span>  
+           		 <span id="real_name_notice"  style="color:#F00;"></span>  
             </p>
             <p>
                 <label>店长手机号码：</label>
                 <input name="phone" type="text" onblur="check_phone(this.value);" id="phone" class="inp" />
-                 <span id="phone_notice"></span>  
+                 <span id="phone_notice"  style="color:#F00;"></span>  
             </p>
             <p>
                 <label>管理登录用户名：</label>
                 <input name="user_name" type="text" id="user_name" class="inp" onblur="check_user_name(this.value);" />
-           		 <span id="user_name_notice"></span>  
+           		 <span id="user_name_notice" style="color:#F00;"></span>  
             </p>
             <p>
                 <label>登录密码：</label>
                 <input name="password" type="password" id="password" class="inp" />
-           		 <span id="password_notice"></span>  
+           		 <span id="password_notice" style="color:#F00;"></span>  
             </p>
             <p>
                 <label>密码确认：</label>
                 <input name="password1" type="password" id="password1" class="inp" />
-           		 <span id="password_notice"></span>  
+           		 <span id="password_notice" style="color:#F00;"></span>  
             </p>
 
             <p>

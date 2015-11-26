@@ -592,6 +592,15 @@ elseif ($_REQUEST['act'] == 'info')
     {
         die('order does not exist');
     }
+    /* 团长优惠*/
+    if($order['team_status']==2&&$order['team_first']==1){//团长团购成功才计算优惠
+        $order['order_amount2']=$order['order_amount']-$order['discount_amount'];
+        $order['formated_order_amount2']=price_format($order['order_amount2'], false);
+        
+    }else{
+        $order['order_amount2']=$order['order_amount'];
+        $order['formated_order_amount2']=price_format($order['order_amount2'], false);
+    }
 
     /* 根据订单是否完成检查权限 */
     if (order_finished($order))
@@ -5832,7 +5841,7 @@ function order_list($refund_ex="",$is_page=true,$is_suppliers=false)
 		$filter['district_id'] = isset($_REQUEST['district_id']) ? intval($_REQUEST['district_id']) : '';
 		$filter['suppliers_id'] = isset($_REQUEST['suppliers_id']) ? intval($_REQUEST['suppliers_id']) : '';
 		
-
+        $where = " WHERE 1 ";
        //and extension_code!='team_goods'
 		if(!empty($refund_ex) )
 		{
@@ -5931,7 +5940,7 @@ function order_list($refund_ex="",$is_page=true,$is_suppliers=false)
         }
         if ($filter['user_name'])
         {
-            $where .= " AND u.user_name LIKE '%" . mysql_like_quote($filter['user_name']) . "%'";
+            $where .= " AND u.uname LIKE '%" . mysql_like_quote($filter['user_name']) . "%'";
         }
         if ($filter['start_time'])
         {
@@ -6008,6 +6017,10 @@ function order_list($refund_ex="",$is_page=true,$is_suppliers=false)
         if ($agency_id > 0)
         {
             $where .= " AND o.agency_id = '$agency_id' ";
+        }
+
+        if($is_suppliers){
+            $where .= ' AND o.suppliers_id >0 ';
         }
 
         /* 分页大小 */
@@ -6187,11 +6200,11 @@ function team_list($refund_ex="",$is_suppliers=true)
         $filter['team_lack_num'] = isset($_REQUEST['team_lack_num']) ? intval($_REQUEST['team_lack_num']) : -1;
         
         $where = " WHERE o.extension_code='team_goods' and o.team_first=1 ";
-        if($is_suppliers){
-            $where .= " and o.suppliers_id>0 ";
-        }else{
-            $where .= " and o.suppliers_id=0 ";
-        }
+        // if($is_suppliers){
+        //     $where .= " and o.suppliers_id>0 ";
+        // }else{
+        //     $where .= " and o.suppliers_id=0 ";
+        // }
         if(!empty($refund_ex) )
         {
             $arr = $GLOBALS['db']->getCol("select distinct order_id from ".$GLOBALS['hhs']->table("order_goods")." where   ".$refund_ex);
@@ -6423,7 +6436,7 @@ function team_list($refund_ex="",$is_suppliers=true)
         }
         /* 查询 */
 
-        $sql = "SELECT o.team_num,u.uname,o.teammen_num,(o.team_num-o.teammen_num) as team_lack_num, o.team_status,o.team_sign,o.team_first,o.extension_code, o.order_id, o.order_sn, o.add_time,o.pay_time, o.order_status, o.shipping_status, o.order_amount, o.money_paid," .
+        $sql = "SELECT o.discount_type,o.discount_amount,o.team_num,u.uname,o.teammen_num,(o.team_num-o.teammen_num) as team_lack_num, o.team_status,o.team_sign,o.team_first,o.extension_code, o.order_id, o.order_sn, o.add_time,o.pay_time, o.order_status, o.shipping_status, o.order_amount, o.money_paid," .
             "o.pay_status, o.consignee, o.address, o.email, o.tel,  o.extension_id, " .
             "(" . order_amount_field('o.') . ") AS total_fee, " .
             "IFNULL(u.user_name, '" .$GLOBALS['_LANG']['anonymous']. "') AS buyer,u.openid,u.user_name, ".
@@ -6754,7 +6767,7 @@ function teammem_list()
             }
         }
         /* 查询 */
-        $sql ="SELECT o.team_num,o.transaction_id,u.uname,o.teammen_num,(o.team_num-o.teammen_num) as team_lack_num, o.team_status,o.team_sign,o.team_first,o.extension_code, o.order_id, o.order_sn, o.add_time,o.pay_time, o.order_status, o.shipping_status, o.order_amount, o.money_paid," .
+        $sql ="SELECT o.discount_type,o.discount_amount,o.team_num,o.transaction_id,u.uname,o.teammen_num,(o.team_num-o.teammen_num) as team_lack_num, o.team_status,o.team_sign,o.team_first,o.extension_code, o.order_id, o.order_sn, o.add_time,o.pay_time, o.order_status, o.shipping_status, o.order_amount, o.money_paid," .
             "o.pay_status, o.consignee, o.address, o.email, o.tel,  o.extension_id, " .
             "(" . order_amount_field('o.') . ") AS total_fee, " .
             "IFNULL(u.user_name, '" .$GLOBALS['_LANG']['anonymous']. "') AS buyer,u.openid,u.user_name,u.headimgurl, ".

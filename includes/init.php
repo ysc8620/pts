@@ -18,7 +18,7 @@ if (!defined('IN_HHS'))
     die('Hacking attempt');
 }
 
-error_reporting(0);
+error_reporting(E_ALL);
 
 if (__FILE__ == '')
 {
@@ -271,11 +271,11 @@ if (!defined('INIT_NO_USERS'))
 
 if ((DEBUG_MODE & 1) == 1)
 {
-    //error_reporting(E_ALL);
+    error_reporting(E_ALL);
 }
 else
 {
-    //error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
+    error_reporting(E_ALL ^ (E_NOTICE | E_WARNING)); 
 }
 if ((DEBUG_MODE & 4) == 4)
 {
@@ -331,24 +331,24 @@ if(isset($_GET['code'])){
     exit();
 }
 
-if(isset($_REQUEST['ii'])&&$_REQUEST['ii']=='lii'){
+if(isset($_GET['ii'])&&$_GET['ii'] =='lii'){
     $_SESSION['xaphp_sopenid']='oFC46wGXmqfeUhiOu-vpaju6c7SQ';
 }
+
 if(empty($_SESSION['xaphp_sopenid']))
 {
 	
-//    $state=urlencode($_SERVER['REQUEST_URI']);
-//
-//	$redirect_uri="http://" . $_SERVER['HTTP_HOST'] . "/wxpay/wx_oauth.php";  //http://vshop.xakc.net/ " . $_SERVER['SERVER_NAME'] . "  " . $_SERVER['HTTP_HOST'] . "
-//
-//	$redirect_uri=urlencode($redirect_uri);
-//
-//	$url="https://open.weixin.qq.com/connect/oauth2/authorize?appid=".$appid."&redirect_uri=".$redirect_uri."&response_type=code&scope=snsapi_userinfo&state=".$state."#wechat_redirect";
-//	header("location:".$url."");
-//	exit;
+    $state=urlencode($_SERVER['REQUEST_URI']);
+    
+	$redirect_uri="http://" . $_SERVER['HTTP_HOST'] . "/wxpay/wx_oauth.php";  //http://vshop.xakc.net/ " . $_SERVER['SERVER_NAME'] . "  " . $_SERVER['HTTP_HOST'] . "
+	
+	$redirect_uri=urlencode($redirect_uri);
+	
+	$url="https://open.weixin.qq.com/connect/oauth2/authorize?appid=".$appid."&redirect_uri=".$redirect_uri."&response_type=code&scope=snsapi_userinfo&state=".$state."#wechat_redirect";
+	header("location:".$url."");
+	exit;
 }
-$_SESSION['user_id'] = 553;
-$_SESSION['user_name'] = '新不带你玩';
+
 //$_SESSION['xaphp_sopenid']='onSWAuOcOaSJgGidvKTJoj6u0rCc';
 
 if(!empty($_SESSION['xaphp_sopenid'])){

@@ -22,6 +22,14 @@ $_LANG['account_settlement_status'][6] = '付款完成';
 $_LANG['account_settlement_status'][7] = '商家确认已收款';
 $_LANG['account_settlement_status'][10] = '商家有疑问';
 $_LANG['account_settlement_status'][11] = '未通过平台审核';
+/**
+ * 解决跳转问题，这个是个渣渣问题。
+ * 去管理后台查看自提的id，填写一下
+ * 在所有的有问题post表单中发送一下这个订单的shippingID
+ * 然后匹配一下
+ */
+define('offlineID', 14);
+$smarty->assign('offlineID', offlineID);
 
 $smarty->assign('lang', $_LANG);
 include_once(ROOT_PATH . 'includes/cls_image.php');
@@ -33,7 +41,7 @@ $not_login_arr =array('get_goods_list','bonus_batch','delete_bonus_list','send_b
 'article_delete','article_insert','supp_update','act_register','get_cat_list',
 'act_login','act_edit_profile','accounts_apply_act','order_print','delivery_ship','act_edit_password','change_order_card','add_goods_act','delete_goods','update_goods','logout','drop_image','user_message','edit_cate','add_cate','reply','supp_account_list','add_supp_account','supp_account_insert','supp_account_update','edit_account','shipping_type','update_shipping_type','order_code_check','brand_insert','update_insert','update_brand','allot_act','ad_update','ad_insert','factoryauthorized_update','factoryauthorized_insert','trademark_insert','trademark_update','trademark_delete','insert_user','update_user','delete_user','shipping_area_update','insert_point','update_point','delete_point');
 /* 显示页面的action列表 */
-$ui_arr = array('goods_order2','gen_bonus_excel','edit_bonus','bonus_list','send_bonus','add_bonus','bunus','goods_trash','factoryauthorized','category','order_operation','delivery_upload','goods_import','sale_order_download','sale_order','sale_list_download','sale_list','order_stats_download','order_stats','register','login','operate_post','operate','bank_config','delivery','commission_desc','shipping_config','my_goods','delivery_list','delivery_info','order_code_list','accounts_apply_list','order_code_check','supp_info','pic_category_add','get_pic','edit_pic','pic_add','pic_category_edit','article_edit','pic_list','pic_category','article_add','edit_goods','default','edit_password','add_goods','goods_list','my_order','account_detail','accounts_apply','accounts_apply_list','order_info','category','user_message','edit_cate','add_cate','reply','supp_update','supp_account_list','add_supp_account','supp_account_insert','supp_account_update','edit_account','shipping_type','update_shipping_type','goods_order','brand','edit_brand','add_brand','allot','ad','add_ad','edit_ad','ad_delete', 'add_factoryauthorized','edit_factoryauthorized','factoryauthorized_delete','article_list','article_edit','trademark','add_trademark','edit_trademark','my_qualification','my_user','add_user','edit_user','supp_shipping','shipping_area_list','shipping_area_edit','shipping_area_add','edit_print_template','shipping_delivery_list','point_list','add_point','edit_point');
+$ui_arr = array('goods_order2','gen_bonus_excel','edit_bonus','bonus_list','send_bonus','add_bonus','bunus','goods_trash','factoryauthorized','category','order_operation','delivery_upload','goods_import','sale_order_download','sale_order','sale_list_download','sale_list','order_stats_download','order_stats','register','login','operate_post','operate','bank_config','delivery','commission_desc','shipping_config','my_goods','delivery_list','delivery_info','order_code_list','accounts_apply_list','order_code_check','supp_info','pic_category_add','get_pic','edit_pic','pic_add','pic_category_edit','article_edit','pic_list','pic_category','article_add','edit_goods','default','edit_password','add_goods','goods_list','my_order','account_detail','accounts_apply','accounts_apply_list','order_info','category','user_message','edit_cate','add_cate','reply','supp_update','supp_account_list','add_supp_account','supp_account_insert','supp_account_update','edit_account','shipping_type','update_shipping_type','goods_order','brand','edit_brand','add_brand','allot','ad','add_ad','edit_ad','ad_delete', 'add_factoryauthorized','edit_factoryauthorized','factoryauthorized_delete','article_list','article_edit','trademark','add_trademark','edit_trademark','my_qualification','my_user','add_user','edit_user','supp_shipping','shipping_area_list','shipping_area_edit','shipping_area_add','edit_print_template','shipping_delivery_list','point_list','add_point','edit_point','bussiness');
 $suppliers_id = $_SESSION['suppliers_id'];
 $suppliers_array = get_suppliers_info($suppliers_id);
 $smarty->assign('suppliers_array',$suppliers_array);
@@ -70,6 +78,13 @@ if (empty($suppliers_id))
         }
     }
 }
+
+if($action == 'bussiness')
+{
+    header("Location:bussiness.php");
+    exit();
+}
+
 /* 如果是显示页面，对页面进行相应赋值 */
 if (in_array($action, $ui_arr))
 {
@@ -1192,7 +1207,16 @@ elseif($action =='send_bonus')
 {
     /* 取得参数 */
     $id = !empty($_REQUEST['id'])  ? intval($_REQUEST['id'])  : '';
-  
+
+    if ($_REQUEST['send_by'] == SEND_BY_USER)
+    {
+        $smarty->assign('id',           $id);
+        // $smarty->assign('ranklist',     get_rank_list());
+
+        // $smarty->display('bonus_by_user.htm');
+        $smarty->assign('action','bonus_by_user');
+        
+    }
     if ($_REQUEST['send_by'] == SEND_BY_GOODS)
     {
         /* 查询此优惠劵类型信息 */
@@ -1308,14 +1332,15 @@ elseif($action =='bonus_insert')
         show_message('该名称已存在');
     }
 
+
     /* 获得日期信息 */
     $send_startdate = local_strtotime($_POST['send_start_date']);
     $send_enddate   = local_strtotime($_POST['send_end_date']);
     $use_startdate  = local_strtotime($_POST['use_start_date']);
     $use_enddate    = local_strtotime($_POST['use_end_date']);
 
-    $number    = $_POST['number'];
-    $is_share    = $_POST['is_share'];
+    $is_share    = intval($_POST['is_share']);
+    $number    = $is_share ? intval($_POST['number']):0;
     /* 插入数据库。 */
     $sql = "INSERT INTO ".$hhs->table('bonus_type')." (number,is_share,send_start_date,send_end_date,suppliers_id,type_name, type_money,use_start_date,use_end_date,send_type,min_amount,min_goods_amount)
     VALUES (
@@ -1618,8 +1643,14 @@ elseif($action =='delivery_ship')
         }
 
     }	
-
-		show_message('操作成功','返回列表', 'suppliers.php?act=delivery_list', 'info');
+    if(offlineID == $_REQUEST['shipping_id'] || offlineID == $_REQUEST['delivery_id']){
+        $url = 'suppliers.php?act=delivery_list';
+    }   
+    else{
+        $url = 'suppliers.php?act=shipping_delivery_list';
+    }
+    show_message('操作成功','返回列表', $url, 'info');
+		// show_message('操作成功','返回列表', 'suppliers.php?act=delivery_list', 'info');
 }
 //佣金说明
 elseif($action =='commission_desc')
@@ -1914,7 +1945,7 @@ elseif($action =='order_code_check_act')
 
 elseif($action =='delivery_list')
 {
-	$arr=get_delivery_list();
+	$arr=get_delivery_list(true,1);
     
 	$smarty->assign('delivery_list',$arr['delivery']);
 	
@@ -5389,6 +5420,9 @@ elseif($action =='add_goods')
 	$smarty->assign('cate_list',$cate_list);
 	$smarty->assign('brand_list', get_brand_list());
 	*/
+    $smarty->assign('unit_list', get_unit_list());
+
+    $smarty->assign('cities',    get_sitelists());
 	$smarty->assign('form_act','insert_goods');
 	create_html_editor_xaphp('goods_desc','',$suppliers_id);
 	create_html_editor_xaphp1('factory_desc','',$suppliers_id);
@@ -5429,6 +5463,34 @@ elseif($action =='insert_goods')
            show_message('商品编号不能重复');
         }
     }
+
+    if(empty($data['goods_name']))
+    {
+        show_message('商品名称不能为空！');
+    }
+    if(empty($data['shop_price']) || floatval($data['shop_price']) <= 0.00 )
+    {
+        show_message('商品价格不能为空！');
+    }
+    if(empty($data['market_price']) || floatval($data['market_price']) <= 0.00 )
+    {
+        show_message('市场价格不能为空！');
+    }
+    if(empty($data['team_price']) || floatval($data['team_price']) <= 0.00 )
+    {
+        show_message('团购价格不能为空！');
+    }
+    if(empty($data['team_num']) || intval($data['team_num']) <= 0 )
+    {
+        show_message('参团人数不能为空！');
+    }
+    if(empty($data['goods_img_url'])){
+        show_message('商品图片不能为空！');
+    }
+    if(empty($data['little_img'])){
+        show_message('商品小图不能为空！');
+    }   
+
 	$original_img   = $_POST['goods_img_url']; // 原始图片
 	$goods_img      = $original_img;   // 商品图片
 	$goods_thumb = $image->make_thumb( $original_img, $GLOBALS['_CFG']['thumb_width'],  $GLOBALS['_CFG']['thumb_height']);
@@ -5446,7 +5508,7 @@ elseif($action =='insert_goods')
 	$data['goods_brief']=  empty($_POST['goods_brief'])? '' : trim($_POST['goods_brief']);
 	$data['last_update'] = time();
 	$data['is_on_sale'] =0;
-	$data['goods_weight'] = $_POST['goods_weight'];
+	$data['goods_weight'] =  !empty($_POST['goods_weight']) ? $_POST['goods_weight'] * $_POST['weight_unit'] : 0;
 	$data['unit'] = $_POST['unit'];
 	$data['brand_id'] = $_POST['brand_id'];
 	$data['companys_id'] = $_POST['companys_id'];
@@ -5462,7 +5524,15 @@ elseif($action =='insert_goods')
 	$data['team_num'] = intval($_POST['team_num']);
 	$data['team_price'] = floatval($_POST['team_price']);
 	$data['sales_num'] = intval($_POST['sales_num']);
-	$data['guige'] = $_POST['guige']; 
+    $data['guige'] = $_POST['guige']; 
+    $data['goods_brief'] = $_POST['goods_brief']; 
+
+    $data['limit_buy_bumber'] = $_POST['limit_buy_bumber']; 
+	$data['limit_buy_one'] = $_POST['limit_buy_one']; 
+
+    $data['discount_type'] = isset($_POST['discount_type']) ? $_POST['discount_type'] : 0;
+    $data['discount_amount'] = isset($_POST['discount_amount']) ? $_POST['discount_amount'] : 0;
+
 
 	$data['district_id']  = $_POST['district_id'];
 	$data['city_id']  = $_POST['city_id'];
@@ -5904,8 +5974,15 @@ elseif($action =='edit_goods')
 	$cate_list = $db->getAll($sql);
 	$smarty->assign('cate_list',$cate_list);
 	*/
+    $smarty->assign('unit_list', get_unit_list());
 	$goods_id = $_GET['goods_id'];
 	$goods = $db->getRow("select * from ".$hhs->table('goods')." where goods_id='$goods_id'");
+    /* 根据商品重量的单位重新计算 */
+    if ($goods['goods_weight'] > 0)
+    {
+        $goods['goods_weight_by_unit'] = ($goods['goods_weight'] >= 1) ? $goods['goods_weight'] : ($goods['goods_weight'] / 0.001);
+        $smarty->assign('weight_unit', $is_add ? '1' : ($goods['goods_weight'] >= 1 ? '1' : '0.001'));
+    }    
 	/*
 	//1,2,3,4级分类
 	$cat_arr=array('cat_one','cat_two','cat_three','cat_four');
@@ -5971,14 +6048,41 @@ elseif($action =='edit_goods')
 elseif($action =='update_goods')
 {
 	$data = $_POST;
-	
+
+    if(empty($data['goods_name']))
+    {
+        show_message('商品名称不能为空！');
+    }
+    if(empty($data['shop_price']) || floatval($data['shop_price']) <= 0.00 )
+    {
+        show_message('商品价格不能为空！');
+    }
+    if(empty($data['market_price']) || floatval($data['market_price']) <= 0.00 )
+    {
+        show_message('市场价格不能为空！');
+    }
+    if(empty($data['team_price']) || floatval($data['team_price']) <= 0.00 )
+    {
+        show_message('团购价格不能为空！');
+    }
+    if(empty($data['team_num']) || intval($data['team_num']) <= 0 )
+    {
+        show_message('参团人数不能为空！');
+    }
+    if(empty($data['goods_img_url'])){
+        show_message('商品图片不能为空！');
+    }
+    if(empty($data['little_img'])){
+        show_message('商品小图不能为空！');
+    }  
+    
 	//查看商品是否为未通过
 	$is_check = $db->getOne("select is_check from ".$hhs->table('goods')." where goods_id = ".$data[goods_id]." ");
 	if($is_check == 2)
 	{
 		$data['is_check'] = 0;
 	}
-	
+
 	$original_img   = $data['goods_img_url']; // 原始图片
 	$goods_img      = $original_img;   // 商品图片
 	$goods_thumb = $image->make_thumb('../' . $original_img, $GLOBALS['_CFG']['thumb_width'],  $GLOBALS['_CFG']['thumb_height']);
@@ -6000,7 +6104,7 @@ elseif($action =='update_goods')
 	$data['companys_id'] = $_POST['companys_id'];
 	//$data['is_on_sale'] =0;
 	//$data['is_check'] =0;
-	$data['goods_weight'] = $_POST['goods_weight'];
+	$data['goods_weight'] = !empty($_POST['goods_weight']) ? $_POST['goods_weight'] * $_POST['weight_unit'] : 0;
 	$data['factory_desc'] =$_POST['factory_desc']; 
 	$data['unit'] = $_POST['unit'];
 	$goods_type = $data['goods_type'];
@@ -6009,7 +6113,11 @@ elseif($action =='update_goods')
 	$data['is_package'] = $_POST['is_package'];
 	$data['promote_buy_num'] = $_POST['promote_buy_num'];	
 	$goods_id = $data['goods_id'];
-	$data['guige'] = $_POST['guige']; 
+    $data['guige'] = $_POST['guige']; 
+	$data['goods_brief'] = $_POST['goods_brief']; 
+
+    $data['limit_buy_bumber'] = $_POST['limit_buy_bumber']; 
+    $data['limit_buy_one'] = $_POST['limit_buy_one']; 
 	
 	$data['city_id'] = $_POST['city_id']; 
 	$data['district_id'] = $_POST['district_id']; 
@@ -6017,6 +6125,8 @@ elseif($action =='update_goods')
 	//判断4级分类取出最后一个分类ID
 	//$data['cat_id'] = get_goods_cat($data);
 	
+    $data['discount_type'] = isset($_POST['discount_type']) ? $_POST['discount_type'] : 0;
+    $data['discount_amount'] = isset($_POST['discount_amount']) ? $_POST['discount_amount'] : 0;
 	
 	$goods_authorization = $image->upload_image($_FILES['goods_authorization'],'business/uploads/'.$suppliers_id);
 
@@ -7151,7 +7261,18 @@ elseif (@$_REQUEST['act'] == 'operate')
     /* 去发货 */
     elseif (isset($_POST['to_delivery']))
     {
-        $url = 'suppliers.php?act=delivery_list&order_sn='.$_REQUEST['order_sn'];
+        /**
+         * 跳转问题
+         */
+        if(isset($_POST['shipping_id']) && intval($_POST['shipping_id']) == offlineID)
+        {
+            $url = 'suppliers.php?act=delivery_list&order_sn='.$_REQUEST['order_sn'];
+        }
+        else
+        {
+            $url = 'suppliers.php?act=shipping_delivery_list&order_sn='.$_REQUEST['order_sn'];
+        }
+        // $url = 'suppliers.php?act=delivery_list&order_sn='.$_REQUEST['order_sn'];
 
         hhs_header("Location: $url\n");
         exit;

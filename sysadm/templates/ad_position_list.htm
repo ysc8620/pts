@@ -18,12 +18,12 @@
   </tr>
   {foreach from=$position_list item=list}
   <tr>
-    <td class="first-cell">
+    <td align="center" class="first-cell">
     <span onclick="javascript:listTable.edit(this, 'edit_position_name', {$list.position_id})">{$list.position_name|escape:html}</span>
     </td>
-    <td align="right"><span onclick="javascript:listTable.edit(this, 'edit_ad_width', {$list.position_id})">{$list.ad_width}</span></td>
-    <td align="right"><span onclick="javascript:listTable.edit(this, 'edit_ad_height', {$list.position_id})">{$list.ad_height}</span></td>
-    <td align="left"><span>{$list.position_desc|escape:html}</span></td>
+    <td align="center"><span onclick="javascript:listTable.edit(this, 'edit_ad_width', {$list.position_id})">{$list.ad_width}</span></td>
+    <td align="center"><span onclick="javascript:listTable.edit(this, 'edit_ad_height', {$list.position_id})">{$list.ad_height}</span></td>
+    <td align="center"><span>{$list.position_desc|escape:html}</span></td>
     <td align="center">
       <a href="ads.php?act=list&pid={$list.position_id}" title="{$lang.view}{$lang.ad_content}">
       <img src="images/icon_view.gif" border="0" height="16" width="16" /></a>
@@ -33,7 +33,7 @@
     </td>
   </tr>
   {foreachelse}
-    <tr><td class="no-records" colspan="5">{$lang.no_position}</td></tr>
+    <tr><td colspan="5" align="center" class="no-records">{$lang.no_position}</td></tr>
   {/foreach}
   <tr>
     <td align="right" nowrap="true" colspan="5">{include file="page.htm"}</td>

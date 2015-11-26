@@ -44,13 +44,13 @@ if ($_REQUEST['act'] == 'list' || $_REQUEST['act'] == 'trash')
         $smarty->assign('add_handler',      $handler_list[$code]);
     }
     $smarty->assign('cities',    get_sitelists());
-    /* 供货商名 */
+    /* 供货商名*/
     $suppliers_list_name = suppliers_list_name();
     $suppliers_exists = 1;
     if (empty($suppliers_list_name))
     {
         $suppliers_exists = 0;
-    }
+    } 
     $smarty->assign('is_on_sale', $is_on_sale);
     $smarty->assign('suppliers_id', $suppliers_id);
     $smarty->assign('suppliers_exists', $suppliers_exists);
@@ -66,17 +66,23 @@ if ($_REQUEST['act'] == 'list' || $_REQUEST['act'] == 'trash')
     $smarty->assign('action_link',  $action_link);
     $smarty->assign('code',     $code);
     $smarty->assign('cat_list',     cat_list(0, $cat_id));
-    $smarty->assign('brand_list',   get_brand_list());
-    $smarty->assign('intro_list',   get_intro_list());
+    //$smarty->assign('brand_list',   get_brand_list());
+    //$smarty->assign('intro_list',   get_intro_list());
     $smarty->assign('lang',         $_LANG);
     $smarty->assign('list_type',    $_REQUEST['act'] == 'list' ? 'goods' : 'trash');
     $smarty->assign('use_storage',  empty($_CFG['use_storage']) ? 0 : 1);
 
-    $suppliers_list = suppliers_list_info(' is_check = 1 ');
-    $suppliers_list_count = count($suppliers_list);
-    $smarty->assign('suppliers_list', ($suppliers_list_count == 0 ? 0 : $suppliers_list)); // 取供货商列表
-
-    $goods_list = goods_list($_REQUEST['act'] == 'list' ? 0 : 1, ($_REQUEST['act'] == 'list') ? (($code == '') ? 1 : 0) : -1," and suppliers_id=0 ");
+    //$suppliers_list = suppliers_list_info(' is_check = 1 ');
+    //$suppliers_list_count = count($suppliers_list);
+    //$smarty->assign('suppliers_list', ($suppliers_list_count == 0 ? 0 : $suppliers_list)); // 取供货商列表
+    
+    
+    if(empty($_REQUEST['is_supplier'])){
+        $ext=" and suppliers_id=0 ";
+    }else{
+        $ext=" and suppliers_id!=0 ";
+    }
+    $goods_list = goods_list($_REQUEST['act'] == 'list' ? 0 : 1, ($_REQUEST['act'] == 'list') ? (($code == '') ? 1 : 0) : -1, $ext);
     $smarty->assign('goods_list',   $goods_list['goods']);
     $smarty->assign('filter',       $goods_list['filter']);
     $smarty->assign('record_count', $goods_list['record_count']);
@@ -88,13 +94,19 @@ if ($_REQUEST['act'] == 'list' || $_REQUEST['act'] == 'trash')
     $smarty->assign($sort_flag['tag'], $sort_flag['img']);
 
     /* 获取商品类型存在规格的类型 */
-    $specifications = get_goods_type_specifications();
-    $smarty->assign('specifications', $specifications);
+    //$specifications = get_goods_type_specifications();
+    //$smarty->assign('specifications', $specifications);
 
     /* 显示商品列表页面 */
+    if(empty($_REQUEST['is_supplier'])){
+        $tpl='goods_list.htm';
+    }else{
+        $tpl='suppliers_goods_list.htm';
+    }
+    
     assign_query_info();
     $htm_file = ($_REQUEST['act'] == 'list') ?
-        'goods_list.htm' : (($_REQUEST['act'] == 'trash') ? 'goods_trash.htm' : 'group_list.htm');
+        $tpl : (($_REQUEST['act'] == 'trash') ? 'goods_trash.htm' : 'group_list.htm');
     $smarty->display($htm_file);
 }
 
@@ -473,6 +485,7 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
 {
     $code = empty($_REQUEST['extension_code']) ? '' : trim($_REQUEST['extension_code']);
 
+
     /* 是否处理缩略图 */
     $proc_thumb = (isset($GLOBALS['shop_id']) && $GLOBALS['shop_id'] > 0)? false : true;
     if ($code == 'virtual_card')
@@ -597,6 +610,32 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
         }
     }
 
+    if(empty($_POST['goods_name']))
+    {
+        sys_msg('商品名称不能为空！');
+    }
+    if(empty($_POST['shop_price']) || floatval($_POST['shop_price']) <= 0.00 )
+    {
+        sys_msg('商品价格不能小于0.01！');
+    }
+    if(empty($_POST['market_price']) || floatval($_POST['market_price']) <= 0.00 )
+    {
+        sys_msg('市场价格不能小于0.01！');
+    }
+    if(empty($_POST['team_price']) || floatval($_POST['team_price']) <= 0.00 )
+    {
+        sys_msg('团购价格不能小于0.01！');
+    }
+    if(empty($_POST['team_num']) || intval($_POST['team_num']) <= 0 )
+    {
+        sys_msg('参团人数不能小于1！');
+    }
+    // if(empty($_POST['goods_img_url'])){
+    //     show_message('商品图片不能为空！');
+    // }
+    // if(empty($_POST['little_img'])){
+    //     show_message('商品小图不能为空！');
+    // } 
     /* 插入还是更新的标识 */
     $is_insert = $_REQUEST['act'] == 'insert';
 
@@ -605,6 +644,7 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
     $goods_thumb      = '';  // 初始化商品缩略图
     $original_img     = '';  // 初始化原始图片
     $old_original_img = '';  // 初始化原始图片旧图
+	 $_POST['goods_img_url'] = 'http://';
 
     // 如果上传了商品图片，相应处理
     if (($_FILES['goods_img']['tmp_name'] != '' && $_FILES['goods_img']['tmp_name'] != 'none') or (($_POST['goods_img_url'] != $_LANG['lab_picture_url'] && $_POST['goods_img_url'] != 'http://') && $is_url_goods_img = 1))
@@ -847,17 +887,19 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
 	
 	$subscribe =  isset($_POST['subscribe']) ? $_POST['subscribe'] : 0;
 
+    $discount_type = isset($_POST['discount_type']) ? $_POST['discount_type'] : 0;
+    $discount_amount = isset($_POST['discount_amount']) ? $_POST['discount_amount'] : 0;
     /* 入库 */
     if ($is_insert)
     {
         if ($code == '')
         {
-            $sql = "INSERT INTO " . $hhs->table('goods') . " (subscribe,district_id,city_id,limit_buy_one,limit_buy_bumber,is_check,is_nearby,sales_num,little_img,team_num,team_price,goods_name, goods_name_style, goods_sn, " .
+            $sql = "INSERT INTO " . $hhs->table('goods') . " (discount_type,discount_amount,subscribe,district_id,city_id,limit_buy_one,limit_buy_bumber,is_check,is_nearby,sales_num,little_img,team_num,team_price,goods_name, goods_name_style, goods_sn, " .
                     "cat_id, brand_id, shop_price, market_price, is_promote, promote_price, " .
                     "promote_start_date, promote_end_date, goods_img, goods_thumb, original_img, keywords, goods_brief, " .
                     "seller_note, goods_weight, goods_number, warn_number, integral, give_integral, is_best, is_new, is_hot, " .
                     "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, rank_integral, suppliers_id)" .
-                "VALUES ('$subscribe','$district_id','$city_id','$limit_buy_one','$limit_buy_bumber',1,'$is_nearby' ,'$sales_num','$little_img','$team_num','$team_price','$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
+                "VALUES ('$discount_type','$discount_amount','$subscribe','$district_id','$city_id','$limit_buy_one','$limit_buy_bumber',1,'$is_nearby' ,'$sales_num','$little_img','$team_num','$team_price','$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
                     "'$brand_id', '$shop_price', '$market_price', '$is_promote','$promote_price', ".
                     "'$promote_start_date', '$promote_end_date', '$goods_img', '$goods_thumb', '$original_img', ".
                     "'$_POST[keywords]', '$_POST[goods_brief]', '$_POST[seller_note]', '$goods_weight', '$goods_number',".
@@ -866,12 +908,12 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
         }
         else
         {
-            $sql = "INSERT INTO " . $hhs->table('goods') . " (subscribe,district_id,city_id.limit_buy_one,limit_buy_bumber,suppliers_id,is_check,is_nearby,sales_num,little_img,team_num,team_price,goods_name, goods_name_style, goods_sn, " .
+            $sql = "INSERT INTO " . $hhs->table('goods') . " (discount_type,discount_amount,subscribe,district_id,city_id.limit_buy_one,limit_buy_bumber,suppliers_id,is_check,is_nearby,sales_num,little_img,team_num,team_price,goods_name, goods_name_style, goods_sn, " .
                     "cat_id, brand_id, shop_price, market_price, is_promote, promote_price, " .
                     "promote_start_date, promote_end_date, goods_img, goods_thumb, original_img, keywords, goods_brief, " .
                     "seller_note, goods_weight, goods_number, warn_number, integral, give_integral, is_best, is_new, is_hot, is_real, " .
                     "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, extension_code, rank_integral)" .
-                "VALUES ('$subscribe','$district_id','$city_id','$limit_buy_one','$limit_buy_bumber','$suppliers_id',1,'$is_nearby' ,'$sales_num','$little_img','$team_num','$team_price','$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
+                "VALUES ('$discount_type','$discount_amount','$subscribe','$district_id','$city_id','$limit_buy_one','$limit_buy_bumber','$suppliers_id',1,'$is_nearby' ,'$sales_num','$little_img','$team_num','$team_price','$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
                     "'$brand_id', '$shop_price', '$market_price', '$is_promote','$promote_price', ".
                     "'$promote_start_date', '$promote_end_date', '$goods_img', '$goods_thumb', '$original_img', ".
                     "'$_POST[keywords]', '$_POST[goods_brief]', '$_POST[seller_note]', '$goods_weight', '$goods_number',".
@@ -920,7 +962,9 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
                 "sales_num  = '$sales_num' ,".
                 "is_nearby  = '$is_nearby' ,".
                 "subscribe  = '$subscribe' ,".
-                "suppliers_id  = '$suppliers_id' ,"
+                "suppliers_id  = '$suppliers_id' ,".
+                "discount_type  = '$discount_type' ,".
+                "discount_amount  = '$discount_amount' ,"
         ;
 
         /* 如果有上传图片，需要更新数据库 */

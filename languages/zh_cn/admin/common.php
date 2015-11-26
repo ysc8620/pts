@@ -241,8 +241,8 @@ $_LANG['09_delivery_order'] = '发货单列表';
 $_LANG['10_back_order'] = '退货单列表';
 
 /* 广告管理 */
-$_LANG['ad_position'] = '广告位置';
-$_LANG['ad_list'] = '广告列表';
+$_LANG['01_ad_position'] = '广告位置';
+$_LANG['02_ad_list'] = '广告列表';
 
 /* 报表统计 */
 $_LANG['report_order'] = '订单统计';

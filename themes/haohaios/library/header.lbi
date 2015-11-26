@@ -8,7 +8,7 @@
     <div class="city-content">
         {foreach from=$site_list item=site name=site}
         <dl>
-            <dt><a href="?cid={$site.city_id}"{if $site.city_id eq $cid} class="cur"{/if}>{$site.name}</a></dt>
+            <dt><a href="?cid={$site.city_id}"{if $site.city_id eq $cid} class="cur"{/if}>{$site.region_name}</a></dt>
             <dd>
                 {foreach from=$site.dis item=dis name=dis}
                 <a href="?cid={$dis.region_id}"{if $dis.region_id eq $cid} class="cur"{/if}>{$dis.region_name}</a>

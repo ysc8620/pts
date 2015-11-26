@@ -2,11 +2,11 @@
 // database host
 $db_host   = "localhost:3306";
 // database name
-$db_name   = "pts1112";
+$db_name   = "haohai_pts";
 // database username
-$db_user   = "root";
+$db_user   = "haohai";
 // database password
-$db_pass   = "LEsc2008";
+$db_pass   = "a147258369";
 // table prefix
 $prefix    = "hhs_";
 $timezone    = "PRC";

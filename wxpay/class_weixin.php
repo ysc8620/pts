@@ -115,7 +115,40 @@ class class_weixin
         return $str;
     
     }
-    
+    public function send_wxmsg($openid,$w_title,$w_url,$w_description,$picurl=''  )
+    {
+        
+        $accessToken = $this->getAccessToken();
+        
+        $url = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='.$accessToken;
+        $cfg_baseurl = $GLOBALS['db']->getOne("SELECT cfg_value FROM ".$GLOBALS['hhs']->table("weixin_cfg")."  WHERE cfg_name = 'baseurl'");
+        preg_match("/^(http:\/\/)?([^\/]+)/i", $cfg_baseurl , $matches);
+        $cfg_baseurl=$matches[0]."/";
+
+        $w_url = $cfg_baseurl.$w_url;
+        $post_msg = '{
+           "touser":"'.$openid.'",
+           "msgtype":"news",
+           "news":{
+               "articles": [
+                {
+                    "title":"'.$w_title.'",
+                    "description":"'.$w_description.'",
+                    "url":"'.$w_url.'",
+                    "picurl":"'.$picurl.'"
+                }
+                ]
+           }
+       }';
+
+       $ret_json = $this->httpPost($url, $post_msg);
+       $ret = json_decode($ret_json);
+       $fp=fopen('a.txt','a');
+       fputs($fp,'==='.serialize($ret));
+       fclose($fp);
+       return $ret->errmsg ;
+       
+    }
     
     protected function httpGet($url, $data = null)
     {
@@ -147,6 +180,27 @@ class class_weixin
         curl_close($ch);
         
         return $tmpInfo;
+    }
+    
+    protected function httpPost($url, $data = null)
+    {
+
+        $ch = curl_init();
+        //curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+       
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        
+        curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+        curl_setopt($ch, CURLOPT_POST, TRUE);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        $temp=curl_exec ($ch);
+        curl_close ($ch);
+        return $temp; 
     }
 }
 ?>
