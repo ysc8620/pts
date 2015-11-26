@@ -6080,7 +6080,7 @@ function order_list($refund_ex="",$is_page=true,$is_suppliers=false)
 
     return $arr;
 }
-function team_list($refund_ex="",$is_suppliers=true)
+function team_list($refund_ex="",$is_suppliers=false)
 {
 
     $result = get_filter();
