@@ -49,10 +49,9 @@
         <div class="tm">
             <form action="javascript:addToCart({$goods.goods_id})" method="post" name="HHS_FORMBUY" id="HHS_FORMBUY" >
             <div class="td2">
-                <div class="td2_name">{$goods.goods_style_name}</div>
+                <div class="td2_name">{$goods.goods_name}</div>
                 <div class="td2_cx">{$goods.goods_brief}</div>
                 <div class="td2_info">
-
                     <div class="td2_num">支付开团并邀请<span>{$d_team_num}</span>人参团，人数不足自动退款，详见下方拼团玩法</div>
                 </div>
             </div>
@@ -76,6 +75,14 @@
             <input name="number" type="hidden" value="1" />
             </form>
         </div>
+        <div class="pro-detial">
+                    <ul class="pro_tab">
+                        <li class="hover"><div>图文详情</div></li>
+                    </ul>
+                    <div class="pro_con">
+                        <div id="con_one_1">{$goods.goods_desc}</div>
+                    </div>
+                </div>
         <div class="step">
             <div class="step_hd">
                 拼团玩法<a class="step_more" href="tuan_rule.php">查看详情</a>
