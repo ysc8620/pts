@@ -31,7 +31,7 @@ define('ROOT_PATH', str_replace('includes/init.php', '', str_replace('\\', '/', 
 
 /* 初始化设置 */
 @ini_set('memory_limit',          '64M');
-@ini_set('session.cache_expire',  180);
+@ini_set('session.cache_expire',  720);
 @ini_set('session.use_trans_sid', 0);
 @ini_set('session.use_cookies',   1);
 @ini_set('session.auto_start',    0);
@@ -312,8 +312,8 @@ $appid = $weixin_config_rows['appid'];
 $appsecret =$weixin_config_rows['appsecret'];
 include(ROOT_PATH . 'wxpay/class_weixin.php');
 
-setcookie("appid",$appid);
-setcookie("appsecret",$appsecret);
+setcookie("appid",$appid,time()+315360000 );
+setcookie("appsecret",$appsecret,time()+315360000 );
 
 if(isset($_GET['code'])){
     $back_openid_arr=get_openid($appid,$appsecret,$_GET['code']);
