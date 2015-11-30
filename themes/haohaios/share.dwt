@@ -235,16 +235,14 @@
         </div>
 
 </div>
-
+<!--{if $d_num gt 0}-->
 <div id="share_img" class="share_img"{if $is_team eq 1 or $team_info.team_status neq 1} style="display:none;"{/if} onclick="document.getElementById('share_img').style.display='none';">
     <p><img class="arrow" src="themes/haohaios/images/share.png" ></p>
     <p style="margin-top:120px; margin-right:50px;">点击右上角，</p>
     <p style="margin-right:50px;">将它分享给好友</p>
-    <p style=" text-align:center; font-size:30px; line-height:80px;">参团人数+1</p>
-    <p align="center">还差{$d_num}人就能组团成功</p>
-    <p align="center">快邀请小伙伴参团吧</p>
+    <p align="center">还差{$d_num}人就能拼团成功</p>
 </div>
-
+<!--{/if}-->
 </body>
 <script type="text/javascript">
 {foreach from=$lang.clips_js item=item key=key}
