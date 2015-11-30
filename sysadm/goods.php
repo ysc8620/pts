@@ -884,7 +884,7 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
 	$limit_buy_one =  isset($_POST['limit_buy_one']) ? $_POST['limit_buy_one'] : 0;
 	$city_id = empty($_POST['city_id']) ? '' : intval($_POST['city_id']);
 	$district_id = empty($_POST['district_id']) ? '' : intval($_POST['district_id']);
-	
+	$sort_order = intval($_POST['sort_order']);
 	$subscribe =  isset($_POST['subscribe']) ? $_POST['subscribe'] : 0;
 
     $discount_type = isset($_POST['discount_type']) ? $_POST['discount_type'] : 0;
@@ -894,12 +894,12 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
     {
         if ($code == '')
         {
-            $sql = "INSERT INTO " . $hhs->table('goods') . " (discount_type,discount_amount,subscribe,district_id,city_id,limit_buy_one,limit_buy_bumber,is_check,is_nearby,sales_num,little_img,team_num,team_price,goods_name, goods_name_style, goods_sn, " .
+            $sql = "INSERT INTO " . $hhs->table('goods') . " (discount_type,sort_order,discount_amount,subscribe,district_id,city_id,limit_buy_one,limit_buy_bumber,is_check,is_nearby,sales_num,little_img,team_num,team_price,goods_name, goods_name_style, goods_sn, " .
                     "cat_id, brand_id, shop_price, market_price, is_promote, promote_price, " .
                     "promote_start_date, promote_end_date, goods_img, goods_thumb, original_img, keywords, goods_brief, " .
                     "seller_note, goods_weight, goods_number, warn_number, integral, give_integral, is_best, is_new, is_hot, " .
                     "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, rank_integral, suppliers_id)" .
-                "VALUES ('$discount_type','$discount_amount','$subscribe','$district_id','$city_id','$limit_buy_one','$limit_buy_bumber',1,'$is_nearby' ,'$sales_num','$little_img','$team_num','$team_price','$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
+                "VALUES ('$discount_type','$sort_order','$discount_amount','$subscribe','$district_id','$city_id','$limit_buy_one','$limit_buy_bumber',1,'$is_nearby' ,'$sales_num','$little_img','$team_num','$team_price','$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
                     "'$brand_id', '$shop_price', '$market_price', '$is_promote','$promote_price', ".
                     "'$promote_start_date', '$promote_end_date', '$goods_img', '$goods_thumb', '$original_img', ".
                     "'$_POST[keywords]', '$_POST[goods_brief]', '$_POST[seller_note]', '$goods_weight', '$goods_number',".
@@ -908,12 +908,12 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
         }
         else
         {
-            $sql = "INSERT INTO " . $hhs->table('goods') . " (discount_type,discount_amount,subscribe,district_id,city_id.limit_buy_one,limit_buy_bumber,suppliers_id,is_check,is_nearby,sales_num,little_img,team_num,team_price,goods_name, goods_name_style, goods_sn, " .
+            $sql = "INSERT INTO " . $hhs->table('goods') . " (discount_type,sort_order,discount_amount,subscribe,district_id,city_id.limit_buy_one,limit_buy_bumber,suppliers_id,is_check,is_nearby,sales_num,little_img,team_num,team_price,goods_name, goods_name_style, goods_sn, " .
                     "cat_id, brand_id, shop_price, market_price, is_promote, promote_price, " .
                     "promote_start_date, promote_end_date, goods_img, goods_thumb, original_img, keywords, goods_brief, " .
                     "seller_note, goods_weight, goods_number, warn_number, integral, give_integral, is_best, is_new, is_hot, is_real, " .
                     "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, extension_code, rank_integral)" .
-                "VALUES ('$discount_type','$discount_amount','$subscribe','$district_id','$city_id','$limit_buy_one','$limit_buy_bumber','$suppliers_id',1,'$is_nearby' ,'$sales_num','$little_img','$team_num','$team_price','$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
+                "VALUES ('$discount_type','$sort_order', '$discount_amount','$subscribe','$district_id','$city_id','$limit_buy_one','$limit_buy_bumber','$suppliers_id',1,'$is_nearby' ,'$sales_num','$little_img','$team_num','$team_price','$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
                     "'$brand_id', '$shop_price', '$market_price', '$is_promote','$promote_price', ".
                     "'$promote_start_date', '$promote_end_date', '$goods_img', '$goods_thumb', '$original_img', ".
                     "'$_POST[keywords]', '$_POST[goods_brief]', '$_POST[seller_note]', '$goods_weight', '$goods_number',".
@@ -950,8 +950,7 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
 				"limit_buy_bumber = '$limit_buy_bumber', " .
 				"limit_buy_one = '$limit_buy_one', " .
 				"city_id = '$city_id', " .
-				"district_id = '$district_id', " . 
-				
+				"district_id = '$district_id', " .
                 "is_promote = '$is_promote', " .
                 "promote_price = '$promote_price', " .
                 "promote_start_date = '$promote_start_date', " .
@@ -981,6 +980,7 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
             $sql .= "is_real=0, extension_code='$code', ";
         }
         $sql .= "keywords = '$_POST[keywords]', " .
+                 "sort_order = '$sort_order', " .
                 "goods_brief = '$_POST[goods_brief]', " .
                 "seller_note = '$_POST[seller_note]', " .
                 "goods_weight = '$goods_weight'," .
