@@ -588,7 +588,7 @@ class wechatCallbackapi{
 					   $db->query("UPDATE `$thistable` SET `is_attention_send` = '1' WHERE `bonus_sn` ='$new_bonus_sn';");					
 					
 					  } else {
-						  $contentStr = "\r\n本次活动红包已送完!";
+						  $contentStr = "";//"\r\n本次活动红包已送完!";
 					  }
             }
         }
