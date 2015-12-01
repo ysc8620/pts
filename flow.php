@@ -4052,7 +4052,7 @@ function favourable_list($user_rank)
             " WHERE CONCAT(',', user_rank, ',') LIKE '%" . $user_rank . "%'" .
             " AND start_time <= '$now' AND end_time >= '$now'" .
             " AND act_type = '" . FAT_GOODS . "'" .
-            " ORDER BY sort_order";
+            " ORDER BY sort_order DESC";
     $res = $GLOBALS['db']->query($sql);
     while ($favourable = $GLOBALS['db']->fetchRow($res))
     {

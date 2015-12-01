@@ -52,7 +52,7 @@ function get_goodslist($type)
             'FROM ' . $GLOBALS['hhs']->table('goods') . ' AS g ' .
             'LEFT JOIN ' . $GLOBALS['hhs']->table('member_price') . ' AS mp ' .
                 "ON mp.goods_id = g.goods_id AND mp.user_rank = '$_SESSION[user_rank]' " .
-            "WHERE $where ORDER BY g.sort_order, g.goods_id";
+            "WHERE $where ORDER BY g.sort_order DESC , g.goods_id DESC ";
     $res = $GLOBALS['db']->getAll($sql);
 
     $arr = array();

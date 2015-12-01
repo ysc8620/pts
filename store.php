@@ -89,7 +89,7 @@ function get_store_goods($store_id)
                 'g.promote_start_date, g.promote_end_date, g.goods_brief, g.goods_thumb , g.goods_img ' .
 				' ,g.team_num,g.team_price '.
             'FROM ' . $GLOBALS['hhs']->table('goods') . ' AS g ' .
-            "WHERE $where ORDER BY sort_order ";
+            "WHERE $where ORDER BY sort_order DESC";
     $goods_list = $GLOBALS['db']->getAll($sql);
 	
 	foreach($goods_list as $key=>$row)

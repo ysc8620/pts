@@ -449,7 +449,7 @@ function category_get_goods($children, $brand, $min, $max, $size, $page, $sort, 
             'FROM ' . $GLOBALS['hhs']->table('goods') . ' AS g ' .
             'LEFT JOIN ' . $GLOBALS['hhs']->table('member_price') . ' AS mp ' .
                 "ON mp.goods_id = g.goods_id AND mp.user_rank = '$_SESSION[user_rank]' " .
-            "WHERE $where ORDER BY sort_order ";
+            "WHERE $where ORDER BY sort_order DESC";
     $res = $GLOBALS['db']->selectLimit($sql, $size, ($page - 1) * $size);
 
     $arr = array();
