@@ -79,7 +79,7 @@ function weiguanzhu(){
                 <div class="td2_name">{$goods.goods_style_name}</div>
                 <div class="td2_cx">{$goods.goods_brief}</div>
                 <div class="td2_info">
-                    <div class="td2_price">市场价：¥<b style="text-decoration:line-through">{$goods.market_price}</b> <span>已售：{$buy_num}件</span></div>
+                    <div class="td2_price">市场价：¥<b>{$goods.market_price}</b> <span>已售：{$buy_num}件</span></div>
                     <div class="td2_num">支付开团并邀请<span>{$d_team_num}</span>人参团，人数不足自动退款，详见下方拼团玩法</div>
                 </div>
             </div>

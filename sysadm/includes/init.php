@@ -210,6 +210,7 @@ if ((DEBUG_MODE & 2) == 2)
 
 $smarty->assign('lang', $_LANG);
 $smarty->assign('help_open', $_CFG['help_open']);
+$smarty->assign('cfg_percentage', $_CFG['percentage']);
 
 if(isset($_CFG['enable_order_check']))  // 为了从旧版本顺利升级到2.5.0
 {

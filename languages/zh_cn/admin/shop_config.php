@@ -157,6 +157,11 @@ $_LANG['cfg_name']['related_goods_number'] = '关联商品显示数量';
 $_LANG['cfg_name']['visit_stats'] = '站点访问统计';
 $_LANG['cfg_name']['help_open'] = '用户帮助是否打开';
 
+$_LANG['cfg_name']['min_money'] = '结算最低额度';
+$_LANG['cfg_desc']['min_money'] = '设置结算最低额度';
+$_LANG['cfg_name']['percentage'] = '默认结算比例';
+
+
 $_LANG['cfg_desc']['smtp'] = '设置邮件服务器基本参数';
 $_LANG['cfg_desc']['market_price_rate'] = '输入商品售价时将自动根据该比例计算市场价格';
 $_LANG['cfg_desc']['rewrite'] = 'URL重写是一种搜索引擎优化技术，可以将动态的地址模拟成静态的HTML文件。需要Apache的支持。';

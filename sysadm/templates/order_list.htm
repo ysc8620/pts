@@ -163,13 +163,10 @@ str=str.slice(0,-1);
         listTable.filter['transaction_id'] = document.forms['searchForm'].elements['transaction_id'].value;
         listTable.filter['composite_status'] = document.forms['searchForm'].elements['status'].value;
 	    listTable.filter['goods_sn'] = document.forms['searchForm'].elements['goods_sn'].value;
-
+		listTable.filter['suppliers_id'] = document.forms['searchForm'].elements['suppliers_id'].value;
 		listTable.filter['city_id'] = document.forms['searchForm'].elements['city_id'].value;
-        try{listTable.filter['suppliers_id'] = document.forms['searchForm'].elements['suppliers_id'].value;
+		listTable.filter['district_id'] = document.forms['searchForm'].elements['district_id'].value;
 
-    }catch (e){}
-
-        listTable.filter['district_id'] = document.forms['searchForm'].elements['district_id'].value;
         listTable.filter['type'] = document.forms['searchForm'].elements['type'].value;
         listTable.filter['start_time'] = document.forms['searchForm'].elements['start_time'].value;
         listTable.filter['end_time'] = document.forms['searchForm'].elements['end_time'].value;

@@ -897,7 +897,7 @@ function get_order_sn()
 function cart_goods($type = CART_GENERAL_GOODS)
 {
     $sql = "SELECT rec_id, user_id, goods_id, goods_name, goods_sn, goods_number, " .
-            "market_price, goods_price, goods_attr, is_real, extension_code, parent_id, is_gift, is_shipping, " .
+            "market_price, goods_price, goods_attr, is_real, extension_code, parent_id, is_gift, is_shipping, city_id,district_id,suppliers_id," .
             "goods_price * goods_number AS subtotal " .
             "FROM " . $GLOBALS['hhs']->table('cart') .
             " WHERE session_id = '" . SESS_ID . "' " .
@@ -1061,7 +1061,7 @@ function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0,$rec_type=
     clear_cart(0);
     clear_cart(5);
     /* 取得商品信息 */
-    $sql = "SELECT g.team_num,g.team_price,g.goods_name, g.goods_sn, g.is_on_sale, g.is_real, ".
+    $sql = "SELECT g.suppliers_id,g.city_id,g.district_id,g.team_num,g.team_price,g.goods_name, g.goods_sn, g.is_on_sale, g.is_real, ".
                 "g.market_price, g.shop_price AS org_price, g.promote_price, g.promote_start_date, ".
                 "g.promote_end_date, g.goods_weight, g.integral, g.extension_code, ".
                 "g.goods_number, g.is_alone_sale, g.is_shipping,".
@@ -1172,7 +1172,11 @@ function addto_cart($goods_id, $num = 1, $spec = array(), $parent = 0,$rec_type=
         'is_gift'       => 0,
         'is_shipping'   => $goods['is_shipping'],
         'rec_type'      => $rec_type,
-        'team_sign'      => $team_sign
+        'team_sign'      => $team_sign,
+        'city_id'       => $goods['city_id'],
+        'district_id'       => $goods['district_id'],
+        'suppliers_id'       => $goods['suppliers_id'],
+
     );
 
     /* 如果该配件在添加为基本件的配件时，所设置的“配件价格”比原价低，即此配件在价格上提供了优惠， */
@@ -3201,9 +3205,7 @@ function pay_team_action($orsn){
         }
 
         if($order_info['team_first']==1){
-            $fp=fopen('a.txt','a');
-            fputs($fp,'sad');
-            fclose($fp);
+           
             $weixin->send_wxmsg($openid, $_team_msg['pay']['title'] , 'share.php?team_sign='.$team_sign , $_team_msg['pay']['desc']  );
         }
         elseif($order_info['team_first']==2)

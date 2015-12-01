@@ -11,9 +11,9 @@
     审核状态：
     <select name="is_check" id='is_check'>
     <option value="">请选择</option>
-    <option value="0">审核中</option>
+    <option value="0">未通过</option>
     <option value="1">已审核</option>
-    <option value="2">未通过</option>
+    <option value="2">审核中</option>
     </select>
     <!-- {if 0} -->
    {if $smarty.session.site_id eq ''}
@@ -106,7 +106,7 @@
       <td align="center">
       {if $suppliers.is_check eq 1}已审核&nbsp;&nbsp;<a href="suppliers.php?act=check&id={$suppliers.suppliers_id}&is_check=1&page={$filter.page}">取消审核</a>{/if}
       {if $suppliers.is_check eq 2}审核中&nbsp;&nbsp;<a href="suppliers.php?act=check&id={$suppliers.suppliers_id}&is_check=2&page={$filter.page}">立即审核</a>{/if}
-       {if $suppliers.is_check eq -1}未通过&nbsp;&nbsp;<a href="suppliers.php?act=check&id={$suppliers.suppliers_id}&is_check=-1&page={$filter.page}">继续审核</a>{/if}
+      {if $suppliers.is_check eq 0}未通过&nbsp;&nbsp;<a href="suppliers.php?act=check&id={$suppliers.suppliers_id}&is_check=-1&page={$filter.page}">继续审核</a>{/if}
       </td>
       <!-- 
       <td align="center">&nbsp;<span onclick="javascript:listTable.edit(this, 'edit_comprehensive_score', {$suppliers.suppliers_id})">{$suppliers.comprehensive_score}&nbsp;&nbsp; </span></td>
@@ -121,7 +121,7 @@
       </td>
       <td align="center">
 {if $suppliers.is_check eq 1}
-        <a href="goods.php?act=list&suppliers_id={$suppliers.suppliers_id}" title="{$lang.edit}">商品</a> |
+        <a href="suppliers_goods.php?act=list&suppliers_id={$suppliers.suppliers_id}" title="{$lang.edit}">商品</a> |
         <a href="suppliers.php?act=edit&id={$suppliers.suppliers_id}&page={$filter.page}" title="{$lang.edit}">详情</a> |
         <!-- 
         <a href="suppliers.php?act=factoryauthorized&id={$suppliers.suppliers_id}&page={$filter.page}" title="授权">授权</a> |

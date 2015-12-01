@@ -59,6 +59,26 @@ function db_create_in($item_list, $field_name = '')
         }
     }
 }
+function get_citys_id()
+{
+		$this_ip  = real_ip();
+		$iplocation = new IpLocation();
+		$location = $iplocation->getlocation($this_ip);
+		
+		
+		$country = $location['country'];
+		
+		//$country = iconv("GBK","UTF-8", $country);
+		$sql = "select * from ".$GLOBALS['hhs']->table('region1')." where region_type='2' and region_name = '$country'";
+		
+		$rows= $GLOBALS['db']->getRow($sql);
+		$region_id = $rows['region_id'];
+		if($region_id=='')
+		{
+			$region_id = 311;
+		}
+		return $region_id;
+}
 
 /**
  * 验证输入的邮件地址是否合法

@@ -52,8 +52,7 @@
                     <li>
                         <div class="nav_item_hd"><a href="user.php?act=bonus"><i class="fa fa-tags"></i>我的优惠券 </a></div>
                     </li>
-                    <li style="display:none">
-
+                    <li>
                         <!-- {if $is_check gte 0} -->
                             <!-- {if $is_check eq 1} -->
                             <div class="nav_item_hd"><a href="store.php?id={$suppliers_id}"><i class="fa fa-inbox"></i>我的小店 </a></div>
@@ -78,13 +77,13 @@
 <!-- {/if} -->
 </div>
 {if $subscribe==0}
-        <div class="guanzhu" style="z-index: 999999"><a href="{$subscribe_url}">您还未关注我们，立即去关注</a></div>
+        <div class="guanzhu"><a href="{$subscribe_url}">您还未关注我们，立即去关注</a></div>
         {/if}
 <div class="footer">
     <ul>
         <li><a href="index.php" class="nav-controller"><i class="fa fa-home"></i>首页</a></li>
-		<li><a href="user.php?act=team_list" class="nav-controller"><i class="fa fa-list"></i>我的团</a></li>
-                <li><a href="user.php?act=order_list" class="nav-controller"><i class="fa fa-trophy"></i>我的订单</a></li>
+		<li><a href="catalog.php" class="nav-controller"><i class="fa fa-list"></i>分类</a></li>
+        <li><a href="rank.php?act=hot" class="nav-controller"><i class="fa fa-trophy"></i>热榜</a></li>
         <li><a href="user.php" class="nav-controller active"><i class="fa fa-user"></i>个人中心</a></li>
     </ul>
 </div>

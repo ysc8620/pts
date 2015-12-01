@@ -93,11 +93,9 @@
 				</div>
 			</div>
 
-
 							<!-- 留言 -->
 				<div class="invite-message">
-				 为了避免对方以为是诈骗信息，请在下面输入一个你们之间的『接头暗号』<br />
-					<textarea id="wxdesc" name="wxdesc" class="txt txt-black time-line-title" placeholder="接头暗号？">一窝蜂</textarea>
+					<textarea id="wxdesc" name="wxdesc" class="txt txt-black time-line-title" placeholder="说点什么吧？">想尝一口被包养的滋味</textarea>
 				</div>
 			
 			<!-- 行动点 -->

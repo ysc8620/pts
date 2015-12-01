@@ -49,41 +49,33 @@
         <div class="tm">
             <form action="javascript:addToCart({$goods.goods_id})" method="post" name="HHS_FORMBUY" id="HHS_FORMBUY" >
             <div class="td2">
-                <div class="td2_name">{$goods.goods_name}</div>
+                <div class="td2_name">{$goods.goods_style_name}</div>
                 <div class="td2_cx">{$goods.goods_brief}</div>
                 <div class="td2_info">
+
                     <div class="td2_num">支付开团并邀请<span>{$d_team_num}</span>人参团，人数不足自动退款，详见下方拼团玩法</div>
                 </div>
             </div>
             <div class="kt which_one">
 
-            {if $is_team eq 1}
-            {if $is_out}
+            {if $is_team eq 1}       
             <a class="kt_item kt_item1" href="javascript:addToCart({$goods.goods_id},0,0,5,{$team_sign})">
                 <span>立即参团</span>
                 <div class="kt_height"><b id="tuan_more_price">{$goods.team_price}</b><i> / </i>件</div>
             </a>
-            {/if}
+            
             {else}
-            {if $is_out}
+            
 			<a class="kt_item kt_item1" href="share.php?team_sign={$team_sign}">
                  <span>邀请好友参团</span>
                  <div class="kt_height"><b id="tuan_more_price">{$goods.team_price}</b><i> / </i>件</div>
             </a>
             {/if}
-{/if}
+
             </div>
             <input name="number" type="hidden" value="1" />
             </form>
         </div>
-        <div class="pro-detial">
-                    <ul class="pro_tab">
-                        <li class="hover"><div>图文详情</div></li>
-                    </ul>
-                    <div class="pro_con">
-                        <div id="con_one_1">{$goods.goods_desc}</div>
-                    </div>
-                </div>
         <div class="step">
             <div class="step_hd">
                 拼团玩法<a class="step_more" href="tuan_rule.php">查看详情</a>

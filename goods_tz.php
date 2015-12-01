@@ -246,9 +246,6 @@ if($sales_num)
 else
 {*/
 	$smarty->assign('buy_num',get_buy_sum($goods_id)+$sales_num);
-
-$is_out = ($goods['team_num']-1) - (get_buy_sum($goods_id)+$sales_num) > 0?true:false;
-$smarty->assign('is_out',  $is_out);
 //}
 
 $smarty->assign('now_time',  gmtime());           // 当前系统时间

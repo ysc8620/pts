@@ -1,156 +1,147 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" Content="text/html; charset=utf-8;" />
- 
-        <title>移动端触摸滑动</title>
-        <meta name="author" content="rainna" />
-        <meta name="keywords" content="rainna's js lib" />
-        <meta name="description" content="移动端触摸滑动" />
-        <meta name="viewport" content="target-densitydpi=320,width=640,user-scalable=no" />
- 
-        <style>
-        *{margin:0;padding:0;}
-        li{list-style:none;}
- 
-        .m-slider{width:600px;margin:50px 20px;overflow:hidden;}
-        .m-slider .cnt{position:relative;left:0;width:3000px;}
-        .m-slider .cnt li{float:left;width:600px;}
-        .m-slider .cnt img{display:block;width:100%;height:450px;}
-        .m-slider .cnt p{margin:20px 0;}
-        .m-slider .icons{text-align:center;color:#000;}
-        .m-slider .icons span{margin:0 5px;}
-        .m-slider .icons .curr{color:red;}
-        .f-anim{-webkit-transition:left .2s linear;}
-        </style>
-    </head>
- 
-    <body>
-        <div class="m-slider">
-            <ul class="cnt" id="slider">
-                <li>
-                    <img src="http://levi.yii.so/wp-content/uploads/2014/08/o_3068640196117481166.jpg" alt="" />
-                    <p>20140813镜面的世界，终究只是倒影。看得到你的身影，却触摸不到你的未来</p>
-                </li>
-                <li>
-                    <img src="http://levi.yii.so/wp-content/uploads/2014/08/o_4798022453110310215.jpg" alt="" />
-                    <p>20140812锡林浩特前往东乌旗S101必经之处，一条极美的铁路。铁路下面是个小型的盐沼，淡淡的有了一丝天空之境的感觉。可惜在此玩了一个小时也没有看见一列火车经过，只好继续赶往东乌旗。</p>
-                </li>
-                <li>
-                    <img src="http://levi.yii.so/wp-content/uploads/2014/08/o_6608946691259322175.jpg" alt="" />
-                    <p>20140811水的颜色为什么那么蓝，我也纳闷，反正自然饱和度和对比度拉完就是这个颜色的</p>
-                </li>
-                <li>
-                    <img src="http://levi.yii.so/wp-content/uploads/2014/08/o_6619295294699949331.jpg" alt="" />
-                    <p>海洋星球3重庆天气热得我想卧轨自杀</p>
-                </li>
-                <li>
-                    <img src="http://levi.yii.so/wp-content/uploads/2014/08/o_3068640196117481166.jpg" alt="" />
-                    <p>以上这些作品分别来自两位设计师作为观者，您能否通过设计风格进行区分</p>
-                </li>
-            </ul>
- 
-            <div class="icons" id="icons">
-                <span class="curr">1</span>
-                <span>2</span>
-                <span>3</span>
-                <span>4</span>
-                <span>5</span>
-            </div>
-        </div>
- 
-        <script>
-        var slider = {
-            // 判断设备是否支持touch事件
-            touch: ('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch,
-            slider: document.getElementById('slider'),
- 
-            // 事件
-            events: {
-                index: 0,                                       // 显示元素的索引
-                slider: this.slider,                            // this为slider对象
-                icons: document.getElementById('icons'),
-                icon: this.icons.getElementsByTagName('span'),
-                handleEvent: function(event) {
-                    // this指events对象
-                    var self = this;
- 
-                    if (event.type == 'touchstart') {
-                        self.start(event);
-                    } else if(event.type == 'touchmove') {
-                        self.move(event);
-                    } else if(event.type == 'touchend') {
-                        self.end(event);
-                    }
-                },
- 
-                // 滑动开始
-                start: function(event) {
-                    event.preventDefault();                      // 阻止触摸事件的默认动作,即阻止滚屏
-                    var touch = event.touches[0];                // touches数组对象获得屏幕上所有的touch，取第一个touch
-                    startPos = {                                 // 取第一个touch的坐标值
-                        x: touch.pageX,
-                        y: touch.pageY,
-                        time: +new Date
-                    };
- 
-                    // 绑定事件
-                    this.slider.addEventListener('touchmove', this, false);
-                    this.slider.addEventListener('touchend', this, false);
-                },
- 
-                // 移动
-                move: function(event) {
-                    event.preventDefault();                      // 阻止触摸事件的默认行为，即阻止滚屏
- 
-                    // 当屏幕有多个touch或者页面被缩放过，就不执行move操作
-                    if (event.touches.length > 1 || event.scale && event.scale !== 1) return;
-                    var touch = event.touches[0];
-                    endPos = {
-                        x: touch.pageX - startPos.x,
-                        y: touch.pageY - startPos.y
-                    };
- 
-                    // 执行操作，使元素移动
-                    this.slider.className = 'cnt';
-                    this.slider.style.left = -this.index * 600 + endPos.x + 'px';
-                },
- 
-                // 滑动释放
-                end: function(event) {
-                    var duration = +new Date - startPos.time;    // 滑动的持续时间
- 
-                    this.icon[this.index].className = '';
-                    if (Number(duration) > 100) {
-                        // 判断是左移还是右移，当偏移量大于50时执行
-                        if (endPos.x > 50) {
-                            if(this.index !== 0) this.index -= 1;
-                        } else if(endPos.x < -50) {
-                            if (this.index !== 4) this.index += 1;
-                        }
-                    }
- 
-                    this.slider.className = 'cnt f-anim';
-                    this.slider.style.left = -this.index*600 + 'px';
-                    this.icon[this.index].className = 'curr';
- 
-                    // 解绑事件
-                    this.slider.removeEventListener('touchmove', this, false);
-                    this.slider.removeEventListener('touchend', this, false);
-                }
-            },
- 
-            // 初始化
-            init: function() {
-                // this指slider对象
-                var self = this;
- 
-                // addEventListener第二个参数可以传一个对象，会调用该对象的handleEvent属性
-                if(!!self.touch) self.slider.addEventListener('touchstart', self.events, false);
-            }
-        };
- 
-        slider.init();
-        </script>
-    </body>
-</html>
+<?php
+define('IN_HHS', true);
+require(dirname(__FILE__) . '/includes/init.php');
+
+$cid = isset($_GET['cid']) ? intval($_GET['cid']) : null;
+
+if($cid){
+    $_SESSION['cid'] = $cid;
+}
+/*
+if ((DEBUG_MODE & 2) != 2)
+{
+    $smarty->caching = true;
+}*/
+
+/* 缓存编号 */
+$cache_id = sprintf('%X', crc32($_SESSION['user_rank'] . '-' . $_CFG['lang']));
+
+/*
+if (!$smarty->is_cached('index.dwt', $cache_id))
+{*/
+    assign_template();
+    $position = assign_ur_here();
+    $smarty->assign('page_title',      $position['title']);    // 页面标题
+    $smarty->assign('ur_here',         $position['ur_here']);  // 当前位置
+
+    /* meta information */
+    $smarty->assign('keywords',        htmlspecialchars($_CFG['shop_keywords']));
+    $smarty->assign('description',     htmlspecialchars($_CFG['shop_desc']));
+    $smarty->assign('goods_list',    get_goodslist());   // 最新文章
+
+    $smarty->assign('playerdb',        get_flash_xml());
+    /* 页面中的动态内容
+    assign_dynamic('index');
+} 
+*/
+
+    
+$sql="select * from ".$hhs->table('users')." where user_id=".$_SESSION['user_id'];
+$user_info=$db->getRow($sql);
+//$appid=$weixin_config_rows['appid'];
+//$secret= $weixin_config_rows['appsecret'];
+
+$smarty->assign('appid', $appid);
+$timestamp=time();
+$smarty->assign('timestamp', $timestamp );
+$class_weixin=new class_weixin($appid,$appsecret);
+$signature=$class_weixin->getSignature($timestamp);
+$smarty->assign('signature', $signature);
+//$smarty->assign('jssdk', $class_weixin->getJsApiTicket() );
+
+//$smarty->assign('signature', jssdk($appid,$secret, $timestamp));
+
+$smarty->assign('imgUrl', $user_info['headimgurl'] );
+$smarty->assign('title', $_CFG['index_share_title']);
+$smarty->assign('desc', mb_substr($_CFG['index_share_dec'], 0,30,'utf-8')  );
+/*
+$smarty->assign('title', 'aaa'.$_CFG['index_share_title']);
+$smarty->assign('desc', mb_substr('bbbb'.$_CFG['index_share_dec'], 0,30,'utf-8')  );
+*/
+$link="http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];//"/index.php";
+$smarty->assign('link', $link);
+
+$smarty->assign('link2', urlencode($link) );
+
+$loading=$smarty->fetch('loading.html');
+$smarty->assign('loading',    $loading);
+
+#print_r(get_sitelists());
+#print_r(get_site_id($ip));
+/*
+if ($_REQUEST['act'] == 'test')
+{
+    $redirect_uri="http://" . $_SERVER['HTTP_HOST'] . "/wxpay/wx_oauth2.php"; 
+    $redirect_uri=urlencode($redirect_uri);
+    $smarty->assign('redirect_uri', $redirect_uri );
+    
+    $smarty->display('test.dwt');exit();
+}*/
+$smarty->display('test.dwt');
+
+
+
+function get_goodslist()
+{
+    
+	$where = "g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_delete = 0 ";
+	//获得区域级别
+	$current_region_type=get_region_type($_SESSION['cid']); 
+	if($current_region_type==2){
+	     $where.=" and g.city_id=".$_SESSION['cid'];
+	}elseif($current_region_type==3){
+	    $where.=" and g.district_id=".$_SESSION['cid'];
+	}
+	
+    $sql = 'SELECT g.goods_id, g.goods_name,g.suppliers_id, g.goods_name_style, g.market_price, g.shop_price AS org_price, ' .
+                "IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS shop_price, g.promote_price, g.goods_type, " .
+                'g.promote_start_date, g.promote_end_date, g.goods_brief, g.goods_thumb , g.goods_img,g.little_img ' .
+            ' ,g.team_num,g.team_price '.
+            'FROM ' . $GLOBALS['hhs']->table('goods') . ' AS g ' .
+            'LEFT JOIN ' . $GLOBALS['hhs']->table('member_price') . ' AS mp ' .
+                "ON mp.goods_id = g.goods_id AND mp.user_rank = '$_SESSION[user_rank]' " .
+            "WHERE $where ORDER BY g.sort_order, g.goods_id";
+    $res = $GLOBALS['db']->getAll($sql);
+
+    $arr = array();
+    foreach ($res AS $idx => $row)
+    {
+        $arr[$idx]['goods_name']          = $row['goods_name'];
+        $arr[$idx]['goods_brief']       = $row['goods_brief'];
+        
+        $arr[$idx]['market_price']    = price_format($row['market_price'],false);
+		$arr[$idx]['shop_price']    = price_format($row['shop_price'],false);
+		
+        $arr[$idx]['goods_thumb']      = get_image_path($row['goods_id'], $row['goods_thumb'], true);
+        $arr[$idx]['goods_img']        = get_image_path($row['goods_id'], $row['goods_img']);
+        $arr[$idx]['url']              = build_uri('goods', array('gid'=>$row['goods_id']), $row['goods_name']);
+        $arr[$idx]['team_num']    = $row['team_num'];
+        $arr[$idx]['team_price']    = price_format($row['team_price'],false);
+        
+        $arr[$idx]['team_discount']    = number_format($row['team_price']/$row['market_price']*10,1);
+        $arr[$idx]['little_img']        = $row['little_img'];
+        
+        $sql="select suppliers_name from ".$GLOBALS['hhs']->table('suppliers')." where suppliers_id=".$row['suppliers_id'];
+        $arr[$idx]['suppliers_name']= $GLOBALS['db']->getOne($sql);
+    }
+
+    return $arr;
+}
+
+
+
+function get_flash_xml($type = 1)
+{
+    $city_id = get_city_id();
+    // $city_id = get_city_id();
+    $flashdb = $GLOBALS['db']->getAll("select * from ".$GLOBALS['hhs']->table('ad')." where position_id='$type' and city_id='$city_id' order by order_sort");
+	foreach($flashdb as $idx=>$v)
+	{
+		$flashdb[$idx]['url'] = $v['ad_link'];
+		$flashdb[$idx]['src'] = '../data/afficheimg/'.$v['ad_code'];
+		
+	}
+    return $flashdb;
+
+}
+?>

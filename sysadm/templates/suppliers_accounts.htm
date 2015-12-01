@@ -30,7 +30,9 @@
           <a href="javascript:listTable.sort('id'); ">{$lang.record_id}</a>{$sort_id} </th>
       <th>结算单号</th>
       <th><a href="javascript:listTable.sort('suppliers_name'); ">{$lang.suppliers_name}</a>{$sort_suppliers_name}</th>
-      <th>结算金额</th>
+      <th>总金额</th>
+      <th>佣金</th>
+      <th>实结金额</th>
       <!-- 
       <th>结算起止时间</th>  -->
       <th>结算时间</th>
@@ -47,8 +49,11 @@
         {$item.id}</td>
       <td align="center">{if $item.settlement_status eq 5}<span style="color:#F00">{$item.settlement_sn}</span>{else}{$item.settlement_sn}{/if}</td>  
       <td align="center" class="first-cell"><span>{$item.suppliers_name|escape:html}</span></td> 
-      <td align="center">{$item.money}</td>
+      <td align="center">{$item.total}</td>
+      <td align="center">{$item.commission}</td>
+      <td align="center">{$item.settlement_amount}</td>
       <!-- 
+      <td align="center">{$item.money}</td>
       <td align="center" >{$item.start_time}<br />{$item.end_time}</td> 
       -->
       <td align="center" >{$item.add_time}</td> 

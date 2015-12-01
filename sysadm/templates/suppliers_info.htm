@@ -80,6 +80,7 @@
     </td>
   </tr>
    <!-- {/if} --> 
+<!-- 
    <tr>
                   <td  class="label">品牌logo：</td>
                   <td>
@@ -113,7 +114,7 @@
           <input name="latitude" type="text" size="40" id="latitude"  class="input"  value="{$suppliers.latitude}"/>
           </td>
         </tr>
-          
+ -->          
           
           
            <tr>
@@ -193,6 +194,13 @@
               <tr>
                 <td class="label">密码：</td>
                 <td><input name="password" type="text" size="20"  class="input"  /></td>
+              </tr>
+              <tr>
+                <td class="label">佣金比例：</td>
+                <td>
+                <input name="percentage" type="text" size="20"  class="input"  value="{if $suppliers.percentage}{$suppliers.percentage}{else}{$cfg_percentage}{/if}" />
+                <span style="color:#FF0000" id="percentage_notice"> %</span>
+                </td>
               </tr>
            
 </table>

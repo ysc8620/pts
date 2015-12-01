@@ -246,6 +246,8 @@
             <div id="orderList" class="order_glist">
                 <!-- {foreach from=$goods_list item=goods} -->
                 <input name="suppliers_id" type="hidden" value="{$goods.suppliers_id}" />
+                <input name="city_id" type="hidden" value="{$goods.city_id}" />
+                <input name="district_id" type="hidden" value="{$goods.district_id}" />
                 <div class="only">
                     <div class="order_goods">
                         <div class="order_goods_img">
@@ -483,7 +485,10 @@ function done(thisObj){
    thisObj.value='正在支付 请稍候';
    var payment=document.forms[0].payment.value;
    var bonus=document.forms[0].bonus.value;
-	Ajax.call('flow.php?step=json_done', 'point_id='+point_id+'&shipping_id='+shipping_id+'&payment='+payment+'&bonus='+bonus+"&lat={$lat}&lng={$lng}", done_response, 'POST', 'JSON');
+   var suppliers_id=document.forms[0].suppliers_id.value;
+   var city_id=document.forms[0].city_id.value;
+   var district_id=document.forms[0].district_id.value;
+	Ajax.call('flow.php?step=json_done', 'point_id='+point_id+'&shipping_id='+shipping_id+'&payment='+payment+'&bonus='+bonus+"&lat={$lat}&lng={$lng}&suppliers_id="+suppliers_id+'&city_id='+city_id+'&district_id='+district_id, done_response, 'POST', 'JSON');
 }
 //+"&lat="+lat+"&lng="+lng
 function jsApiCall(code,returnrul){

@@ -143,9 +143,7 @@ class class_weixin
 
        $ret_json = $this->httpPost($url, $post_msg);
        $ret = json_decode($ret_json);
-       $fp=fopen('a.txt','a');
-       fputs($fp,'==='.serialize($ret));
-       fclose($fp);
+      
        return $ret->errmsg ;
        
     }

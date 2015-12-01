@@ -774,6 +774,8 @@ document.getElementById('account_print').href="suppliers.php?act=account_print&"
  -->
           <th align="center" bgcolor="#FFFFFF">结算单号</th>
           <!-- <th align="center" bgcolor="#FFFFFF">结算起止时间</th> --> 		
+          <th align="center" bgcolor="#FFFFFF">总金额</th>
+          <th align="center" bgcolor="#FFFFFF">结算佣金</th>
           <th align="center" bgcolor="#FFFFFF">结算总额</th>
  		  <th align="center" bgcolor="#FFFFFF">结算时间</th>
            <th align="center" bgcolor="#FFFFFF">状态</th>
@@ -791,6 +793,8 @@ document.getElementById('account_print').href="suppliers.php?act=account_print&"
           <td align="center" bgcolor="#FFFFFF"><a href="suppliers.php?act=account_detail&suppliers_accounts_id={$item.id}">{$item.settlement_sn}</a></td>
           <!-- <td align="center" bgcolor="#FFFFFF">{$item.start_time}<br />{$item.end_time}</td>
            -->
+          <td align="center" bgcolor="#FFFFFF">{$item.total}</td>
+          <td align="center" bgcolor="#FFFFFF">{$item.commission}</td>
           <td align="center" bgcolor="#FFFFFF">{$item.settlement_amount}</td>
           <td align="center" bgcolor="#FFFFFF">{$item.add_time}</td>
           <td align="center" bgcolor="#FFFFFF">{$lang.account_settlement_status[$item.settlement_status]}</td>
@@ -863,8 +867,8 @@ document.getElementById('account_print').href="suppliers.php?act=account_print&"
            <th align="center" bgcolor="#FFFFFF">订单时间</th>
            <th align="center" bgcolor="#FFFFFF">商品数量</th>		
           <th align="center" bgcolor="#FFFFFF">订单金额</th>
-          <th align="center" bgcolor="#FFFFFF">佣金</th>
-          <th align="center" bgcolor="#FFFFFF">结算金额</th>		
+          <!-- <th align="center" bgcolor="#FFFFFF">佣金</th>
+          <th align="center" bgcolor="#FFFFFF">结算金额</th> -->		
         </tr>
         <!-- {if $account_detail} -->
 
@@ -878,8 +882,8 @@ document.getElementById('account_print').href="suppliers.php?act=account_print&"
           <td align="center" bgcolor="#FFFFFF">{$item.order_time}</td>
           <td align="center" bgcolor="#FFFFFF">{$item.total_goods_num}</td>
           <td align="center" bgcolor="#FFFFFF">{$item.amount}</td>
-          <td align="center" bgcolor="#FFFFFF">{$item.commission}</td>
-          <td align="center" bgcolor="#FFFFFF">{$item.money}</td>
+          <!-- <td align="center" bgcolor="#FFFFFF">{$item.commission}</td>
+          <td align="center" bgcolor="#FFFFFF">{$item.money}</td> -->
 
         </tr>
         <!--{/foreach}-->
@@ -887,8 +891,8 @@ document.getElementById('account_print').href="suppliers.php?act=account_print&"
 		 <td colspan="4" ></td> 
           <td align="center" >合计</td> 
           <td align="center" bgcolor="#FFFFFF">{$total_amount}</td>
-          <td align="center" bgcolor="#FFFFFF">{$total_commission}</td>
-          <td align="center" bgcolor="#FFFFFF">{$total_money}</td>   
+          <!-- <td align="center" bgcolor="#FFFFFF">{$total_commission}</td>
+          <td align="center" bgcolor="#FFFFFF">{$total_money}</td> -->   
         </tr>
 		<tr>
 		  <td colspan="4" >备注：

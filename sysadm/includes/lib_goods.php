@@ -839,6 +839,8 @@ function goods_list($is_delete, $real_goods=1, $conditions = '')
 		$filter['city_id']   = empty($_REQUEST['city_id']) ? '' : trim($_REQUEST['city_id']);
 		$filter['district_id']   = empty($_REQUEST['district_id']) ? '' : trim($_REQUEST['district_id']);
 
+        $filter['is_check'] = isset($_REQUEST['is_check']) ? $_REQUEST['is_check'] : '';
+
         $where = $filter['cat_id'] > 0 ? " AND " . get_children($filter['cat_id']) : '';
 
         /* 推荐类型 */
@@ -884,6 +886,15 @@ function goods_list($is_delete, $real_goods=1, $conditions = '')
         if ($filter['extension_code'])
         {
             $where .= " AND extension_code='$filter[extension_code]'";
+        }
+        //check
+        if (isset($filter['is_check']) && $filter['is_check'] != "") 
+
+        {
+            
+            $is_check = $filter['is_check'];
+            
+            $where .= " and is_check = '$is_check'";
         }
 
         /* 关键字 */

@@ -14,6 +14,12 @@ require(ROOT_PATH . 'languages/' .$_CFG['lang']. '/admin/order.php');
 require(ROOT_PATH . 'languages/' .$_CFG['lang']. '/admin/bonus.php');
 require_once(ROOT_PATH . 'languages/' .$_CFG['lang']. '/admin/statistic.php');
 
+$suppliers_id = $_SESSION['suppliers_id'];
+if(empty($suppliers_id))
+{
+    header("Location:suppliers.php");
+    die();
+}
 /* act操作项的初始化 */
 if (empty($_REQUEST['act']))
 {
@@ -196,8 +202,8 @@ if ($_REQUEST['act'] == 'send_by_user')
         {
              /* 向会员优惠劵表录入数据 */
             $sql = "INSERT INTO " . $hhs->table('user_bonus') .
-                    "(bonus_type_id, bonus_sn, user_id, used_time, order_id, emailed) " .
-                    "VALUES ('$_REQUEST[id]', 0, '$val[user_id]', 0, 0, " .BONUS_MAIL_SUCCEED. ")";
+                    "(suppliers_id,bonus_type_id, bonus_sn, user_id, used_time, order_id, emailed) " .
+                    "VALUES ('".$suppliers_id."','$_REQUEST[id]', 0, '$val[user_id]', 0, 0, " .BONUS_MAIL_SUCCEED. ")";
             $db->query($sql);
 			
 			$user_id=$val['user_id'];

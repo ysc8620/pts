@@ -36,8 +36,7 @@ if($user_id > 0)
         $w_url = $cfg_baseurl.'share.php?team_sign='.$team_sign;
         $w_description="恭喜您荣升为团长！马上叫小伙伴来参团，组团成功才能享受优惠哦~";
         $picurl='';
-	}
-	elseif($wxch_order_name=='warn'){
+	}elseif($wxch_order_name=='warn'){
 	    $w_title = '参团人数不足提醒';
 	    $w_url = $cfg_baseurl.'share.php?team_sign='.$team_sign;
 	    $w_description="您参加的 ".$goods_name."还剩10小时，目前人数不足，尚未组团成功！快去叫身边的小伙伴一起来参团吧";
@@ -54,19 +53,6 @@ if($user_id > 0)
 	    $w_description='亲爱的'.$uname.'您好！恭喜您获得了'.$count.'个红包，金额分别为'.$money;
 	    $picurl='';
 	}
-	elseif($wxch_order_name=='refund_team_first'){
-	    $w_title = '团长免单活动';
-	    $w_url = $cfg_baseurl.'user.php?act=order_detail&order_id='.$order_id;
-	    $w_description="您参加的团长免单优惠活动团购成功，现已将您的金额退回您的微信钱包，请注意查收";
-	    $picurl='';
-	}
-	elseif($wxch_order_name=='refund_team_discount'){
-	    $w_title = '团长优惠活动';
-	    $w_url = $cfg_baseurl.'user.php?act=order_detail&order_id='.$order_id;
-	    $w_description="您参加的团长优惠活动团购成功，现已将您的优惠金额退回您的微信钱包，请注意查收";
-	    $picurl='';
-	}
-	
 	elseif($wxch_order_name=='shipping'){
 		$orders = $db->getRow("SELECT * FROM " . $hhs->table('order_info') . " WHERE `order_id` = '$order_id' ");
 		$order_goods = $db->getAll("SELECT * FROM " . $hhs->table('order_goods') . "  WHERE `order_id` = '$order_id'");
@@ -109,7 +95,26 @@ if($user_id > 0)
 	    $w_description = '订单号：'.$orders['order_sn']."\r\n".'商品信息：'.$shopinfo."\r\n总金额：".$orders['order_amount']."\r\n".$pay_status.$wxch_consignee.$wxch_address;
 	    $picurl='';
 	}
-	
+	elseif($wxch_order_name=='send_checked_result'){
+	    $w_title = '发送审核结果提醒';
+	    $w_url = '';//$cfg_baseurl.'user.php?act=bonus';
+	    $w_description='亲爱的'.$uname.'您好！您申请的商家审核'.($is_check == 1 ?'已通过':'暂未通过').'。' . $check_desc;
+	    $picurl='';
+	}
+	elseif($wxch_order_name=='pay_msgs'){
+		$pay_msgs = array(
+			'1' => ' 已经产生，请核对结算信息',
+			'3' => ' 审核通过',
+			'4' => ' 准备结算，请核对银行账户',
+			'6' => ' 已支付，请注意查收',
+			'11' =>' 审核未过，请注意跟进联系',
+		);
+	    $w_title = '结款通知提醒';
+	    $w_url = '';//$cfg_baseurl.'user.php?act=bonus';
+	    $w_description= '结算单：' .$settlement_sn . $pay_msgs[$settlement_status];
+	    $picurl='';
+	}
+
 	$post_msg = '{
        "touser":"'.$wxid.'",
        "msgtype":"news",
@@ -124,11 +129,11 @@ if($user_id > 0)
             ]
        }
    }';
+ 
 	
 	$ret_json = curl_grab_page($url, $post_msg);
 	$ret = json_decode($ret_json);
 	//var_dump($ret);exit();
-	
 	
 	if($ret->errmsg != 'ok') 
 	{

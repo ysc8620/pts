@@ -1,7 +1,6 @@
 <?php
 define('IN_HHS', true);
 require(dirname(__FILE__) . '/includes/init.php');
-require(dirname(__FILE__) . '/includes/ip.php');
 /*
 if ((DEBUG_MODE & 2) != 2)
 {
@@ -58,43 +57,9 @@ $smarty->assign('link2', urlencode($link) );
 
 $loading=$smarty->fetch('loading.html');
 $smarty->assign('loading',    $loading);
-get_citys_id();
+echo get_citys_id();exit;
 $smarty->display('index.dwt');
 
-function get_citys_id()
-{
-		$this_ip  = real_ip();
-		
-		$iplocation = new IpLocation();
-		$location = $iplocation->getlocation($this_ip);
-		
-		echo "<pre>";
-		
-		print_r($location);exit;
-		
-		
-		$country = $location[country];
-
-
-		$country = iconv("GBK","UTF-8", $country);
-	
-		$sql = "select * from ".$GLOBALS['ecs']->table('region1')." where region_type='2' and region_name = '$country'";
-		$rows= $GLOBALS['db']->getRow($sql);
-		$region_id = $rows['region_id'];
-		//echo $region_id;exit;
-		$city_list = array('283');		
-		if($region_id=='')
-		{
-			$region_id = 283;
-		}
-		
-//		elseif(!in_array($region_id,$city_list))
-//		{
-//			$region_id = 283;
-//		}
-		 
-		return $region_id;
-}
 
 function get_goodslist()
 {

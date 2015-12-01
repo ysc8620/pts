@@ -477,6 +477,24 @@ elseif ($_REQUEST['act'] == 'settlement')
         PS_PAYED
     ));
     
+    $sql = "select SUM(goods_amount + shipping_fee + insure_fee + pay_fee + pack_fee + card_fee + tax - discount) AS total_fee from " . $hhs->table('order_info') . " where suppliers_id ='$suppliers_id' AND " 
+        . $ex_where;
+    $total_all = floatval($db->getOne($sql));
+
+    if($total_all < floatval($_CFG['min_money']))
+    {
+        
+        $links = array(
+            array(
+                'href' => 'suppliers.php?act=suppliers_accounts&suppliers_id=' . $suppliers_id,
+                'text' => '结算列表'
+            )
+        );
+        
+        sys_msg('所有未结订单金额不足最低结算金额，无法结算', 0, $links);
+    }
+
+
     $sql = "select order_id,order_sn,pay_time,add_time,(goods_amount + shipping_fee + insure_fee + pay_fee + pack_fee + card_fee + tax - discount) AS total_fee from " . $hhs->table('order_info') . " where ";
     
     $sql .= $ex_where;
@@ -498,6 +516,9 @@ elseif ($_REQUEST['act'] == 'settlement')
         
         $commission_all = 0;
         $total=0;
+        // change the amount
+        $goods_amount = $db->getOne('select SUM(`goods_amount`) from '. $hhs->table('order_info') .' where suppliers_id ='.$suppliers_id . ' and '. $ex_where);
+        $percentage = $db->getOne('SELECT `percentage` FROM '. $hhs->table('suppliers') .' WHERE suppliers_id =' . $suppliers_id);
         // 插入明细表
         
         foreach ($order_list as $idx => $value) 
@@ -517,10 +538,23 @@ elseif ($_REQUEST['act'] == 'settlement')
             $total = $total + $value['total_fee'];
         }
         // 更新总表
-        $settlement_amount = $total - $commission_all;
+        // $settlement_amount = $total - $commission_all;
         
-        $sql = $db->query("update " . $hhs->table('suppliers_accounts') . " set settlement_amount='$settlement_amount' ,settlement_status=1 where id='$suppliers_accounts_id'");
-        
+        // $sql = $db->query("update " . $hhs->table('suppliers_accounts') . " set settlement_amount='$settlement_amount' ,settlement_status=1 where id='$suppliers_accounts_id'");
+        //佣金
+        $commission = number_format($goods_amount * $percentage / 100,2,'.','');
+        //实结
+        $settlement_amount = $total - $commission;
+        //
+        $sql = $db->query("update " . $hhs->table('suppliers_accounts') . " set settlement_amount='$settlement_amount' ,commission='$commission' ,total='$total' ,settlement_status=1 where id='$suppliers_accounts_id'"); 
+
+        $user_id=$db->getOne("select user_id from " . $hhs->table('suppliers') . "
+             where `suppliers_id`= " .$suppliers_id );
+
+        $settlement_status = 1;
+        $wxch_order_name = 'pay_msgs';
+        require_once (ROOT_PATH . 'wxch_order.php');                
+
         $links = array(
             array(
                 'href' => 'suppliers.php?act=suppliers_accounts&suppliers_id=' . $suppliers_id,
@@ -567,7 +601,7 @@ elseif ($_REQUEST['act'] == 'settlement_act2')
         
         $wtime = local_strtotime("-$suppliers_time_format day");
         
-        $ex_where = " settlement_status=0 and  order_status " . db_create_in(array(
+        $ex_where = " and settlement_status=0 and  order_status " . db_create_in(array(
             OS_SPLITED
         )) . " AND shipping_status " . db_create_in(array(
             SS_RECEIVED
@@ -581,9 +615,23 @@ elseif ($_REQUEST['act'] == 'settlement_act2')
         foreach ($suppliers as $v) {
             
             $suppliers_id = $v[suppliers_id];
-            
+
+            /**
+             * check the amount
+             */
+            $sql = "select SUM(goods_amount + shipping_fee + insure_fee + pay_fee + pack_fee + card_fee + tax - discount) AS total_fee from " . $hhs->table('order_info') . " where suppliers_id ='$suppliers_id' " 
+                . $ex_where;
+            $total_all = floatval($db->getOne($sql));
+
+            if($total_all < floatval($_CFG['min_money']))
+                continue;
+
+
+
+            //check end
+            //do the next
             $sql = "select order_id,order_sn,pay_time,add_time,(goods_amount + shipping_fee + insure_fee + pay_fee + pack_fee + card_fee + tax - discount) AS total_fee from " . $hhs->table('order_info') . " where suppliers_id ='$suppliers_id' ";
-            $sql.=" and ".$ex_where;
+            $sql.= $ex_where;
             $order_list = $db->getAll($sql);
             if ($order_list) {
                 // 插入结算总表中
@@ -599,6 +647,10 @@ elseif ($_REQUEST['act'] == 'settlement_act2')
                 $commission_all = 0;
                 $total=0;
                 // 插入明细表
+                // change the amount
+                $goods_amount = $db->getOne('select SUM(`goods_amount`) from '. $hhs->table('order_info') .' where suppliers_id ='.$suppliers_id . $ex_where);
+
+                $percentage = $db->getOne('SELECT `percentage` FROM '. $hhs->table('suppliers') .' WHERE suppliers_id =' . $suppliers_id);
         
                 foreach ($order_list as $idx => $value)
         
@@ -619,9 +671,21 @@ elseif ($_REQUEST['act'] == 'settlement_act2')
                     $total = $total + $value['total_fee'];
                 }
                 // 更新总表
-                $settlement_amount = $total - $commission_all;
+                // $settlement_amount = $total - $commission_all;
         
-                $sql = $db->query("update " . $hhs->table('suppliers_accounts') . " set settlement_amount='$settlement_amount' ,settlement_status=1 where id='$suppliers_accounts_id'");
+                // $sql = $db->query("update " . $hhs->table('suppliers_accounts') . " set settlement_amount='$settlement_amount' ,settlement_status=1 where id='$suppliers_accounts_id'");
+                
+                //佣金
+                $commission = number_format($goods_amount * $percentage / 100,2,'.','');
+                //实结
+                $settlement_amount = $total - $commission;
+                //
+                $sql = $db->query("update " . $hhs->table('suppliers_accounts') . " set settlement_amount='$settlement_amount' ,commission='$commission' ,total='$total' ,settlement_status=1 where id='$suppliers_accounts_id'");
+
+                $user_id=$v['user_id'];
+                $settlement_status = 1;
+                $wxch_order_name = 'pay_msgs';
+                require_once (ROOT_PATH . 'wxch_order.php');                
             }
             
         }
@@ -917,25 +981,43 @@ elseif ($_REQUEST['act'] == 'detail')
 } elseif ($_REQUEST['act'] == 'operate_post') {
     $id = intval($_REQUEST['id']);
     $action_note = $_REQUEST['action_note'];
+    $settlement_status = 0;
     if (isset($_POST['checkok'])) {
+        $settlement_status = 3;
         $sql = "update " . $hhs->table('suppliers_accounts') . " set settlement_status=3 where id=" . $id;
         $db->query($sql);
     } elseif (isset($_POST['checkno'])) {
+        $settlement_status = 11;
         $sql = "update " . $hhs->table('suppliers_accounts') . " set settlement_status=11 where id=" . $id;
         $db->query($sql);
     } elseif (isset($_POST['request_check_account'])) {
+        $settlement_status = 4;
         $sql = "update " . $hhs->table('suppliers_accounts') . " set settlement_status=4 where id=" . $id;
         $db->query($sql);
         $sql = "select suppliers_id from " . $hhs->table('suppliers_accounts') . "  where id=" . $id;
         $suppliers_id=$db->getOne($sql);
         $sql = "select phone from " . $hhs->table('suppliers') . "  where suppliers_id=" . $suppliers_id;
         $phone=$db->getOne($sql);
-        $content="请登录商家管理中心核对您的账户信息，谢谢。";
-        $send = $sms->send($phone, $content, '', 1);
+        if($phone)
+        {
+            $content="请登录商家管理中心核对您的账户信息，谢谢。";
+            // $send = $sms->send($phone, $content, '', 1);
+        }
     } elseif (isset($_POST['pay'])) {
+        $settlement_status = 6;
         $sql = "update " . $hhs->table('suppliers_accounts') . " set settlement_status=6 where id=" . $id;
         $db->query($sql);
     }
+    if(in_array($settlement_status, array(3,4,6,11)))
+    {
+        $settlement_sn = $db->getOne('SELECT `settlement_sn` FROM ' .$hhs->table('suppliers_accounts') . ' where id= ' .$id);
+
+        $user_id=$db->getOne("select user_id from " . $hhs->table('suppliers') . " as s,".$hhs->table('suppliers_accounts')." as a where a.`suppliers_id`= s.`suppliers_id` and a.`id` = " .$id );
+
+        $wxch_order_name = 'pay_msgs';
+        require_once (ROOT_PATH . 'wxch_order.php');
+    }
+
     settlement_action($id, $action_note, '平台');
     $links[] = array(
         'text' => '返回',
@@ -1757,25 +1839,25 @@ elseif ($_REQUEST['act'] == 'batch')
                 
                 $db->query($sql);
                 
-                $suppliers_factoryauthorized = $db->getAll("select * from " . $hhs->table('suppliers_factoryauthorized') . " where supp_id='$value[suppliers_id]'");
+     //            $suppliers_factoryauthorized = $db->getAll("select * from " . $hhs->table('suppliers_factoryauthorized') . " where supp_id='$value[suppliers_id]'");
                 
-                foreach ($suppliers_factoryauthorized as $idx => $v) 
+     //            foreach ($suppliers_factoryauthorized as $idx => $v) 
 
-                {
+     //            {
                     
-                    @unlink(ROOT_PATH . $v['pic']);
-                }
+     //                @unlink(ROOT_PATH . $v['pic']);
+     //            }
                 
-                $sql = "DELETE FROM " . $hhs->table('suppliers_factoryauthorized') . "
-					WHERE supp_id = '$value[suppliers_id]'";
+     //            $sql = "DELETE FROM " . $hhs->table('suppliers_factoryauthorized') . "
+					// WHERE supp_id = '$value[suppliers_id]'";
                 
-                $db->query($sql);
+     //            $db->query($sql);
                 
                 // $sql = "DELETE FROM " . $hhs->table('supp_account') . "
                 
                 // WHERE suppliers_id = '$value[suppliers_id]'";
                 
-                $db->query($sql);
+                // $db->query($sql);
                 
                 $sql = "DELETE FROM " . $hhs->table('supp_config') . "
 					WHERE suppliers_id = '$value[suppliers_id]'";
@@ -2191,21 +2273,21 @@ elseif ($_REQUEST['act'] == 'check_act')
 
         {
             
-            $content = '您的店铺正在审核中，请耐心等待![珍佰农资]' . $desc;
+            $content = '您的店铺正在审核中，请耐心等待!' . $desc;
         }
         
         if ($is_check == 1) 
 
         {
             
-            $content = '恭喜，您提交的店铺申请已审核通过，请<a href="' . $hhs->url() . '/business/suppliers.php">立即登录</a>上传商品![珍佰农资]' . $desc;
+            $content = '恭喜，您提交的店铺申请已审核通过，请<a href="' . $hhs->url() . '/business/suppliers.php">立即登录</a>上传商品!' . $desc;
         }
         
         if ($is_check == 2) 
 
         {
             
-            $content = '您的申请未通过审核，请致电客服 ' . $_CFG['service_phone'] . '' . $desc . '[珍佰农资]';
+            $content = '您的申请未通过审核，请致电客服 ' . $_CFG['service_phone'] . '' . $desc . '';
         }
         
         send_mail($_CFG['shop_name'] . $rows['suppliers_name'], $rows['email'], '店铺审核通知', $content, 1);
@@ -2330,6 +2412,11 @@ elseif (in_array($_REQUEST['act'], array(
     $business_scope = $image->upload_image($_FILES['business_scope'], 'business_file');
     
     $certificate = $image->upload_image($_FILES['certificate'], 'business_file');
+
+    /**
+     * percentage
+     * add by luo 
+     */
     
     if ($_REQUEST['act'] == 'insert') 
 
@@ -2397,7 +2484,7 @@ elseif (in_array($_REQUEST['act'], array(
 			'longitude' => $_POST['longitude'],
 			'latitude' => $_POST['latitude'],
 			
-			
+			'percentage' => floatval($_POST['percentage']),
 			
             
             'announcement' => $_POST['announcement'],
@@ -2556,7 +2643,8 @@ elseif (in_array($_REQUEST['act'], array(
 			'longitude' => $_POST['longitude'],
 			'latitude' => $_POST['latitude'],
 
-            
+            'percentage' => floatval($_POST['percentage']),//佣金比例
+
             'suppliers_desc' => trim($_POST['suppliers_desc']),
             
             'rank_id' => $_POST['rank_id'],
@@ -3457,7 +3545,7 @@ function suppliers_list($is_down = true)
         
         $filter = $result['filter'];
     }
-    
+
     $row = $GLOBALS['db']->getAll($sql);
     
     foreach ($row as $idx => $value) 

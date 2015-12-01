@@ -32,7 +32,7 @@ switch ($getcom){
     case "中通速递":
         $postcom = 'zto';
         break;
-    case "汇通速递":
+    case "汇通快递":
         $postcom = 'ht';
         break;
     case "全峰速递":

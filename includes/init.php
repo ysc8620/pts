@@ -18,7 +18,7 @@ if (!defined('IN_HHS'))
     die('Hacking attempt');
 }
 
-error_reporting(0);
+error_reporting(E_ALL);
 
 if (__FILE__ == '')
 {
@@ -31,11 +31,11 @@ define('ROOT_PATH', str_replace('includes/init.php', '', str_replace('\\', '/', 
 
 /* 初始化设置 */
 @ini_set('memory_limit',          '64M');
-@ini_set('session.cache_expire',  720);
+@ini_set('session.cache_expire',  180);
 @ini_set('session.use_trans_sid', 0);
 @ini_set('session.use_cookies',   1);
 @ini_set('session.auto_start',    0);
-@ini_set('display_errors',        0);
+@ini_set('display_errors',        1);
 
 if (DIRECTORY_SEPARATOR == '\\')
 {
@@ -64,7 +64,7 @@ if ('/' == substr($php_self, -1))
     $php_self .= 'index.php';
 }
 define('PHP_SELF', $php_self);
-
+require(ROOT_PATH . 'includes/ip.php');
 require(ROOT_PATH . 'includes/inc_constant.php');
 require(ROOT_PATH . 'includes/cls_hhshop.php');
 require(ROOT_PATH . 'includes/cls_error.php');
@@ -271,11 +271,11 @@ if (!defined('INIT_NO_USERS'))
 
 if ((DEBUG_MODE & 1) == 1)
 {
-    //error_reporting(E_ALL);
+    error_reporting(E_ALL);
 }
 else
 {
-    //error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
+    error_reporting(E_ALL ^ (E_NOTICE | E_WARNING)); 
 }
 if ((DEBUG_MODE & 4) == 4)
 {
@@ -288,7 +288,7 @@ if (!empty($_REQUEST['cid']))
 }else{
     if(empty($_SESSION['site_id']))
     {
-       $_SESSION['cid'] = $cid = get_site_id(real_ip()); 
+       $_SESSION['cid'] = $cid = get_citys_id(); 
     }
 }
 
@@ -312,8 +312,8 @@ $appid = $weixin_config_rows['appid'];
 $appsecret =$weixin_config_rows['appsecret'];
 include(ROOT_PATH . 'wxpay/class_weixin.php');
 
-setcookie("appid",$appid,time()+315360000 );
-setcookie("appsecret",$appsecret,time()+315360000 );
+setcookie("appid",$appid);
+setcookie("appsecret",$appsecret);
 
 if(isset($_GET['code'])){
     $back_openid_arr=get_openid($appid,$appsecret,$_GET['code']);
@@ -331,24 +331,27 @@ if(isset($_GET['code'])){
     exit();
 }
 
-if(isset($_REQUEST['ii'])&&$_REQUEST['ii']=='lii'){
+if(isset($_GET['ii'])&&$_GET['ii'] =='lii'){
     $_SESSION['xaphp_sopenid']='oFC46wGXmqfeUhiOu-vpaju6c7SQ';
 }
+
 if(empty($_SESSION['xaphp_sopenid']))
 {
 	
     $state=urlencode($_SERVER['REQUEST_URI']);
-
+    
 	$redirect_uri="http://" . $_SERVER['HTTP_HOST'] . "/wxpay/wx_oauth.php";  //http://vshop.xakc.net/ " . $_SERVER['SERVER_NAME'] . "  " . $_SERVER['HTTP_HOST'] . "
-
+	
 	$redirect_uri=urlencode($redirect_uri);
-
+	
 	$url="https://open.weixin.qq.com/connect/oauth2/authorize?appid=".$appid."&redirect_uri=".$redirect_uri."&response_type=code&scope=snsapi_userinfo&state=".$state."#wechat_redirect";
+	
+	//$url="https://open.weixin.qq.com/connect/qrconnect?appid=".$appid."&redirect_uri=".$redirect_uri."&response_type=code&scope=snsapi_login&state=".$state."#wechat_redirect";
+	
 	header("location:".$url."");
-//	exit;
+	exit;
 }
-//$_SESSION['user_id'] = 553;
-//$_SESSION['user_name'] = '新不带你玩';
+
 //$_SESSION['xaphp_sopenid']='onSWAuOcOaSJgGidvKTJoj6u0rCc';
 
 if(!empty($_SESSION['xaphp_sopenid'])){
@@ -442,7 +445,7 @@ if(!empty($_SESSION['xaphp_sopenid'])){
 
 	   $str="";
 	   if(!empty($userinfo_back_arr)){
-	       if($userinfo_back_arr['nickname']!=''&&$userinfo_back_arr['nickname']!=$rs['uname']   ){
+	       if($userinfo_back_arr['nickname']!=''&&$userinfo_back_arr['nickname']!=$rs['uname']  && !preg_match('/\'\/^\\s*$|^c:\\\\con\\\\con$|[%,\\*\\"\\s\\t\\<\\>\\&\'\\\\]/', $userinfo_back_arr['nickname'])  ){
 	           $str.=" uname='".$userinfo_back_arr['nickname']."' ,";
 	       }
 	       if($headimgurl!=''&& $headimgurl!=$rs['headimgurl']){

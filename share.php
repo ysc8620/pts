@@ -135,8 +135,8 @@ if ($act == 'default'){
    // $smarty->assign('imgUrl', $user_info['headimgurl']);
    $smarty->assign('imgUrl','http://'.$_SERVER['HTTP_HOST']."/".$goods_list[0]['goods_thumb']);
    //'http://'.$_SERVER['HTTP_HOST']."/".$goods_list[0]['goods_thumb']
-    $smarty->assign('title', $goods_list[0]['goods_name']);
-    $smarty->assign('desc', $d_num>0?"我已参团，还差{$d_num}人，快来一窝蜂！":"^_^不好意思，没位置了，您可以再开一团");//
+    $smarty->assign('title', "我参加了”".$goods_list[0]['goods_name']."“拼单，还差".$d_num."个人！"); 
+    $smarty->assign('desc', mb_substr($_CFG['group_share_dec'], 0,30,'utf-8')  );//
     $link="http://" . $_SERVER['HTTP_HOST'] . "/share.php?team_sign=".$team_info['team_sign'];
     $smarty->assign('link', $link );
     $smarty->assign('link2', urlencode($link) );

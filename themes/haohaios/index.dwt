@@ -54,17 +54,14 @@
                 </a>
             </div>
             <!--{/foreach}-->
-            <!--{if empty($goods_list)}-->
-            『抱歉，您的城市还没有开通，可以点击左上角按钮切换城市』
-            <!--{/if}-->
         </div>
     </div>
 </div>
 <div class="footer">
     <ul>
         <li><a href="index.php" class="nav-controller active"><i class="fa fa-home"></i>首页</a></li>
-		<li><a href="user.php?act=team_list" class="nav-controller"><i class="fa fa-list"></i>我的团</a></li>
-        <li><a href="user.php?act=order_list" class="nav-controller"><i class="fa fa-trophy"></i>我的订单</a></li>
+		<li><a href="catalog.php" class="nav-controller"><i class="fa fa-list"></i>分类</a></li>
+        <li><a href="rank.php?act=hot" class="nav-controller"><i class="fa fa-trophy"></i>热榜</a></li>
         <li><a href="user.php" class="nav-controller"><i class="fa fa-user"></i>个人中心</a></li>
     </ul>
 </div>

@@ -43,6 +43,13 @@
     {/if}
     <!-- 关键字 -->
     {$lang.keyword} <input type="text" name="keyword" size="15" />
+    审核状态
+    <select name="is_check" id="is_check">
+      <option value="">请选择</option>
+      <option value="0">审核中</option>
+      <option value="1">审核通过</option>
+      <option value="2">审核未过</option>
+    </select>
     <input type="submit" value="{$lang.button_search}" class="button" />
   </form>
 </div>
@@ -56,6 +63,7 @@ region.isAdmin = true;
 {/literal}
         {if $smarty.get.act neq "trash"}
         listTable.filter['cat_id'] = document.forms['searchForm'].elements['cat_id'].value;
+        listTable.filter['is_check'] = document.forms['searchForm'].elements['is_check'].value;
         //listTable.filter['brand_id'] = document.forms['searchForm'].elements['brand_id'].value;
    
 		listTable.filter['city_id'] = document.forms['searchForm'].elements['city_id'].value;
