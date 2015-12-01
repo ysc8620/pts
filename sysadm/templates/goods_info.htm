@@ -128,6 +128,10 @@
             <td class="label">团购限购数量：</td>
             <td><input type="text" name="limit_buy_bumber" value="{$goods.limit_buy_bumber}" size="20" /> 如果是团购请设置，为0表示不限购，如果是团长免单或团长优惠请确认是否要限制购买次数</td>
           </tr>
+          <tr>
+              <td class="label">商品排序：</td>
+              <td><input type="text" name="sort_order" value="{if $goods.id}{$goods.sort_order}{else}100{/if}" size="20" /> 越小越靠前</td>
+          </tr>
             <tr>
             <td class="label">团购限制次数;</td>
             <td><input type="radio" name="limit_buy_one" value="1" {if $goods.limit_buy_one eq 1}checked="checked"{/if}>是

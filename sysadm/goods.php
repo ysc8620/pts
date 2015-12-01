@@ -658,11 +658,11 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
             $row = $db->getRow($sql);
             if ($row['goods_thumb'] != '' && is_file('../' . $row['goods_thumb']))
             {
-                @unlink('../' . $row['goods_thumb']);
+                //@unlink('../' . $row['goods_thumb']);
             }
             if ($row['goods_img'] != '' && is_file('../' . $row['goods_img']))
             {
-                @unlink('../' . $row['goods_img']);
+                //@unlink('../' . $row['goods_img']);
             }
             if ($row['original_img'] != '' && is_file('../' . $row['original_img']))
             {
@@ -824,7 +824,7 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
     /* 删除下载的外链原图 */
     if (!empty($is_url_goods_img))
     {
-        unlink(ROOT_PATH . $original_img);
+        //unlink(ROOT_PATH . $original_img);
         empty($newname) || unlink(ROOT_PATH . $newname);
         $url_goods_img = $goods_img = $original_img = htmlspecialchars(trim($_POST['goods_img_url']));
     }
@@ -862,7 +862,7 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
     $give_integral = isset($_POST['give_integral']) ? intval($_POST['give_integral']) : '-1';
     $rank_integral = isset($_POST['rank_integral']) ? intval($_POST['rank_integral']) : '-1';
     $suppliers_id = isset($_POST['suppliers_id']) ? intval($_POST['suppliers_id']) : '0';
-
+    $sort_order = intval($_POST['sort_order']);
     $goods_name_style = $_POST['goods_name_color'] . '+' . $_POST['goods_name_style'];
 
     $catgory_id = empty($_POST['cat_id']) ? '' : intval($_POST['cat_id']);
@@ -894,12 +894,12 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
     {
         if ($code == '')
         {
-            $sql = "INSERT INTO " . $hhs->table('goods') . " (discount_type,discount_amount,subscribe,district_id,city_id,limit_buy_one,limit_buy_bumber,is_check,is_nearby,sales_num,little_img,team_num,team_price,goods_name, goods_name_style, goods_sn, " .
+            $sql = "INSERT INTO " . $hhs->table('goods') . " (discount_type,sort_order,discount_amount,subscribe,district_id,city_id,limit_buy_one,limit_buy_bumber,is_check,is_nearby,sales_num,little_img,team_num,team_price,goods_name, goods_name_style, goods_sn, " .
                     "cat_id, brand_id, shop_price, market_price, is_promote, promote_price, " .
                     "promote_start_date, promote_end_date, goods_img, goods_thumb, original_img, keywords, goods_brief, " .
                     "seller_note, goods_weight, goods_number, warn_number, integral, give_integral, is_best, is_new, is_hot, " .
                     "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, rank_integral, suppliers_id)" .
-                "VALUES ('$discount_type','$discount_amount','$subscribe','$district_id','$city_id','$limit_buy_one','$limit_buy_bumber',1,'$is_nearby' ,'$sales_num','$little_img','$team_num','$team_price','$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
+                "VALUES ('$discount_type','$sort_order','$discount_amount','$subscribe','$district_id','$city_id','$limit_buy_one','$limit_buy_bumber',1,'$is_nearby' ,'$sales_num','$little_img','$team_num','$team_price','$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
                     "'$brand_id', '$shop_price', '$market_price', '$is_promote','$promote_price', ".
                     "'$promote_start_date', '$promote_end_date', '$goods_img', '$goods_thumb', '$original_img', ".
                     "'$_POST[keywords]', '$_POST[goods_brief]', '$_POST[seller_note]', '$goods_weight', '$goods_number',".
@@ -908,12 +908,12 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
         }
         else
         {
-            $sql = "INSERT INTO " . $hhs->table('goods') . " (discount_type,discount_amount,subscribe,district_id,city_id.limit_buy_one,limit_buy_bumber,suppliers_id,is_check,is_nearby,sales_num,little_img,team_num,team_price,goods_name, goods_name_style, goods_sn, " .
+            $sql = "INSERT INTO " . $hhs->table('goods') . " (discount_type,sort_order,discount_amount,subscribe,district_id,city_id.limit_buy_one,limit_buy_bumber,suppliers_id,is_check,is_nearby,sales_num,little_img,team_num,team_price,goods_name, goods_name_style, goods_sn, " .
                     "cat_id, brand_id, shop_price, market_price, is_promote, promote_price, " .
                     "promote_start_date, promote_end_date, goods_img, goods_thumb, original_img, keywords, goods_brief, " .
                     "seller_note, goods_weight, goods_number, warn_number, integral, give_integral, is_best, is_new, is_hot, is_real, " .
                     "is_on_sale, is_alone_sale, is_shipping, goods_desc, add_time, last_update, goods_type, extension_code, rank_integral)" .
-                "VALUES ('$discount_type','$discount_amount','$subscribe','$district_id','$city_id','$limit_buy_one','$limit_buy_bumber','$suppliers_id',1,'$is_nearby' ,'$sales_num','$little_img','$team_num','$team_price','$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
+                "VALUES ('$discount_type','$sort_order','$discount_amount','$subscribe','$district_id','$city_id','$limit_buy_one','$limit_buy_bumber','$suppliers_id',1,'$is_nearby' ,'$sales_num','$little_img','$team_num','$team_price','$_POST[goods_name]', '$goods_name_style', '$goods_sn', '$catgory_id', " .
                     "'$brand_id', '$shop_price', '$market_price', '$is_promote','$promote_price', ".
                     "'$promote_start_date', '$promote_end_date', '$goods_img', '$goods_thumb', '$original_img', ".
                     "'$_POST[keywords]', '$_POST[goods_brief]', '$_POST[seller_note]', '$goods_weight', '$goods_number',".
@@ -930,13 +930,13 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
         $row = $db->getRow($sql);
         if ($proc_thumb && $goods_img && $row['goods_img'] && !goods_parse_url($row['goods_img']))
         {
-            @unlink(ROOT_PATH . $row['goods_img']);
-            @unlink(ROOT_PATH . $row['original_img']);
+           // @unlink(ROOT_PATH . $row['goods_img']);
+            //@unlink(ROOT_PATH . $row['original_img']);
         }
 
         if ($proc_thumb && $goods_thumb && $row['goods_thumb'] && !goods_parse_url($row['goods_thumb']))
         {
-            @unlink(ROOT_PATH . $row['goods_thumb']);
+           // @unlink(ROOT_PATH . $row['goods_thumb']);
         }
 
         $sql = "UPDATE " . $hhs->table('goods') . " SET " .
@@ -981,6 +981,7 @@ elseif ($_REQUEST['act'] == 'insert' || $_REQUEST['act'] == 'update')
             $sql .= "is_real=0, extension_code='$code', ";
         }
         $sql .= "keywords = '$_POST[keywords]', " .
+                "sort_order = '$sort_order', " .
                 "goods_brief = '$_POST[goods_brief]', " .
                 "seller_note = '$_POST[seller_note]', " .
                 "goods_weight = '$goods_weight'," .
@@ -1848,15 +1849,15 @@ elseif ($_REQUEST['act'] == 'drop_goods')
     /* 删除商品图片和轮播图片 */
     if (!empty($goods['goods_thumb']))
     {
-        @unlink('../' . $goods['goods_thumb']);
+        //@unlink('../' . $goods['goods_thumb']);
     }
     if (!empty($goods['goods_img']))
     {
-        @unlink('../' . $goods['goods_img']);
+        //@unlink('../' . $goods['goods_img']);
     }
     if (!empty($goods['original_img']))
     {
-        @unlink('../' . $goods['original_img']);
+        //@unlink('../' . $goods['original_img']);
     }
     /* 删除商品 */
     $exc->drop($goods_id);
@@ -1878,15 +1879,15 @@ elseif ($_REQUEST['act'] == 'drop_goods')
     {
         if (!empty($row['img_url']))
         {
-            @unlink('../' . $row['img_url']);
+            //@unlink('../' . $row['img_url']);
         }
         if (!empty($row['thumb_url']))
         {
-            @unlink('../' . $row['thumb_url']);
+            //@unlink('../' . $row['thumb_url']);
         }
         if (!empty($row['img_original']))
         {
-            @unlink('../' . $row['img_original']);
+            //@unlink('../' . $row['img_original']);
         }
     }
 
@@ -1973,15 +1974,15 @@ elseif ($_REQUEST['act'] == 'drop_image')
 
     if ($row['img_url'] != '' && is_file('../' . $row['img_url']))
     {
-        @unlink('../' . $row['img_url']);
+        //@unlink('../' . $row['img_url']);
     }
     if ($row['thumb_url'] != '' && is_file('../' . $row['thumb_url']))
     {
-        @unlink('../' . $row['thumb_url']);
+        //@unlink('../' . $row['thumb_url']);
     }
     if ($row['img_original'] != '' && is_file('../' . $row['img_original']))
     {
-        @unlink('../' . $row['img_original']);
+       // @unlink('../' . $row['img_original']);
     }
 
     /* 删除数据 */
