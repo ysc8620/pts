@@ -86,12 +86,12 @@ function get_goodslist()
     
 	$where = "g.is_on_sale = 1 AND g.is_alone_sale = 1 AND g.is_delete = 0 ";
 	//获得区域级别
-	$current_region_type=get_region_type($_SESSION['cid']); 
-	if($current_region_type==2){
-	     $where.=" and g.city_id=".$_SESSION['cid'];
-	}elseif($current_region_type==3){
-	    $where.=" and g.district_id=".$_SESSION['cid'];
-	}
+//	$current_region_type=get_region_type($_SESSION['cid']);
+//	if($current_region_type==2){
+//	     $where.=" and g.city_id=".$_SESSION['cid'];
+//	}elseif($current_region_type==3){
+//	    $where.=" and g.district_id=".$_SESSION['cid'];
+//	}
 	
     $sql = 'SELECT g.goods_id, g.goods_name,g.suppliers_id, g.goods_name_style, g.market_price, g.shop_price AS org_price, ' .
                 "IFNULL(mp.user_price, g.shop_price * '$_SESSION[discount]') AS shop_price, g.promote_price, g.goods_type, " .
