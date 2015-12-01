@@ -513,7 +513,7 @@ class wxpay
     function get_code($order, $payment,$direct=false)
 
     {
-        return $this->get_code2($order, $payment);
+        //return $this->get_code2($order, $payment);
 
 	//$uid = $_SESSION['user_name'];
 
