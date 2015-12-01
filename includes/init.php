@@ -317,6 +317,18 @@ include(ROOT_PATH . 'wxpay/class_weixin.php');
 setcookie("appid",$appid,time()+2592000);
 setcookie("appsecret",$appsecret,time()+2592000);
 
+if(empty($_SESSION['xaphp_sopenid'])){
+    if($_COOKIE['xaphp_sopenid']){
+        $_SESSION['xaphp_sopenid'] = $_COOKIE['xaphp_sopenid'];
+    }
+}
+
+if(empty($_SESSION['A_token'])){
+    if($_COOKIE['A_token']){
+        $_SESSION['A_token'] = $_COOKIE['A_token'];
+    }
+}
+
 if(isset($_GET['code']) && empty($_SESSION['xaphp_sopenid'])){
     $back_openid_arr=get_openid($appid,$appsecret,$_GET['code']);
 
