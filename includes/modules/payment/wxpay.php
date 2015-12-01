@@ -498,6 +498,8 @@ class wxpay
 
 */
 
+
+
     /**
 
      * 生成支付代码
@@ -511,6 +513,7 @@ class wxpay
     function get_code($order, $payment,$direct=false)
 
     {
+        return $this->get_code2($order, $payment);
 
 	//$uid = $_SESSION['user_name'];
 
