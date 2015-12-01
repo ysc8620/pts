@@ -49,7 +49,7 @@
         <div class="tm">
             <form action="javascript:addToCart({$goods.goods_id})" method="post" name="HHS_FORMBUY" id="HHS_FORMBUY" >
             <div class="td2">
-                <div class="td2_name">{$goods.goods_style_name}</div>
+                 <div class="td2_name">{$goods.goods_name}</div>
                 <div class="td2_cx">{$goods.goods_brief}</div>
                 <div class="td2_info">
 
@@ -76,6 +76,14 @@
             <input name="number" type="hidden" value="1" />
             </form>
         </div>
+         <div class="pro-detial">
+                            <ul class="pro_tab">
+                                <li class="hover"><div>图文详情</div></li>
+                            </ul>
+                            <div class="pro_con">
+                                <div id="con_one_1">{$goods.goods_desc}</div>
+                            </div>
+                        </div>
         <div class="step">
             <div class="step_hd">
                 拼团玩法<a class="step_more" href="tuan_rule.php">查看详情</a>
