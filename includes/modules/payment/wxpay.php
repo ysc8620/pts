@@ -514,7 +514,7 @@ class wxpay
 
     {
 
-        print_r($order);die();
+        //print_r($order);die();
         //return $this->get_code2($order, $payment);
 
 	//$uid = $_SESSION['user_name'];
