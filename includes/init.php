@@ -314,14 +314,17 @@ $appid = $weixin_config_rows['appid'];
 $appsecret =$weixin_config_rows['appsecret'];
 include(ROOT_PATH . 'wxpay/class_weixin.php');
 
-setcookie("appid",$appid);
-setcookie("appsecret",$appsecret);
+setcookie("appid",$appid,time()+2592000);
+setcookie("appsecret",$appsecret,time()+2592000);
 
-if(isset($_GET['code'])){
+if(isset($_GET['code']) && empty($_SESSION['xaphp_sopenid'])){
     $back_openid_arr=get_openid($appid,$appsecret,$_GET['code']);
 
     $_SESSION['xaphp_sopenid']=$back_openid_arr['openid'];
     $_SESSION['A_token']=$back_openid_arr['access_token'];
+    setcookie("xaphp_sopenid",$back_openid_arr['openid'],time()+2592000);
+    setcookie("A_token",$back_openid_arr['access_token'],time()+2592000);
+
     $pattern1 = '/[\?]code=[^&]*/i';
     $pattern2 = "/&code=[^&]*/i";
     
