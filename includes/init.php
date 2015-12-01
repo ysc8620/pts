@@ -37,6 +37,8 @@ define('ROOT_PATH', str_replace('includes/init.php', '', str_replace('\\', '/', 
 @ini_set('session.auto_start',    0);
 @ini_set('display_errors',        0);
 
+session_start();
+
 if (DIRECTORY_SEPARATOR == '\\')
 {
     @ini_set('include_path', '.;' . ROOT_PATH);
