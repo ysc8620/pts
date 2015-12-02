@@ -674,6 +674,15 @@ elseif ($_REQUEST['act'] == 'get_todolist')
 // 自动取消订单
 elseif($_REQUEST['act'] == 'auto_cancel_order'){
     // 查找可取消订单
+
+    $weixin=new class_weixin($GLOBALS['appid'],$GLOBALS['appsecret']);
+
+    $openid = $GLOBALS['db']->getOne("select openid from ".$GLOBALS['hhs']->table('users')." where user_id=".$_SESSION['user_id'] );
+    if($openid){
+        echo $openid;
+        $weixin->send_wxmsg($openid, '测试消息',  'share.php?team_sign=55' ,'这是一条测试消息' );
+    }
+  
     echo "ok";
 }
 // 邮件群发处理
