@@ -1169,6 +1169,7 @@ elseif ($action == 'order_list')
     $orders = get_user_orders_ex($user_id, $pager['size'], $pager['start'],$where);
     $merge  = get_user_merge($user_id);
 
+    $smarty->assign('act', 'order_list');
     $smarty->assign('merge',  $merge);
     $smarty->assign('pager',  $pager);
     $smarty->assign('orders', $orders);
@@ -1193,6 +1194,8 @@ elseif ($action == 'team_list')
     $smarty->assign('merge',  $merge);
     $smarty->assign('pager',  $pager);
     $smarty->assign('orders', $orders);
+
+    $smarty->assign('act', 'team_list');
     
     $smarty->display('user_transaction.dwt');
 }
