@@ -61,7 +61,7 @@
             {if $is_team eq 1}
              {if $subscribe==0}
                              <div class="guanzhu"><a href="{$subscribe_url}">关注后购买</a></div>
-                            <{else}>
+                            {else}
             <a class="kt_item kt_item1" href="javascript:addToCart({$goods.goods_id},0,0,5,{$team_sign})">
                 <span>立即参团</span>
                 <div class="kt_height"><b id="tuan_more_price">{$goods.team_price}</b><i> / </i>件</div>

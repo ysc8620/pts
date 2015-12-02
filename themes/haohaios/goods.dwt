@@ -121,7 +121,7 @@ function weiguanzhu(){
  {/if}                     
          {if $subscribe==0}
                  <div class="guanzhu"><a href="{$subscribe_url}">关注后购买</a></div>
-                <{else}>
+                {else}
             <div class="kt">
                 <a class="kt_item" style="margin-right:2%" href="javascript:addToCart({$goods.goods_id},0,0,5)">
                     <div class="kt_price">¥<b id="tuan_more_price">{$goods.team_price}</b><i> / </i>件</div>
