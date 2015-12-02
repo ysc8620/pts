@@ -677,12 +677,12 @@ elseif($_REQUEST['act'] == 'auto_cancel_order'){
 
     $weixin=new class_weixin($GLOBALS['appid'],$GLOBALS['appsecret']);
 
-    $openid = $GLOBALS['db']->getOne("select openid from ".$GLOBALS['hhs']->table('users')." where user_id=".$_SESSION['user_id'] );
+    $openid = $GLOBALS['db']->getOne("select openid from ".$GLOBALS['hhs']->table('users')." where user_id=553" );
     if($openid){
         echo $openid;
         $weixin->send_wxmsg($openid, '测试消息',  'share.php?team_sign=55' ,'这是一条测试消息' );
     }
-  
+
     echo "ok";
 }
 // 邮件群发处理
