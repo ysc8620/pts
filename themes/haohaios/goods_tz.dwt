@@ -61,7 +61,7 @@
             {if $is_team eq 1}
              {if $subscribe==0}
                              <div class="kt">
-                                               <a class="kt_item kt_item_buy" href="{$subscribe_url">
+                                               <a class="kt_item kt_item_buy" href="{$subscribe_url}">
                                                <span>关注后购买</span>
                                                                   <div class="kt_btn">点击关注</div>
                                                               </a></div>
