@@ -60,7 +60,10 @@
 
             {if $is_team eq 1}
              {if $subscribe==0}
-                             <div class="guanzhu"><a href="{$subscribe_url}">关注后购买</a></div>
+                             <div class="kt">
+                                               <a class="kt_item kt_item_buy" href="{$subscribe_url">
+                                                                  <div class="kt_btn">点击关注后购买</div>
+                                                              </a></div>
                             {else}
             <a class="kt_item kt_item1" href="javascript:addToCart({$goods.goods_id},0,0,5,{$team_sign})">
                 <span>立即参团</span>
