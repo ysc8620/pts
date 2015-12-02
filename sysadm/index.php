@@ -674,7 +674,8 @@ elseif ($_REQUEST['act'] == 'get_todolist')
 // 自动取消订单
 elseif($_REQUEST['act'] == 'auto_cancel_order'){
     // 查找可取消订单
-
+    print_r($GLOBALS);
+    die();
     $weixin=new class_weixin($GLOBALS['appid'],$GLOBALS['appsecret']);
 
     $openid = $GLOBALS['db']->getOne("select openid from ".$GLOBALS['hhs']->table('users')." where user_id=553" );
