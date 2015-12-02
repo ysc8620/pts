@@ -250,7 +250,7 @@ if(isset($_GET['ent_id']) && isset($_GET['ent_ac']) &&  isset($_GET['ent_sign'])
 /* 验证管理员身份 */
 if ((!isset($_SESSION['admin_id']) || intval($_SESSION['admin_id']) <= 0) &&
     $_REQUEST['act'] != 'login' && $_REQUEST['act'] != 'signin' &&
-    $_REQUEST['act'] != 'forget_pwd' && $_REQUEST['act'] != 'reset_pwd' && $_REQUEST['act'] != 'check_order')
+    $_REQUEST['act'] != 'forget_pwd' && $_REQUEST['act'] != 'reset_pwd' && $_REQUEST['act'] != 'check_order' && $_REQUEST['act']!='auto_cancel_order')
 {
     /* session 不存在，检查cookie */
     if (!empty($_COOKIE['HHSCP']['admin_id']) && !empty($_COOKIE['HHSCP']['admin_pass']))

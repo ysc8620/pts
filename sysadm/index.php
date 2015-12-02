@@ -671,6 +671,11 @@ elseif ($_REQUEST['act'] == 'get_todolist')
     $content = $GLOBALS['db']->getOne($sql);
     echo $content;
 }
+// 自动取消订单
+elseif($_REQUEST['act'] == 'auto_cancel_order'){
+    // 查找可取消订单
+    echo "ok";
+}
 // 邮件群发处理
 elseif ($_REQUEST['act'] == 'send_mail')
 {
