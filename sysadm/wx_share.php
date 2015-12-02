@@ -174,7 +174,7 @@ function share_list()
         /* 分页大小 */
         $filter = page_and_size($filter);
 
-        $sql = "SELECT s.*, u.user_name,u.openid,u.headimgurl " .
+        $sql = "SELECT s.*, u.user_name,u.uname,u.openid,u.headimgurl " .
             " FROM " . $GLOBALS['hhs']->table('share_info') . " AS s left join ".
             $GLOBALS['hhs']->table('users')." as u on s.user_id=u.user_id ".
             " WHERE  $where" .

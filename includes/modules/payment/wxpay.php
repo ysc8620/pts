@@ -498,8 +498,6 @@ class wxpay
 
 */
 
-
-
     /**
 
      * 生成支付代码
@@ -513,9 +511,6 @@ class wxpay
     function get_code($order, $payment,$direct=false)
 
     {
-
-        //print_r($order);die();
-        //return $this->get_code2($order, $payment);
 
 	//$uid = $_SESSION['user_name'];
 
@@ -544,9 +539,9 @@ class wxpay
 
 	//$openid = "oSxZVuNcC7qArMKsIgPeHeoHOydA";
 
-	$unifiedOrder = new UnifiedOrder_pub();
+	$unifiedOrder = new UnifiedOrder_pub();	
 
-	$conf = new WxPayConf_pub();
+	$conf = new WxPayConf_pub();	
 
 	//$returnrul = $conf->successurl.$order["order_id"];
     if($order['extension_code']=='team_goods'){
@@ -556,7 +551,7 @@ class wxpay
     }
 	//var_dump($returnrul);
     //http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']
-	//exit;
+	//exit;  
 
 	$unifiedOrder->setParameter("openid","$openid");//商品描述
 
@@ -568,11 +563,11 @@ class wxpay
 
 	//$out_trade_no = WxPayConf_pub::APPID."$timeStamp";
 
-	$unifiedOrder->setParameter("out_trade_no",$order['order_sn']);//商户订单号
+	$unifiedOrder->setParameter("out_trade_no",$order['order_sn']);//商户订单号 
 
 	$unifiedOrder->setParameter("total_fee",intval($order['order_amount'] * 100));//总金额
 
-	$unifiedOrder->setParameter("notify_url",$conf->notifyurl);//通知地址
+	$unifiedOrder->setParameter("notify_url",$conf->notifyurl);//通知地址 
 
 	$unifiedOrder->setParameter("trade_type","JSAPI");//交易类型
 
@@ -581,26 +576,26 @@ class wxpay
     if(!empty($order['goods_name'])){
 	    $unifiedOrder->setParameter("body",  mb_strlen($order['goods_name'],"utf-8")>30 ? mb_substr($order['goods_name'],0,30,'utf-8') : $order['goods_name'] );
 	}
-
+	
 	//非必填参数，商户可根据实际情况选填
 
-	//$unifiedOrder->setParameter("sub_mch_id","XXXX");//子商户号
+	//$unifiedOrder->setParameter("sub_mch_id","XXXX");//子商户号  
 
-	//$unifiedOrder->setParameter("device_info","XXXX");//设备号
+	//$unifiedOrder->setParameter("device_info","XXXX");//设备号 
 
-	//$unifiedOrder->setParameter("attach","XXXX");//附加数据
+	//$unifiedOrder->setParameter("attach","XXXX");//附加数据 
 
 	//$unifiedOrder->setParameter("time_start","XXXX");//交易起始时间
 
-	//$unifiedOrder->setParameter("time_expire","XXXX");//交易结束时间
+	//$unifiedOrder->setParameter("time_expire","XXXX");//交易结束时间 
 
-	//$unifiedOrder->setParameter("goods_tag","XXXX");//商品标记
+	//$unifiedOrder->setParameter("goods_tag","XXXX");//商品标记 
 
 	//$unifiedOrder->setParameter("openid","XXXX");//用户标识
 
 	//$unifiedOrder->setParameter("product_id","XXXX");//商品ID
 
-
+	
 	$prepay_id = $unifiedOrder->getPrepayId();
 
 	$jsApi = new JsApi_pub();
@@ -611,17 +606,18 @@ class wxpay
 
 	/*
 	if($direct){
-	    $pay_online=$jsApi->getbutton2($jsApiParameters,$returnrul,$order);
+	    $pay_online=$jsApi->getbutton2($jsApiParameters,$returnrul,$order);    
 	}else{*/
-	    $pay_online=$jsApi->getbutton($jsApiParameters,$returnrul,$order);
-
+	    $pay_online=$jsApi->getbutton($jsApiParameters,$returnrul,$order);    
+	    
 	//}
-
+	
      return $pay_online;
 
 }
 
-    function get_code2($order, $payment )
+ 
+function get_code2($order, $payment )
 
 {
 

@@ -102,6 +102,15 @@ if ($action == 'default')
             $smarty->assign('next_rank_name', sprintf($_LANG['next_level'], $rank['next_rank'] ,$rank['next_rank_name']));
         }
     }
+        /**
+     * 申请供应商什么的
+     */
+    $sql = "SELECT `is_check`,`suppliers_id` from ".$hhs->table('suppliers')." WHERE `user_id` = " . $_SESSION['user_id'];
+
+    $row = $db->getRow($sql);
+    $smarty->assign('is_check',$row['is_check']);
+    $smarty->assign('suppliers_id',$row['suppliers_id']);
+    
     $smarty->assign('info',        get_user_default($user_id));
     $smarty->assign('user_notice', $_CFG['user_notice']);
     $smarty->assign('prompt',      get_user_prompt($user_id));

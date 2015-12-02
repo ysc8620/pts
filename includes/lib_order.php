@@ -3201,7 +3201,8 @@ function pay_team_action($orsn){
 
                 }
             }
-
+            //发送通知
+            send_msg_to_suppliers($order_info['suppliers_id']);
         }
 
         if($order_info['team_first']==1){
@@ -3220,6 +3221,28 @@ function pay_team_action($orsn){
             }
         }
 
+    }
+
+}
+
+//给商家发送消息
+function send_msg_to_suppliers($suppliers_id){
+    if (!$suppliers_id) {
+        return false;
+    }
+    // $sql = "SELECT `openid`,`phone`,`user_id`,`email` FROM " . $GLOBALS['hhs']->table('suppliers') . " WHERE `suppliers_id` = " . $suppliers_id;
+    $sql = "SELECT u.`openid` from " . $GLOBALS['hhs']->table('suppliers') . " as s left join " . $GLOBALS['hhs']->table('users') . " as u on u.`user_id` = s.`user_id` WHERE s.`suppliers_id` = " . $suppliers_id;
+    $s = $GLOBALS['db']->getRow($sql);
+
+    if($s['openid'])
+    {
+        $weixin = new class_weixin($GLOBALS['appid'],$GLOBALS['appsecret']);
+        $openid = $s['openid'];
+        $title  = '团购已经成功';
+        $url    = '';
+        $desc   = '请抓紧时间安排发货';
+
+        $weixin->send_wxmsg($openid, $title , $url , $desc );
     }
 
 }

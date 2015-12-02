@@ -220,7 +220,7 @@ function get_user_orders_ex($user_id, $num = 10, $start = 0,$ext=null)
                         include_once(ROOT_PATH . 'includes/modules/payment/' . $payment_info['pay_code'] . '.php');
                         $pay_obj    = new $payment_info['pay_code'];
                         $pay_online = $pay_obj->get_code($row, $payment);
-                
+
                     }else{
                         $pay_online ='<a class="state_btn_2" href="toalipay.php?order_id='.$row['order_id'].'"   >支付宝支付</a>';
                     }
