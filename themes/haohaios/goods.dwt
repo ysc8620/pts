@@ -122,7 +122,7 @@ function weiguanzhu(){
          {if $subscribe eq 0 &&  $goods.is_follow eq 1}
          <div class="kt">
                   <a class="kt_item kt_item_buy" href="{$subscribe_url}">
-                                      <div class="kt_price">关注后购买</div>
+                                      <div class="kt_price">本商品关注后才能购买</div>
                                                                                                        <div class="kt_btn">点击关注</div>
                                  </a></div>
                 {else}
@@ -155,7 +155,7 @@ function weiguanzhu(){
                     <em>进店逛逛</em>
                     </div>
                 </div>
-                
+
             </a>
         </div>
         {/if}
