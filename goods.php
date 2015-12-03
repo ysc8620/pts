@@ -347,7 +347,8 @@ $smarty->assign('signature', $signature);
 //$smarty->assign('jssdk', jssdk($appid,$secret,$timestamp));
 $smarty->assign('imgUrl','http://' . $_SERVER['HTTP_HOST'].'/'.$goods['goods_thumb'] );
 $smarty->assign('title', $goods['goods_name']);
-$smarty->assign('desc', "已有{$sales_num}人购买，快来一窝蜂！" );
+$buy_num = get_buy_sum($goods_id)+$sales_num;
+$smarty->assign('desc', "已有{$buy_num}人购买，快来一窝蜂！" );
 /*
 if(($pos=strrpos($_SERVER[REQUEST_URI], "from"))!==false){
 	$uri=substr($_SERVER[REQUEST_URI],0,$pos-1);
