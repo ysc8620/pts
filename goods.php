@@ -386,7 +386,7 @@ if(!empty($_SESSION['xaphp_sopenid'])){
     }
 }
 
-    $smarty->display('goods.dwt',      $cache_id);
+    $smarty->display('goods.dwt');
 
 /*------------------------------------------------------ */
 //-- PRIVATE FUNCTION
