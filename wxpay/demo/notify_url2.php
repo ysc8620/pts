@@ -48,7 +48,7 @@ require('../../includes/modules/payment/wxpay.php');
 			$log_->log_result($log_name,"【业务出错】:\n".$xml."\n");
 		}
 		else{
-			$order = $notify->getData();						$transaction_id = $order["transaction_id"];//微信订单号			$orsn = $order["out_trade_no"];			
+			$order = $notify->getData();						$transaction_id = $order["transaction_id"];//微信订单号			$orsn = substr($order["out_trade_no"],0,13);			
 			$odid=get_order_id_by_sn($orsn); 			//确保只发一次			$sql="select pay_status from ".$hhs->table('order_info')." where order_sn='$orsn' ";			$pay_status=$db->getOne($sql);			
 			order_paid($odid);						$sql="update ".$GLOBALS['hhs']->table('order_info')." set transaction_id='$transaction_id' where order_sn='$orsn' ";			$GLOBALS['db']->query($sql);						//确保只发一次			if($pay_status!=2){			    pay_team_action($orsn);			}							//代付			$sql="select * from ".$hhs->table('order_info')."  where order_sn='".$orsn."'";			$order_info=$db->getRow($sql);			//代付			if($order_info['share_pay_type']>0){			    $sql="update ". $hhs->table('share_pay_info') ." set is_paid=1 where   order_id=".$order_info['order_id'];			    			    $db->query($sql);			    			}			
 			//此处应该更新一下订单状态，商户自行增删操作
