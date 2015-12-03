@@ -354,7 +354,7 @@ if(($pos=strrpos($_SERVER[REQUEST_URI], "from"))!==false){
 }else{
     $uri=$_SERVER[REQUEST_URI];
 }*/
-
+echo $_SESSION['xaphp_sopenid'];
 if(!empty($_SESSION['xaphp_sopenid'])){
     require_once(ROOT_PATH . 'languages/' .$_CFG['lang']. '/user.php');
     $sql="select * from ".$hhs->table('users')." where openid='".trim($_SESSION['xaphp_sopenid'])."'";
