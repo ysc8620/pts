@@ -29,7 +29,7 @@ class class_weixin
             $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$this->appid."&secret=".$this->appsecret;
             
             $tmpInfo=$this->httpGet($url);
-            
+            var_dump($tmpInfo);
             $info=json_decode($tmpInfo,true);
             
             //setcookie("access_token",$info['access_token'],time()+7000,'/');            
