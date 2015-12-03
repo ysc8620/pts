@@ -18,6 +18,11 @@ if (!defined('IN_HHS'))
     die('Hacking attempt');
 }
 
+header("Content-type: text/html; charset=utf-8");
+header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+header("Expires: Sat, 26 Jul 2010 05:00:00 GMT"); // Date in the past
+header("Pragma: no-cache");
+
 error_reporting(E_ALL);
 
 if (__FILE__ == '')
