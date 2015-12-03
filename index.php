@@ -41,7 +41,12 @@ $user_info=$db->getRow($sql);
 //$appid=$weixin_config_rows['appid'];
 //$secret= $weixin_config_rows['appsecret'];
 
-
+$smarty->assign('appid', $appid);
+$timestamp=time();
+$smarty->assign('timestamp', $timestamp );
+$class_weixin=new class_weixin($appid,$appsecret);
+$signature=$class_weixin->getSignature($timestamp);
+$smarty->assign('signature', $signature);
 //$smarty->assign('jssdk', $class_weixin->getJsApiTicket() );
 
 //$smarty->assign('signature', jssdk($appid,$secret, $timestamp));
