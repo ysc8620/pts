@@ -169,7 +169,10 @@ listTable.query = "team_query";
         listTable.filter['team_status'] = document.forms['searchForm'].elements['team_status'].value;
         listTable.filter['pay_start_time'] = document.forms['searchForm'].elements['pay_start_time'].value;
         listTable.filter['pay_end_time'] = document.forms['searchForm'].elements['pay_end_time'].value;
-		listTable.filter['suppliers_id'] = document.forms['searchForm'].elements['suppliers_id'].value;
+        try{
+            listTable.filter['suppliers_id'] = document.forms['searchForm'].elements['suppliers_id'].value;
+        }catch(e){}}
+
 		listTable.filter['city_id'] = document.forms['searchForm'].elements['city_id'].value;
 		listTable.filter['district_id'] = document.forms['searchForm'].elements['district_id'].value;
         listTable.filter['extension_id'] = document.forms['searchForm'].elements['extension_id'].value;
