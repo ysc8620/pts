@@ -319,7 +319,7 @@ function refund($order_sn,$refund_fee){
     $payment    = get_payment('wxpay');
     
    
-    $refund->setParameter("appid", "$payment[wxpay_app_id]");
+    $refund->setParameter("appid", $payment['wxpay_app_id']);
     $refund->setParameter("mch_id", $payment['wxpay_mchid']);
     
     $refund->wxpay_key	=       $payment['wxpay_key'];
@@ -563,7 +563,7 @@ class wxpay
 
 	//$out_trade_no = WxPayConf_pub::APPID."$timeStamp";
 
-	$unifiedOrder->setParameter("out_trade_no",$order['order_sn'].time());//商户订单号 
+	$unifiedOrder->setParameter("out_trade_no",$order['order_sn']);//商户订单号 
 
 	$unifiedOrder->setParameter("total_fee",intval($order['order_amount'] * 100));//总金额
 
@@ -679,7 +679,7 @@ function get_code2($order, $payment )
 
 	//$out_trade_no = WxPayConf_pub::APPID."$timeStamp";
 
-	$unifiedOrder->setParameter("out_trade_no",$order['order_sn'].time());//商户订单号
+	$unifiedOrder->setParameter("out_trade_no",$order['order_sn']);//商户订单号
 
 	$unifiedOrder->setParameter("total_fee",intval($order['order_amount'] * 100));//总金额
 
