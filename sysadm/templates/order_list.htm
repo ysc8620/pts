@@ -163,6 +163,9 @@ str=str.slice(0,-1);
         listTable.filter['transaction_id'] = document.forms['searchForm'].elements['transaction_id'].value;
         listTable.filter['composite_status'] = document.forms['searchForm'].elements['status'].value;
 	    listTable.filter['goods_sn'] = document.forms['searchForm'].elements['goods_sn'].value;
+        try{
+            listTable.filter['suppliers_id'] = document.forms['searchForm'].elements['suppliers_id'].value;
+        }catch (e){}
 		listTable.filter['suppliers_id'] = document.forms['searchForm'].elements['suppliers_id'].value;
 		listTable.filter['city_id'] = document.forms['searchForm'].elements['city_id'].value;
 		listTable.filter['district_id'] = document.forms['searchForm'].elements['district_id'].value;
