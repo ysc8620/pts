@@ -390,9 +390,11 @@ if(!empty($_SESSION['xaphp_sopenid'])){
 	    //获取头像
 	    $headimgurl=$userinfo_back_arr["headimgurl"];
 	}
+    echo $appid.','.$appsecret."\r\n";
 	//单单为了获取是否关注
 	$weixin=new class_weixin($appid,$appsecret);
 	$access_token = $weixin->getAccessToken();
+    var_dump($access_token);
 	if(!empty($access_token)){
 	    $userinfo_back_arr2=getUserInfo($_SESSION['xaphp_sopenid'],2);
 	    $userinfo_back_arr['subscribe']=$userinfo_back_arr2["subscribe"];
