@@ -319,7 +319,7 @@ $smarty->assign('stores_info',$stores_info);
 }
 
 
-
+$buy_num = get_buy_sum($goods_id)+$sales_num;
 /*
 if($sales_num)
 {
@@ -327,7 +327,7 @@ if($sales_num)
 }
 else
 {*/
-	$smarty->assign('buy_num',get_buy_sum($goods_id)+$sales_num);
+	$smarty->assign('buy_num',$buy_num);
 //}
 
 $smarty->assign('now_time',  gmtime());           // 当前系统时间
@@ -347,7 +347,6 @@ $smarty->assign('signature', $signature);
 //$smarty->assign('jssdk', jssdk($appid,$secret,$timestamp));
 $smarty->assign('imgUrl','http://' . $_SERVER['HTTP_HOST'].'/'.$goods['goods_thumb'] );
 $smarty->assign('title', $goods['goods_name']);
-$buy_num = get_buy_sum($goods_id)+$sales_num;
 $smarty->assign('desc', "已有{$buy_num}人购买，快来一窝蜂！" );
 /*
 if(($pos=strrpos($_SERVER[REQUEST_URI], "from"))!==false){
