@@ -299,6 +299,10 @@ if (!empty($_REQUEST['cid']))
     }
 }
 
+$smarty->assign('imgUrl', "http://" . $_SERVER['HTTP_HOST'].'/images/logo.jpg');
+$smarty->assign('title', $_CFG['index_share_title']);
+$smarty->assign('desc', mb_substr($_CFG['index_share_dec'], 0,30,'utf-8')  );
+
 $smarty->assign('cid', $_SESSION['cid']);
 $smarty->assign('site_name',  get_region_name($_SESSION['cid']));
 
@@ -318,6 +322,15 @@ $weixin_config_rows = $db->getRow("select * from ".$hhs->table('weixin_config').
 $appid = $weixin_config_rows['appid'];
 $appsecret =$weixin_config_rows['appsecret'];
 include(ROOT_PATH . 'wxpay/class_weixin.php');
+
+
+$smarty->assign('appid', $appid);
+$timestamp=time();
+$smarty->assign('timestamp', $timestamp );
+$class_weixin=new class_weixin($appid,$appsecret);
+$signature=$class_weixin->getSignature($timestamp);
+$smarty->assign('signature', $signature);
+
 
 setcookie("appid",$appid,time()+2592000);
 setcookie("appsecret",$appsecret,time()+2592000);
