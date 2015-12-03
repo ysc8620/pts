@@ -354,7 +354,7 @@ if(($pos=strrpos($_SERVER[REQUEST_URI], "from"))!==false){
 }else{
     $uri=$_SERVER[REQUEST_URI];
 }*/
-echo $_SESSION['xaphp_sopenid'];
+
 if(!empty($_SESSION['xaphp_sopenid'])){
     require_once(ROOT_PATH . 'languages/' .$_CFG['lang']. '/user.php');
     $sql="select * from ".$hhs->table('users')." where openid='".trim($_SESSION['xaphp_sopenid'])."'";
@@ -369,10 +369,11 @@ if(!empty($_SESSION['xaphp_sopenid'])){
         //获取头像
         $headimgurl=$userinfo_back_arr["headimgurl"];
     }
+    echo '1';
     //单单为了获取是否关注
     $weixin=new class_weixin($appid,$appsecret);
     $access_token = $weixin->getAccessToken();
-    if(!empty($access_token)){
+    if(!empty($access_token)){ echo '2';
         $userinfo_back_arr2=getUserInfo($_SESSION['xaphp_sopenid'],2);
         $userinfo_back_arr['subscribe']=$userinfo_back_arr2["subscribe"];
         echo $userinfo_back_arr['subscribe'];
