@@ -360,32 +360,6 @@ $link="http://" . $_SERVER['HTTP_HOST'] . $_SERVER[REQUEST_URI];
 $smarty->assign('link', $link );
 $smarty->assign('link2', urlencode($link) );
 
-if(!empty($_SESSION['xaphp_sopenid'])){
-    require_once(ROOT_PATH . 'languages/' .$_CFG['lang']. '/user.php');
-    $sql="select * from ".$hhs->table('users')." where openid='".trim($_SESSION['xaphp_sopenid'])."'";
-    $rs=$db->getRow($sql);
-
-    //根据全局token获取用户信息
-    if(!empty($_SESSION['A_token'])){
-        //echo $_SESSION['A_token'];
-        define("ACCESS_TOKEN",$_SESSION['A_token']);//
-        $userinfo_back_arr=getUserInfo($_SESSION['xaphp_sopenid']);
-
-        //获取头像
-        $headimgurl=$userinfo_back_arr["headimgurl"];
-    }
-    //单单为了获取是否关注
-    $weixin=new class_weixin($appid,$appsecret);
-    $access_token = $weixin->getAccessToken();
-    if(!empty($access_token)){
-        $userinfo_back_arr2=getUserInfo($_SESSION['xaphp_sopenid'],2);
-        $userinfo_back_arr['subscribe']=$userinfo_back_arr2["subscribe"];
-
-        echo  $userinfo_back_arr['subscribe'];
-        $smarty->assign("subscribe" , $userinfo_back_arr['subscribe']);
-    }
-}
-
     $smarty->display('goods.dwt');
 
 /*------------------------------------------------------ */
