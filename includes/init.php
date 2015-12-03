@@ -396,6 +396,7 @@ if(!empty($_SESSION['xaphp_sopenid'])){
 	if(!empty($access_token)){
 	    $userinfo_back_arr2=getUserInfo($_SESSION['xaphp_sopenid'],2);
 	    $userinfo_back_arr['subscribe']=$userinfo_back_arr2["subscribe"];
+        echo $userinfo_back_arr['subscribe'];
 	    $smarty->assign("subscribe" , $userinfo_back_arr['subscribe']);
 	}    
 	    
