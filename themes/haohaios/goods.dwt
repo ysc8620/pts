@@ -119,7 +119,8 @@ function weiguanzhu(){
                 <span>限购{$goods.limit_buy_bumber}件</span>   
                   </div>          
  {/if}                     
-         {if $subscribe==0}<div class="kt">
+         {if $subscribe eq 0 &&  $goods.is_follow eq 1}
+         <div class="kt">
                   <a class="kt_item kt_item_buy" href="{$subscribe_url}">
                                       <div class="kt_price">关注后购买</div>
                                                                                                        <div class="kt_btn">点击关注</div>

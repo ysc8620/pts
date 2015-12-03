@@ -59,7 +59,7 @@
             <div class="kt which_one">
 
             {if $is_team eq 1}
-             {if $subscribe==0}
+             {if $subscribe==0 &&  $goods.is_follow eq 1}
 
                            <a class="kt_item kt_item_buy" href="{$subscribe_url}">
                            <span>关注后购买</span>
