@@ -369,15 +369,13 @@ if(!empty($_SESSION['xaphp_sopenid'])){
         //获取头像
         $headimgurl=$userinfo_back_arr["headimgurl"];
     }
-    echo '1';
     //单单为了获取是否关注
     $weixin=new class_weixin($appid,$appsecret);
     $access_token = $weixin->getAccessToken();
-    print_r($access_token);
-    if(!empty($access_token)){ echo '2';
+
+    if(!empty($access_token)){
         $userinfo_back_arr2=getUserInfo($_SESSION['xaphp_sopenid'],2);
         $userinfo_back_arr['subscribe']=$userinfo_back_arr2["subscribe"];
-        echo $userinfo_back_arr['subscribe'];
         $smarty->assign("subscribe" , $userinfo_back_arr['subscribe']);
     }
 }
