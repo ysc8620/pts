@@ -84,32 +84,6 @@ require(ROOT_PATH . 'includes/lib_goods.php');
 require(ROOT_PATH . 'includes/lib_article.php');
 require(ROOT_PATH . 'includes/lib_wxf.php');
 
-$access_token = file_get_contents(ROOT_PATH . '/data/access_token.php');
-$time = 0;
-$access_token_str = '';
-if($access_token){
-    $data = (array)json_decode($access_token);
-    //print_r($data);
-    $time = $data['time'];
-    $access_token_str = $data['access_token'];
-    echo '111';
-
-}
-
-//文件内的 access_token
-if($access_token &&  $access_token_str && time() < ($time + 5)){
-
-    echo '222';
-    return;
-}
-
-$data['access_token'] = '987654321';
-$data['time'] = time();
-
-file_put_contents(ROOT_PATH . '/data/access_token.php', json_encode($data));
-echo '333';
-die();
-
 /* 对用户传入的变量进行转义操作。*/
 if (!get_magic_quotes_gpc())
 {
