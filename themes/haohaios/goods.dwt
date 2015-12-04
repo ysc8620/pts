@@ -121,11 +121,11 @@ function weiguanzhu(){
  {/if}
          {if $subscribe eq '0' &&  $goods.is_follow eq 1}
          <div class="kt">
-                  <a class="kt_item" style="margin-right:2%" href="javascript:addToCart({$goods.goods_id},0,0,5)">
+                  <a class="kt_item" style="margin-right:2%" href="{$subscribe_url}">
                                      <div class="kt_price">¥<b id="tuan_more_price">{$goods.team_price}</b><i> / </i>件</div>
                                      <div class="kt_btn"><b id="tuan_more_number">{$goods.team_num}人团</b></div>
                                  </a>
-                                 <a class="kt_item kt_item_buy" href="javascript:addToCart({$goods.goods_id});">
+                                 <a class="kt_item kt_item_buy" href="{$subscribe_url}">
                                      <div class="kt_price">¥<b>{$goods.shop_price}</b><i> / </i>件</div>
                                      <div class="kt_btn">单独购买</div>
                                  </a>
