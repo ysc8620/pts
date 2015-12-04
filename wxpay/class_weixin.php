@@ -20,31 +20,52 @@ class class_weixin
             
             return ;
         }
-        
     }
-    public function getAccessToken(){
-        
-        if(empty($_SESSION['access_token']) ||  (gmtime()-intval($_SESSION['access_token'])>7000) ){
-         
-            $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$this->appid."&secret=".$this->appsecret;
-            
-            $tmpInfo=$this->httpGet($url);
-            //var_dump($tmpInfo);
-            $info=json_decode($tmpInfo,true);
-            
-            //setcookie("access_token",$info['access_token'],time()+7000,'/');            
-            $_SESSION['access_token']=$info['access_token'];
-            $_SESSION['access_token_time']=gmtime();
-            
-            return $info['access_token'];         
 
-        }else{
-            
-        	return $_SESSION['access_token'];
-        	
+    /**
+     * @return mixed
+     */
+    public function getAccessToken(){
+        // session 存在就直接返回
+        if($_SESSION['access_token'] && time() < ($_SESSION['access_token_time'] + 7000) ){
+            return $_SESSION['access_token'];
         }
-    	
+
+        $access_token = file_get_contents(ROOT_PATH . '/data/access_token.php');
+        $time = 0;
+        $access_token_str = '';
+        if($access_token){
+            $data = (array)json_decode($access_token);
+            $time = $data['time'];
+            $access_token_str = $data['access_token'];
+        }
+
+        //文件内的 access_token
+        if($access_token &&  $access_token_str && time() < ($time + 7000)){
+            $_SESSION['access_token'] = $data['access_token'];
+            $_SESSION['access_token_time'] = $time;
+
+            return $data['access_token'];
+        }
+
+        $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$this->appid."&secret=".$this->appsecret;
+
+        $tmpInfo=$this->httpGet($url);
+        //var_dump($tmpInfo);
+        $info=json_decode($tmpInfo,true);
+
+        //setcookie("access_token",$info['access_token'],time()+7000,'/');
+        $_SESSION['access_token'] = $info['access_token'];
+        $_SESSION['access_token_time'] = time();
+
+        $data['access_token'] = $info['access_token'];
+        $data['time'] = time();
+
+        file_put_contents(ROOT_PATH . '/data/access_token.php', json_encode($data));
+        return $info['access_token'];
     }
+
+
     public function getSignature($timestamp='1499992323' ) {
         
         $jsapiTicket = $this->getJsApiTicket();
@@ -72,7 +93,7 @@ class class_weixin
     public function getJsApiTicket() {
         // jsapi_ticket 应该全局存储与更新，以下代码以写入到文件中做示例
         
-        if(empty($_SESSION['jsapi_ticket']) ||  (gmtime()-intval($_SESSION['jsapi_ticket_time'])>7000) ){
+        if(empty($_SESSION['jsapi_ticket']) ||  (time()-intval($_SESSION['jsapi_ticket_time'])>7000) ){
             
             $accessToken = $this->getAccessToken();
             
@@ -86,7 +107,7 @@ class class_weixin
                 
                 //setcookie("jsapi_ticket",$jsapi_ticket,time()+7000,'/');
                 $_SESSION['jsapi_ticket']=$jsapi_ticket;
-                $_SESSION['jsapi_ticket_time']=gmtime();
+                $_SESSION['jsapi_ticket_time']=time();
             }
             
             return $jsapi_ticket;
