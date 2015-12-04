@@ -67,7 +67,7 @@
 <!--{/if}-->
         
         </div>
-         <!--{if $team_info.team_status eq 1 }-->    
+         <!--{if $team_info.team_status eq 1 or $team_info.team_status eq 2 }-->
         <div class="share_box">
             <a class="share_link" id="share_button" href="javascript:void(0);" onclick="document.getElementById('share_img').style.display='';">直接分享好友参团</a>
             <!--a class="share_pic" id="share_button" href="javascript:void(0);" onclick="document.getElementById('share_pic').style.display='';">二维码分享好友参团</a-->
@@ -211,8 +211,11 @@
 
  
  			<!--{if $team_info.team_status eq 2 ||  $team_info.team_status eq 3 ||  $team_info.team_status eq 4}-->
-            <div class="fixopt_item">
-                <a class="fixopt_btn bottomBtn" href="goods.php?id={$goods.goods_id}">我也开个团，点击回商品列表</a>
+            <div class="fixopt_item fixopt_item1">
+                            <a class="fixopt_home" href="index.php" ></a>
+                            <a class="fixopt_share" id="share_button" href="javascript:void(0);" onclick="document.getElementById('share_img').style.display='';"></a>
+
+                <a class="fixopt_btn bottomBtn" href="goods.php?id={$goods.goods_id}">我也开个团</a>
             </div>
             <!--{else}-->
             
