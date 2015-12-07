@@ -1186,6 +1186,7 @@ class cls_template
         }else{
             $selected = '';
         }
+        print_r($arr);
 
 
         if ($arr['options'])
