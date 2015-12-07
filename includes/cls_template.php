@@ -1184,7 +1184,7 @@ class cls_template
         if(isset($arr['selected'])){
             $selected = $arr['selected'];
         }else{
-            $selected = '';
+            $selected = '-1';
         }
 
         if ($arr['options'])
@@ -1209,7 +1209,7 @@ class cls_template
         {
             foreach ($options AS $key => $val)
             {
-                $out .= ($key == $selected || $selected !='') ? "<option value=\"$key\" selected>$val</option>" : "<option value=\"$key\">$val</option>";
+                $out .= ($key == $selected) ? "<option value=\"$key\" selected>$val</option>" : "<option value=\"$key\">$val</option>";
             }
         }
 
