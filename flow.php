@@ -116,7 +116,7 @@ if ($_REQUEST['step'] == 'add_to_cart')
 		
 		if($limit_buy_one ==1)
 		{
-			    $where = '  og.goods_id = ' . $goods->goods_id . ' and oi.order_status=1';
+			    $where = '  og.goods_id = ' . $goods->goods_id . ' and oi.order_status in(0,1)';
                 $sql = 'select count(oi.order_id) from ' . $hhs->table('order_info') . ' as oi left join ' . $hhs->table('order_goods') . ' as og on oi.order_id = og.order_id where ' . $where . ' and oi.user_id = ' . $_SESSION['user_id'] . ' ';
                 $is_buy = $db->GetOne($sql);
 			    if($is_buy)
