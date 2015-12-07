@@ -1186,8 +1186,6 @@ class cls_template
         }else{
             $selected = '';
         }
-        print_r($arr);
-
 
         if ($arr['options'])
         {
@@ -1211,7 +1209,7 @@ class cls_template
         {
             foreach ($options AS $key => $val)
             {
-                $out .= $key == $selected ? "<option value=\"$key\" selected>$val</option>" : "<option value=\"$key\">$val</option>";
+                $out .= ($key == $selected || $selected !='') ? "<option value=\"$key\" selected>$val</option>" : "<option value=\"$key\">$val</option>";
             }
         }
 
