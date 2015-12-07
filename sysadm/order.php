@@ -408,7 +408,7 @@ elseif ($_REQUEST['act'] == 'team_list' )
 			}
 		}
 	}
-	print_r($_LANG);
+	//print_r($_LANG);
     $smarty->assign('sort_order_time', '<img src="images/sort_desc.gif">');
     $tpl_file = 'team_list.htm';
 	

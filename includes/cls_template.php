@@ -1181,7 +1181,12 @@ class cls_template
 
     function html_options($arr)
     {
-        $selected = $arr['selected'];
+        if(isset($arr['selected'])){
+            $selected = $arr['selected'];
+        }else{
+            $selected = '';
+        }
+
 
         if ($arr['options'])
         {
