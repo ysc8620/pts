@@ -676,7 +676,10 @@ elseif($_REQUEST['act'] == 'auto_order'){
     set_time_limit(0);
     ini_set('memory_limit', '1000M');
     // 查找可取消订单
-    $sql="select * from ".$hhs->table('order_info')." where extension_code='team_goods' and (team_status=3 or team_status=1) and team_first=1 and pay_status=2 and add_time>1440204356 ";
+
+    $expire_time = time() - ($GLOBALS['_CFG']['team_suc_time']*86400);
+    $new_expire_time = $expire_time + 172800;
+    $sql="select * from ".$hhs->table('order_info')." where extension_code='team_goods' and (team_status=3 or team_status=1) and team_first=1 and pay_status=2 and add_time<$expire_time LIMIT 100";
     $order_list=$db->getAll($sql);
 
     if(!empty($order_list) ){
@@ -684,11 +687,10 @@ elseif($_REQUEST['act'] == 'auto_order'){
         require_once(ROOT_PATH . 'includes/lib_payment.php');
         require_once(ROOT_PATH . 'includes/modules/payment/wxpay.php');
         foreach($order_list as $v){
-
             if($v['team_status']==1){
                 $sql="select pay_time from ".$hhs->table('order_info')." where order_id=".$v['team_sign'];
                 $pay_time=$db->getOne($sql);
-                if(gmtime()-$pay_time >$GLOBALS['_CFG']['team_suc_time']*24*3600 ){
+                if(gmtime()-$pay_time > $expire_time){
 
                     $sql="update ".$GLOBALS['hhs']->table('order_info')." set team_status=3,order_status=2 where  team_sign=".$v['team_sign'];
                     $GLOBALS['db']->query($sql);
@@ -722,6 +724,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
                 }
             }
 
+            /*
             if($v['team_status']==3){
                 $sql="select * from ".$GLOBALS['hhs']->table('order_info')." where team_sign=".$v['team_sign'];
                 $team_list= $GLOBALS['db']->getAll($sql);
@@ -748,7 +751,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
                 }
 
 
-            }
+            }*/
 
         }
 
