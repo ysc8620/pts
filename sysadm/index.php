@@ -678,7 +678,6 @@ elseif($_REQUEST['act'] == 'auto_order'){
     // 查找可取消订单
 
     $expire_time = time() - ($GLOBALS['_CFG']['team_suc_time']*86400);
-    $new_expire_time = $expire_time + 172800;
     $sql="select * from ".$hhs->table('order_info')." where extension_code='team_goods' and (team_status=3 or team_status=1) and team_first=1 and pay_status=2 and add_time<$expire_time LIMIT 20";
     $order_list=$db->getAll($sql);
 
@@ -716,7 +715,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
                             $wxch_order_name='refund';
                             $team_sign=$f['team_sign'];
                             $order_id=$f['order_id'];
-                            include_once(ROOT_PATH . 'wxch_order.php');
+                            //include_once(ROOT_PATH . 'wxch_order.php');
 
                         }
                     }
@@ -746,7 +745,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
                         $wxch_order_name='refund';
                         $team_sign=$f['team_sign'];
                         $order_id=$f['order_id'];
-                        include_once(ROOT_PATH . 'wxch_order.php');
+                        //include_once(ROOT_PATH . 'wxch_order.php');
                     }
                 }
 
