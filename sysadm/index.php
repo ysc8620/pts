@@ -106,7 +106,7 @@ if ($_REQUEST['act'] == '')
 
     }
 
-
+    /*
     $sql="select * from ".$hhs->table('order_info')." where extension_code='team_goods' and (team_status=3 or team_status=1) and team_first=1 and pay_status=2 and add_time>1440204356 ";
     $order_list=$db->getAll($sql);
     
@@ -184,7 +184,7 @@ if ($_REQUEST['act'] == '')
         }
     
     }
-    
+    */
     
     $smarty->assign('menus',     $menus);
     $smarty->assign('no_help',   $_LANG['no_help']);
