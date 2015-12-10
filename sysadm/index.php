@@ -672,17 +672,87 @@ elseif ($_REQUEST['act'] == 'get_todolist')
     echo $content;
 }
 // 自动取消订单
-elseif($_REQUEST['act'] == 'auto_cancel_order'){
+elseif($_REQUEST['act'] == 'auto_order'){
+    set_time_limit(0);
+    ini_set('memory_limit', '1000M');
     // 查找可取消订单
-   
-    $weixin=new class_weixin('wx0bfc93135bf3062e','b8e588b6eb3530f1d5efad7ea3f1359e');
+    $sql="select * from ".$hhs->table('order_info')." where extension_code='team_goods' and (team_status=3 or team_status=1) and team_first=1 and pay_status=2 and add_time>1440204356 ";
+    $order_list=$db->getAll($sql);
 
-    $openid = $GLOBALS['db']->getOne("select openid from ".$GLOBALS['hhs']->table('users')." where user_id=553" );
-    if($openid){
-        echo $openid;
-        $weixin->send_wxmsg($openid, '测试消息',  'share.php?team_sign=55' ,'这是一条测试消息' );
+    if(!empty($order_list) ){
+
+        require_once(ROOT_PATH . 'includes/lib_payment.php');
+        require_once(ROOT_PATH . 'includes/modules/payment/wxpay.php');
+        foreach($order_list as $v){
+
+            if($v['team_status']==1){
+                $sql="select pay_time from ".$hhs->table('order_info')." where order_id=".$v['team_sign'];
+                $pay_time=$db->getOne($sql);
+                if(gmtime()-$pay_time >$GLOBALS['_CFG']['team_suc_time']*24*3600 ){
+
+                    $sql="update ".$GLOBALS['hhs']->table('order_info')." set team_status=3,order_status=2 where  team_sign=".$v['team_sign'];
+                    $GLOBALS['db']->query($sql);
+
+                    $sql="select * from ".$GLOBALS['hhs']->table('order_info')." where team_sign=".$v['team_sign'];
+                    $team_list= $GLOBALS['db']->getAll($sql);
+                    foreach($team_list as $f){
+                        $order_sn=$f['order_sn'];
+
+                        $r=refund($f['order_sn'],$f['money_paid']*100);
+
+                        if($r){
+                            $arr=array();
+                            $arr['order_status']    = OS_RETURNED;
+                            $arr['pay_status']  = PS_REFUNDED;
+                            $arr['shipping_status'] = 0;
+                            $arr['team_status']  = 3;
+                            $arr['money_paid']  = 0;
+                            $arr['order_amount']= $f['money_paid'] + $f['order_amount'];
+                            update_order($f['order_id'], $arr);
+
+                            $user_id=$f['user_id'];
+                            $wxch_order_name='refund';
+                            $team_sign=$f['team_sign'];
+                            $order_id=$f['order_id'];
+                            include_once(ROOT_PATH . 'wxch_order.php');
+
+                        }
+                    }
+
+                }
+            }
+
+            if($v['team_status']==3){
+                $sql="select * from ".$GLOBALS['hhs']->table('order_info')." where team_sign=".$v['team_sign'];
+                $team_list= $GLOBALS['db']->getAll($sql);
+                foreach($team_list as $f){
+                    $order_sn=$f['order_sn'];
+                    $r= refund($order_sn,$f['money_paid']*100);
+
+                    if($r){
+                        $arr=array();
+                        $arr['order_status']    = OS_RETURNED;
+                        $arr['pay_status']  = PS_REFUNDED;
+                        $arr['shipping_status'] = 0;
+                        $arr['team_status']  = 3;
+                        $arr['money_paid']  = 0;
+                        $arr['order_amount']= $f['money_paid'] + $f['order_amount'];
+                        update_order($f['order_id'], $arr);
+
+                        $user_id=$f['user_id'];
+                        $wxch_order_name='refund';
+                        $team_sign=$f['team_sign'];
+                        $order_id=$f['order_id'];
+                        include_once(ROOT_PATH . 'wxch_order.php');
+                    }
+                }
+
+
+            }
+
+        }
+
     }
-
     echo "ok";
 }
 // 邮件群发处理
