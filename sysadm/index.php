@@ -686,6 +686,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
         require_once(ROOT_PATH . 'includes/lib_payment.php');
         require_once(ROOT_PATH . 'includes/modules/payment/wxpay.php');
         foreach($order_list as $v){
+            echo $v['order_id'].",\r\n";
             if($v['team_status']==1){
                 $sql="select pay_time from ".$hhs->table('order_info')." where order_id=".$v['team_sign'];
                 $pay_time=$db->getOne($sql);
