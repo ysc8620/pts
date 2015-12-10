@@ -701,7 +701,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
                         $order_sn=$f['order_sn'];
 
                         $r=refund($f['order_sn'],$f['money_paid']*100);
-
+                        var_dump($r);
                         if($r){
                             $arr=array();
                             $arr['order_status']    = OS_RETURNED;
