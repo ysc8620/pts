@@ -724,7 +724,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
                 }
             }
 
-            /*
+
             if($v['team_status']==3){
                 $sql="select * from ".$GLOBALS['hhs']->table('order_info')." where team_sign=".$v['team_sign'];
                 $team_list= $GLOBALS['db']->getAll($sql);
@@ -751,7 +751,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
                 }
 
 
-            }*/
+            }
 
         }
 
