@@ -689,7 +689,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
             if($v['team_status']==1){
                 $sql="select pay_time from ".$hhs->table('order_info')." where order_id=".$v['team_sign'];
                 $pay_time=$db->getOne($sql);
-                if(gmtime()-$pay_time > $expire_time){
+                if(gmtime()-$pay_time >$GLOBALS['_CFG']['team_suc_time']*24*3600 ){
 
                     $sql="update ".$GLOBALS['hhs']->table('order_info')." set team_status=3,order_status=2 where  team_sign=".$v['team_sign'];
                     $GLOBALS['db']->query($sql);
@@ -701,7 +701,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
 
                         $r=refund($f['order_sn'],$f['money_paid']*100);
                         if($r){
-                            echo $order_sn."： 退款成功<br/>";
+                            echo '1'.$order_sn."： 退款成功<br/>";
                             $arr=array();
                             $arr['order_status']    = OS_RETURNED;
                             $arr['pay_status']  = PS_REFUNDED;
@@ -742,7 +742,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
                     $r= refund($order_sn,$f['money_paid']*100);
 
                     if($r){
-                        echo $order_sn."： 退款成功<br/>";
+                        echo '3'. $order_sn."： 退款成功<br/>";
                         $arr=array();
                         $arr['order_status']    = OS_RETURNED;
                         $arr['pay_status']  = PS_REFUNDED;
