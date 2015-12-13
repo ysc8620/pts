@@ -40,8 +40,10 @@
             <div class="wx_bar_back">
                 <a id="back" href="javascript:void(0);"></a>
             </div>
-            <div class="wx_bar_tit">收货地址</div>
-        </div>
+            <div class="wx_bar_tit">收货地址<br />
+            重要说明：目前只支持发货到<span style="color:red">中兴通讯人才公寓、科技园中兴研发大楼、西丽中兴工业园</span>三个区域。请其他地方的朋友不要拍下，如果误拍也不要担心，我们会尽快退款。
+       </div>
+       </div>
         <div class="wx_wrap">
             <div class="address_new">
                 <input id="address_regionId" value="" type="hidden">
