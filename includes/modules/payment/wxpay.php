@@ -565,7 +565,7 @@ class wxpay
 
 	//$out_trade_no = WxPayConf_pub::APPID."$timeStamp";
 
-	$unifiedOrder->setParameter("out_trade_no",$order['order_sn'].time());//商户订单号 
+	$unifiedOrder->setParameter("out_trade_no",$order['order_sn']);//商户订单号
 
 	$unifiedOrder->setParameter("total_fee",intval($order['order_amount'] * 100));//总金额
 
@@ -681,7 +681,7 @@ function get_code2($order, $payment )
 
 	//$out_trade_no = WxPayConf_pub::APPID."$timeStamp";
 
-	$unifiedOrder->setParameter("out_trade_no",$order['order_sn'].time());//商户订单号
+	$unifiedOrder->setParameter("out_trade_no",$order['order_sn']);//商户订单号
 
 	$unifiedOrder->setParameter("total_fee",intval($order['order_amount'] * 100));//总金额
 
