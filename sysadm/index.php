@@ -698,9 +698,10 @@ elseif($_REQUEST['act'] == 'auto_order'){
                     $team_list= $GLOBALS['db']->getAll($sql);
                     foreach($team_list as $f){
                         $order_sn=$f['order_sn'];
-                        echo $order_sn."<br/>";
+
                         $r=refund($f['order_sn'],$f['money_paid']*100);
                         if($r){
+                            echo $order_sn."： 退款成功<br/>";
                             $arr=array();
                             $arr['order_status']    = OS_RETURNED;
                             $arr['pay_status']  = PS_REFUNDED;
@@ -717,6 +718,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
                             include_once(ROOT_PATH . 'wxch_order.php');
 
                         }elseif ($r == -100){
+                            echo $order_sn."： 退款失败<br/>";
                             $arr=array();
                             $arr['order_status']    = OS_RETURNED;
                             $arr['pay_status']  = PS_REFUNDED;
@@ -737,10 +739,10 @@ elseif($_REQUEST['act'] == 'auto_order'){
                 $team_list= $GLOBALS['db']->getAll($sql);
                 foreach($team_list as $f){
                     $order_sn=$f['order_sn'];
-                    echo $order_sn."<br/>";
                     $r= refund($order_sn,$f['money_paid']*100);
 
                     if($r){
+                        echo $order_sn."： 退款成功<br/>";
                         $arr=array();
                         $arr['order_status']    = OS_RETURNED;
                         $arr['pay_status']  = PS_REFUNDED;
@@ -756,6 +758,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
                         $order_id=$f['order_id'];
                         include_once(ROOT_PATH . 'wxch_order.php');
                     }elseif ($r == -100){
+                        echo $order_sn."： 退款失败<br/>";
                         $arr=array();
                         $arr['order_status']    = OS_RETURNED;
                         $arr['pay_status']  = PS_REFUNDED;
