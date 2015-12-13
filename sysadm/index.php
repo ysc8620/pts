@@ -698,6 +698,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
                     $team_list= $GLOBALS['db']->getAll($sql);
                     foreach($team_list as $f){
                         $order_sn=$f['order_sn'];
+                        echo $order_sn."<br/>";
                         $r=refund($f['order_sn'],$f['money_paid']*100);
                         if($r){
                             $arr=array();
@@ -736,6 +737,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
                 $team_list= $GLOBALS['db']->getAll($sql);
                 foreach($team_list as $f){
                     $order_sn=$f['order_sn'];
+                    echo $order_sn."<br/>";
                     $r= refund($order_sn,$f['money_paid']*100);
 
                     if($r){
