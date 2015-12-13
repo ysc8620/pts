@@ -701,7 +701,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
 
                         $r=refund($f['order_sn'],$f['money_paid']*100);
                         if($r){
-                            echo '1'.$order_sn."： 退款成功<br/>";
+                            echo '1='.$order_sn."： 退款成功<br/>";
                             $arr=array();
                             $arr['order_status']    = OS_RETURNED;
                             $arr['pay_status']  = PS_REFUNDED;
@@ -718,7 +718,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
                             include_once(ROOT_PATH . 'wxch_order.php');
 
                         }elseif ($r == -100){
-                            echo $order_sn."： 退款失败<br/>";
+                            echo '1='.$order_sn."： 退款失败<br/>";
                             $arr=array();
                             $arr['order_status']    = OS_RETURNED;
                             $arr['pay_status']  = PS_REFUNDED;
@@ -742,7 +742,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
                     $r= refund($order_sn,$f['money_paid']*100);
 
                     if($r){
-                        echo '3'. $order_sn."： 退款成功<br/>";
+                        echo '3='. $order_sn."： 退款成功<br/>";
                         $arr=array();
                         $arr['order_status']    = OS_RETURNED;
                         $arr['pay_status']  = PS_REFUNDED;
@@ -758,7 +758,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
                         $order_id=$f['order_id'];
                         include_once(ROOT_PATH . 'wxch_order.php');
                     }elseif ($r == -100){
-                        echo $order_sn."： 退款失败<br/>";
+                        echo '3='.$order_sn."： 退款失败<br/>";
                         $arr=array();
                         $arr['order_status']    = OS_RETURNED;
                         $arr['pay_status']  = PS_REFUNDED;
