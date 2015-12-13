@@ -841,7 +841,7 @@ function get_code2($order, $payment )
 
 			order_paid($log_id);
 
-			//$wxpay = new wxpay();
+			//$wxpay = new wxpay();  
 
 			//$wxpay->respond($order["out_trade_no"]);			
 
