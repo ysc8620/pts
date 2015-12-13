@@ -678,7 +678,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
     // 查找可取消订单
 
     $expire_time = time() - ($GLOBALS['_CFG']['team_suc_time']*86400);
-    $sql="select * from ".$hhs->table('order_info')." where extension_code='team_goods' and (team_status=3 or team_status=1) and team_first=1 and pay_status=2 and add_time<$expire_time ORDER BY order_id DESC LIMIT 20";
+    $sql="select * from ".$hhs->table('order_info')." where extension_code='team_goods' and (team_status=3 or team_status=1) and team_first=1 and pay_status=2 and add_time<$expire_time ORDER BY order_id DESC LIMIT 100";
     $order_list=$db->getAll($sql);
 
     if(!empty($order_list) ){
