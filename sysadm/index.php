@@ -720,7 +720,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
                             $arr['order_status']    = OS_RETURNED;
                             $arr['pay_status']  = PS_REFUNDED;
                             $arr['shipping_status'] = 0;
-                            $arr['team_status']  = 3;
+                            $arr['team_status']  = 4;
                             $arr['money_paid']  = 0;
                             $arr['order_amount']= $f['money_paid'] + $f['order_amount'];
                             update_order($f['order_id'], $arr);
@@ -758,7 +758,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
                         $arr['order_status']    = OS_RETURNED;
                         $arr['pay_status']  = PS_REFUNDED;
                         $arr['shipping_status'] = 0;
-                        $arr['team_status']  = 3;
+                        $arr['team_status']  = 4;
                         $arr['money_paid']  = 0;
                         $arr['order_amount']= $f['money_paid'] + $f['order_amount'];
                         update_order($f['order_id'], $arr);
