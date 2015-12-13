@@ -262,6 +262,7 @@ $class_weixin=new class_weixin($appid,$appsecret);
 $signature=$class_weixin->getSignature($timestamp);
 $smarty->assign('signature', $signature);
 
+$buy_num = get_buy_sum($goods_id)+$sales_num;
 //$smarty->assign('jssdk', jssdk($appid,$secret,$timestamp));
 $smarty->assign('imgUrl','http://' . $_SERVER['HTTP_HOST'].'/'.$goods['goods_thumb'] );
 $smarty->assign('title', $goods['goods_name']);
