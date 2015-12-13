@@ -730,9 +730,9 @@ elseif($_REQUEST['act'] == 'auto_order'){
                 $sql="select * from ".$GLOBALS['hhs']->table('order_info')." where team_sign=".$v['team_sign'];
                 $team_list= $GLOBALS['db']->getAll($sql);
                 foreach($team_list as $f){
-                    echo 'status=3,'$f['order_id'].", {$f['team_status']}, <br/>";
+                    echo 'status=3,'.$f['order_id'].", {$f['team_status']}, <br/>";
                     $order_sn=$f['order_sn'];
-                    echo $order_sn."=".$f['money_paid']*100."<br/>";
+                    echo $order_sn."=".($f['money_paid']*100)."<br/>";
                     $r= refund($order_sn,$f['money_paid']*100);
                     var_dump($r);die();
                     if($r){
