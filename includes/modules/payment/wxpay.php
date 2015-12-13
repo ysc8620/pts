@@ -397,7 +397,8 @@ function refund($order_sn,$refund_fee){
            return true;
        }
        else{
-           print_r($refundResult);
+           return -100;
+           // print_r($refundResult);
        }
     /*
         echo "业务结果：".$refundResult['result_code']."<br>";
@@ -841,7 +842,7 @@ function get_code2($order, $payment )
 
 			order_paid($log_id);
 
-			//$wxpay = new wxpay();  
+			//$wxpay = new wxpay();
 
 			//$wxpay->respond($order["out_trade_no"]);			
 

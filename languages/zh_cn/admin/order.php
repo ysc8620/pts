@@ -59,7 +59,7 @@ $_LANG['team_status'][0] = '团购待付款';
 $_LANG['team_status'][1] = '团购正在进行中';
 $_LANG['team_status'][2] = '团购成功';
 $_LANG['team_status'][3] = '团购失败';
-//$_LANG['team_status'][4] = '团购失败';
+$_LANG['team_status'][4] = '团购自动退款失败';
 
 $_LANG['ss_admin'][SS_SHIPPED_ING] = '发货中（前台状态：未发货）';
 /* 订单操作 */

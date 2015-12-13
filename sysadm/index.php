@@ -686,7 +686,6 @@ elseif($_REQUEST['act'] == 'auto_order'){
         require_once(ROOT_PATH . 'includes/lib_payment.php');
         require_once(ROOT_PATH . 'includes/modules/payment/wxpay.php');
         foreach($order_list as $v){
-            echo $v['order_id'].", {$v['team_status']}, \r\n";
             if($v['team_status']==1){
                 $sql="select pay_time from ".$hhs->table('order_info')." where order_id=".$v['team_sign'];
                 $pay_time=$db->getOne($sql);
@@ -699,10 +698,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
                     $team_list= $GLOBALS['db']->getAll($sql);
                     foreach($team_list as $f){
                         $order_sn=$f['order_sn'];
-
                         $r=refund($f['order_sn'],$f['money_paid']*100);
-                        var_dump($r);
-                        die();
                         if($r){
                             $arr=array();
                             $arr['order_status']    = OS_RETURNED;
@@ -717,8 +713,17 @@ elseif($_REQUEST['act'] == 'auto_order'){
                             $wxch_order_name='refund';
                             $team_sign=$f['team_sign'];
                             $order_id=$f['order_id'];
-                            //include_once(ROOT_PATH . 'wxch_order.php');
+                            include_once(ROOT_PATH . 'wxch_order.php');
 
+                        }elseif ($r == -100){
+                            $arr=array();
+                            $arr['order_status']    = OS_RETURNED;
+                            $arr['pay_status']  = PS_REFUNDED;
+                            $arr['shipping_status'] = 0;
+                            $arr['team_status']  = 3;
+                            $arr['money_paid']  = 0;
+                            $arr['order_amount']= $f['money_paid'] + $f['order_amount'];
+                            update_order($f['order_id'], $arr);
                         }
                     }
 
@@ -730,11 +735,9 @@ elseif($_REQUEST['act'] == 'auto_order'){
                 $sql="select * from ".$GLOBALS['hhs']->table('order_info')." where team_sign=".$v['team_sign'];
                 $team_list= $GLOBALS['db']->getAll($sql);
                 foreach($team_list as $f){
-                    echo 'status=3,'.$f['order_id'].", {$f['team_status']}, <br/>";
                     $order_sn=$f['order_sn'];
-                    echo $order_sn."=".($f['money_paid']*100)."<br/>";
                     $r= refund($order_sn,$f['money_paid']*100);
-                    var_dump($r);die();
+
                     if($r){
                         $arr=array();
                         $arr['order_status']    = OS_RETURNED;
@@ -749,7 +752,16 @@ elseif($_REQUEST['act'] == 'auto_order'){
                         $wxch_order_name='refund';
                         $team_sign=$f['team_sign'];
                         $order_id=$f['order_id'];
-                        //include_once(ROOT_PATH . 'wxch_order.php');
+                        include_once(ROOT_PATH . 'wxch_order.php');
+                    }elseif ($r == -100){
+                        $arr=array();
+                        $arr['order_status']    = OS_RETURNED;
+                        $arr['pay_status']  = PS_REFUNDED;
+                        $arr['shipping_status'] = 0;
+                        $arr['team_status']  = 3;
+                        $arr['money_paid']  = 0;
+                        $arr['order_amount']= $f['money_paid'] + $f['order_amount'];
+                        update_order($f['order_id'], $arr);
                     }
                 }
 
