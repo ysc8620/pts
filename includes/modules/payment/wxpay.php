@@ -396,7 +396,9 @@ function refund($order_sn,$refund_fee){
            
            return true;
        }
-       
+       else{
+           print_r($refundResult);
+       }
     /*
         echo "业务结果：".$refundResult['result_code']."<br>";
     
