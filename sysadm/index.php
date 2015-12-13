@@ -702,6 +702,7 @@ elseif($_REQUEST['act'] == 'auto_order'){
 
                         $r=refund($f['order_sn'],$f['money_paid']*100);
                         var_dump($r);
+                        die();
                         if($r){
                             $arr=array();
                             $arr['order_status']    = OS_RETURNED;
@@ -729,9 +730,10 @@ elseif($_REQUEST['act'] == 'auto_order'){
                 $sql="select * from ".$GLOBALS['hhs']->table('order_info')." where team_sign=".$v['team_sign'];
                 $team_list= $GLOBALS['db']->getAll($sql);
                 foreach($team_list as $f){
+                    echo $f['order_id'].", {$f['team_status']}, \r\n";
                     $order_sn=$f['order_sn'];
                     $r= refund($order_sn,$f['money_paid']*100);
-
+                    var_dump($r);die();
                     if($r){
                         $arr=array();
                         $arr['order_status']    = OS_RETURNED;
