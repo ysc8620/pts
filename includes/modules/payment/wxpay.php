@@ -397,7 +397,18 @@ function refund($order_sn,$refund_fee){
            return true;
        }
        else{
-           return -100;
+
+//               echo '3='.$order_sn."： 退款失败<br/>";
+//               $arr=array();
+//               $arr['order_status']    = OS_RETURNED;
+//               $arr['pay_status']  = PS_REFUNDED;
+//               $arr['shipping_status'] = 0;
+//               $arr['team_status']  = 4;
+//               $arr['money_paid']  = 0;
+//               $arr['order_amount']= $f['money_paid'] + $f['order_amount'];
+//               update_order($f['order_id'], $arr);
+
+           return false;
            // print_r($refundResult);
        }
     /*
