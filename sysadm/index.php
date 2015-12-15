@@ -717,6 +717,8 @@ elseif($_REQUEST['act'] == 'auto_order'){
                             $order_id=$f['order_id'];
                             include_once(ROOT_PATH . 'wxch_order.php');
 
+                        }else{
+                            echo '1='. $order_sn."： 退款失败<br/>";
                         }
                     }
 
@@ -747,6 +749,8 @@ elseif($_REQUEST['act'] == 'auto_order'){
                         $team_sign=$f['team_sign'];
                         $order_id=$f['order_id'];
                         include_once(ROOT_PATH . 'wxch_order.php');
+                    }else{
+                        echo '3='. $order_sn."： 退款失败<br/>";
                     }
                 }
 
